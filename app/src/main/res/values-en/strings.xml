@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="back_content_description">Back</string>
     <string name="title_hello">Hello, Praktikum</string>
     <string name="search">Search</string>
     <string name="library">Library</string>

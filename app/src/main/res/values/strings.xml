@@ -1,4 +1,5 @@
 <resources>
+    <string name="back_content_description">Назад</string>
     <string name="app_name" translatable="false">Playlist maker</string>
     <string name="title_hello">Привет, Практикум</string>
     <string name="search">Поиск</string>

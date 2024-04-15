@@ -4,13 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Здесь будет медиабиблиотека"
-        android:textColor="@color/black"/>
+    <LinearLayout
+        android:id="@+id/panelHeader"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/panel_header_height"
+        android:layout_marginBottom="@dimen/panel_header_marginBottom"
+        android:padding="@dimen/panel_header_padding"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/panel_title_hight"
+            android:layout_marginStart="@dimen/panel_title_marrgin"
+            android:gravity="center_vertical"
+            android:text="@string/library"
+            android:textColor="@color/black"
+            android:textSize="@dimen/panel_title_text_size" />
+    </LinearLayout>
 
 </LinearLayout>

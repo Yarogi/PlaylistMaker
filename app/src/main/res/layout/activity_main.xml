@@ -4,23 +4,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/panelHeader"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/primary_title_margin_botom"
-        android:text="@string/app_name"
-        android:textColor="@color/white"
-        android:textSize="@dimen/primary_text_size" />
+        android:layout_height="@dimen/panel_header_height"
+        android:layout_marginBottom="@dimen/panel_header_marginBottom"
+        android:padding="@dimen/panel_header_padding"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/panel_title_hight"
+            android:layout_marginStart="@dimen/panel_title_marrgin"
+            android:gravity="center_vertical"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="@dimen/panel_title_text_size" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnSearch"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/medium_margin"
         android:layout_weight="1"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="@dimen/big_button_margin"
+        android:layout_marginRight="@dimen/big_button_margin"
         android:backgroundTint="@color/white"
         android:text="@string/search"
         android:textColor="@color/black"
@@ -35,8 +45,10 @@
         android:id="@+id/btnLibrary"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/medium_margin"
         android:layout_weight="1"
+        android:layout_marginTop="@dimen/big_button_margin"
+        android:layout_marginLeft="@dimen/big_button_margin"
+        android:layout_marginRight="@dimen/big_button_margin"
         android:backgroundTint="@color/white"
         android:text="@string/library"
         android:textColor="@color/black"
@@ -51,8 +63,8 @@
         android:id="@+id/btnSettings"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/medium_margin"
         android:layout_weight="1"
+        android:layout_margin="@dimen/big_button_margin"
         android:backgroundTint="@color/white"
         android:text="@string/settings"
         android:textColor="@color/black"
