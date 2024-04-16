@@ -20,7 +20,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val shareAppButton = findViewById<Button>(R.id.shareApp)
         shareAppButton.setOnClickListener {
-            val message = R.string.praktikum_andoid_dev_url
+            val message = getString(R.string.praktikum_andoid_dev_url)
 
             val intent = Intent()
             intent.action = Intent.ACTION_SEND
@@ -46,10 +46,12 @@ class SettingsActivity : AppCompatActivity() {
 
         val termsOfUseButton = findViewById<Button>(R.id.termsOfUse)
         termsOfUseButton.setOnClickListener {
+            val url = getString(R.string.praktikum_andoid_dev_term_of_use)
             val intent = Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse(R.string.praktikum_andoid_dev_term_of_use.toString())
+                Uri.parse(url)
             )
+
             startActivity(intent)
         }
 
