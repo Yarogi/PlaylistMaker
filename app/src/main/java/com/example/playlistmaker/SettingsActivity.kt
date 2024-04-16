@@ -30,12 +30,14 @@ class SettingsActivity : AppCompatActivity() {
         val writeToSupportButton = findViewById<Button>(R.id.writeToSupport)
         writeToSupportButton.setOnClickListener {
 
+            val mailTheme = getString(R.string.write_to_support_theme)
             val message = getString(R.string.write_to_support_message)
             val supportEmail = getString(R.string.support_email)
 
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = Uri.parse("mailto:")
             intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(supportEmail))
+            intent.putExtra(Intent.EXTRA_SUBJECT, mailTheme)
             intent.putExtra(Intent.EXTRA_TEXT, message)
 
             startActivity(intent)

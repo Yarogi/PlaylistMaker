@@ -12,6 +12,7 @@
     <!--  Messages  -->
     <string name="praktikum_andoid_dev_url" translatable="false">https://practicum.yandex.ru/android-developer</string>
     <string name="praktikum_andoid_dev_term_of_use" translatable="false"> https://yandex.ru/legal/practicum_offer</string>
-    <string name="write_to_support_message">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="write_to_support_message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="support_email" translatable="false">yachmenyov.igor@yandex.ru</string>
+    <string name="write_to_support_theme">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
 </resources>
