@@ -7,11 +7,19 @@
 
     <LinearLayout
         android:id="@+id/panelHeader"
-        style="@style/PanelHeader">
+        style="@style/PanelHeader"
+        android:layout_marginBottom="0dp">
+
+        <Button
+            android:id="@+id/exitBtn"
+            style="@style/PanelIcon"
+            android:contentDescription="@string/back_content_description"
+            app:icon="@drawable/arrow_back" />
 
         <TextView
             style="@style/PanelTitle"
             android:text="@string/library" />
     </LinearLayout>
+
 
 </LinearLayout>
