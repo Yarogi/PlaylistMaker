@@ -62,12 +62,8 @@
         <item name="iconPadding">@dimen/menu_text_icon_padding</item>
         <item name="iconTint">@color/text_gray</item>
         <item name="android:textColor">@color/black</item>
-        <!--Text-->
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">@dimen/menu_text_size</item>
-        <item name="android:fontFamily">@font/ys_display_regular</item>
-        <item name="android:textFontWeight">400</item>
-
     </style>
+
+
 
 </resources>

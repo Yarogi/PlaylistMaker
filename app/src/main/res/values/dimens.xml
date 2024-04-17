@@ -28,5 +28,6 @@
     <dimen name="menu_text_padding_left">16dp</dimen>
     <dimen name="menu_text_padding_vertical">21dp</dimen>
     <dimen name="menu_text_icon_padding">12dp</dimen>
+    <dimen name="input_icon_size">16dp</dimen>
 
 </resources>
