@@ -52,6 +52,7 @@
         <item name="iconPadding">@dimen/panel_title_icon_padding</item>
         <item name="iconTint">@color/black</item>
         <item name="android:textColor">@color/black</item>
+        <item name="elevation">0dp</item>
     </style>
 
     <style name="MenuItem">
