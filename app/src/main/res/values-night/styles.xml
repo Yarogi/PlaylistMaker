@@ -35,7 +35,11 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
-    <style name="MainButtomStyle" parent="PlaylistTitle">
+    <style name="MainButtomStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:textSize">@dimen/primary_text_size</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textAllCaps">false</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">1</item>
@@ -48,9 +52,6 @@
         <item name="iconPadding">@dimen/panel_title_icon_padding</item>
         <item name="iconTint">@color/black</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:stateListAnimator" ns1:ignore="NewApi">
-            @animator/mtrl_btn_unelevated_state_list_anim
-        </item>
         <item name="elevation">0dp</item>
     </style>
 
