@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.internal.ViewUtils
 
 class SearchActivity : AppCompatActivity() {
@@ -45,6 +46,11 @@ class SearchActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {}
         }
         searchTextEdit.addTextChangedListener(searchTextWatcher)
+
+        //TrackList
+        val trackListView = findViewById<RecyclerView>(R.id.trackListView)
+
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

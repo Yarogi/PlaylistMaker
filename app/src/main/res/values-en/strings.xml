@@ -11,4 +11,6 @@
     <string name="terms_of_use">Terms of use</string>
     <string name="write_to_support_message">Thanks to the developers and developers for the cool application!</string>
     <string name="write_to_support_theme">Message to the developers and developers of the Playlist Maker app</string>
+    <string name="track_album_cover">Album cover</string>
+    <string name="no_description">no description</string>
 </resources>
