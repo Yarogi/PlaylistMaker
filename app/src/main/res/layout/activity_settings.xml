@@ -1,101 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/panelHeader"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/panel_header_height"
-        android:layout_marginBottom="@dimen/panel_header_marginBottom"
-        android:orientation="horizontal"
-        android:padding="@dimen/panel_header_padding">
+        style="@style/PanelHeader">
 
         <Button
             android:id="@+id/exitBtn"
-            android:inputType="none"
-            android:layout_width="@dimen/panel_title_hight"
-            android:layout_height="@dimen/panel_title_hight"
-            android:layout_gravity="start"
-            android:background="@android:color/transparent"
-            android:gravity="start"
-            app:icon="@drawable/arrow_back"
-            app:iconGravity="start"
-            app:iconPadding="@dimen/panel_title_icon_padding"
-            app:iconTint="@color/black"
-            android:contentDescription="@string/back_content_description"/>
+            style="@style/PanelIcon"
+            android:contentDescription="@string/back_content_description"
+            app:icon="@drawable/arrow_back" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/panel_title_hight"
-            android:layout_marginStart="@dimen/panel_title_marrgin"
-            android:gravity="center_vertical"
-            android:text="@string/settings"
-            android:textColor="@color/black"
-            android:textSize="@dimen/panel_title_text_size" />
+            style="@style/PanelTitle"
+            android:text="@string/settings"/>
     </LinearLayout>
 
-
     <Switch
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/menu_text_padding_left"
-        android:paddingVertical="@dimen/menu_text_padding_vertical"
+        android:id="@+id/switchNightMode"
+        style="@style/MenuItem"
         android:paddingEnd="@dimen/menu_text_icon_padding"
         android:text="@string/dark_theme"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="@dimen/menu_text_size" />
+        tools:ignore="RtlSymmetry,UseSwitchCompatOrMaterialXml" />
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/menu_text_padding_left"
-        android:paddingVertical="@dimen/menu_text_padding_vertical"
-        android:layout_gravity="start"
-        android:background="@android:color/transparent"
-        android:gravity="start"
+        android:id="@+id/shareApp"
+        style="@style/MenuItem"
         android:text="@string/share_app"
-        android:textAllCaps="false"
-        android:textSize="@dimen/menu_text_size"
-        app:icon="@drawable/share"
-        app:iconGravity="end"
-        app:iconPadding="@dimen/menu_text_icon_padding"
-        app:iconTint="@color/text_gray" />
+        app:icon="@drawable/share" />
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/menu_text_padding_left"
-        android:paddingVertical="@dimen/menu_text_padding_vertical"
-        android:layout_gravity="start"
-        android:background="@android:color/transparent"
-        android:gravity="start"
+        android:id="@+id/writeToSupport"
+        style="@style/MenuItem"
         android:text="@string/write_to_support"
-        android:textAllCaps="false"
-        android:textSize="@dimen/menu_text_size"
-        app:icon="@drawable/support"
-        app:iconGravity="end"
-        app:iconPadding="@dimen/menu_text_icon_padding"
-        app:iconTint="@color/text_gray" />
+        app:icon="@drawable/support" />
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/menu_text_padding_left"
-        android:paddingVertical="@dimen/menu_text_padding_vertical"
-        android:layout_gravity="start"
-        android:background="@android:color/transparent"
-        android:gravity="start"
+        android:id="@+id/termsOfUse"
+        style="@style/MenuItem"
         android:text="@string/terms_of_use"
-        android:textAllCaps="false"
-        android:textSize="@dimen/menu_text_size"
-        app:icon="@drawable/arrow_left"
-        app:iconGravity="end"
-        app:iconPadding="@dimen/menu_text_icon_padding"
-        app:iconTint="@color/text_gray" />
+        app:icon="@drawable/arrow_left" />
 
 </LinearLayout>
