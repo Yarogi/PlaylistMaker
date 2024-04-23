@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.model.Track
 
 class SearchActivity : AppCompatActivity() {
 

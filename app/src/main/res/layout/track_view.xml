@@ -1,19 +1,20 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tool="http://schemas.android.com/tools"
-    android:foreground="?android:attr/selectableItemBackground"
     android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="8dp"
-    app:cardElevation="0dp"
-    android:focusable="true">
+    app:cardElevation="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="61dp"
-        android:orientation="horizontal">
-        
+        android:orientation="horizontal"
+        android:theme="@style/Theme.PlaylistMaker.TrackListItem">
+
         <ImageView
             android:id="@+id/artwork"
             android:layout_width="45dp"
@@ -21,50 +22,53 @@
             android:layout_gravity="center"
             android:layout_marginStart="13dp"
             android:layout_marginEnd="8dp"
+            android:contentDescription="@string/track_album_cover"
             android:src="@drawable/track_placeholder"
-            android:contentDescription="@string/track_album_cover" />
+            android:theme="@style/Theme.PlaylistMaker.TrackListItem.PlaceHolder" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingVertical="14dp">
 
             <TextView
-                android:id="@+id/artistName"
-                android:layout_width="match_parent"
+                android:id="@+id/trackName"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                tool:text="@string/example_text_4"/>
+                tool:text="@string/example_text_very_long" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:theme="@style/Theme.PlaylistMaker.TrackListItem.Info">
 
                 <TextView
-                    android:id="@+id/trackName"
+                    android:id="@+id/artistName"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@string/example_text_3"
-                    android:gravity="center_vertical"/>
+                    android:gravity="center_vertical"
+                    android:maxWidth="54sp"
+                    tool:text="@string/example_text_very_long" />
 
                 <ImageView
                     android:layout_width="13dp"
                     android:layout_height="13dp"
-                    android:padding="5dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ellipse_1"
-                    android:contentDescription="@string/no_description" />
+                    android:contentDescription="@string/no_description"
+                    android:padding="5dp"
+                    android:src="@drawable/ellipse_1" />
 
                 <TextView
                     android:id="@+id/trackTime"
-                    android:layout_width="wrap_content"
+                    android:layout_width="64sp"
                     android:layout_height="match_parent"
-                    android:text="@string/example_text_duration"
-                    android:gravity="center_vertical"/>
-
+                    android:gravity="center_vertical"
+                    tool:text="@string/example_text_duration" />
 
             </LinearLayout>
 
@@ -78,8 +82,7 @@
             android:paddingHorizontal="8dp"
             android:paddingVertical="5dp"
 
-            android:src="@drawable/arrow_left"
-            />
+            android:src="@drawable/arrow_left" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

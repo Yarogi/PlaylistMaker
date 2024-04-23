@@ -27,7 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
         android:orientation="horizontal"
         android:theme="@style/Theme.PlaylistMaker.SearchBox">
 
