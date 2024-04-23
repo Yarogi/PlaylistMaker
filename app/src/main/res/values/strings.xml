@@ -17,4 +17,8 @@
     <string name="write_to_support_theme">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="track_album_cover">Обложка альбома</string>
     <string name="no_description">без описания</string>
+    <string name="example_text_3" translatable="false">Lorem ipsum dolor</string>
+    <string name="example_text_4" translatable="false">Lorem ipsum dolor sit</string>
+    <string name="example_text_duration" translatable="false">6:15</string>
+    <string name="more_detailed">Подробнее</string>
 </resources>
