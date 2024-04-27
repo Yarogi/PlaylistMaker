@@ -1,5 +1,7 @@
 package com.example.playlistmaker
 
+import android.content.Context
+import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -28,13 +30,20 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         trackNameView.text = model.trackName
         trackTimeView.text = model.trackTime
 
+        val artWorkRadius = toDP(itemView.context,2)
+
         Glide.with(artworkView)
             .load(model.artworkUrl100)
             .centerCrop()
             .placeholder(R.drawable.track_placeholder)
-            .transform(RoundedCorners(2))
+            .transform(RoundedCorners(artWorkRadius))
             .into(artworkView)
 
+    }
+
+    private fun toDP(context: Context, value: Int): Int {
+        return  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+            value.toFloat(),context.resources.displayMetrics).toInt()
     }
 
 }
