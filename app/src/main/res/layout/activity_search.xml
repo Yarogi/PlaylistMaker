@@ -27,7 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
         android:orientation="horizontal"
         android:theme="@style/Theme.PlaylistMaker.SearchBox">
 
@@ -48,11 +49,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:maxLines="1"
+            android:autofillHints=""
             android:background="@null"
             android:hint="@string/search"
             android:inputType="text"
-            android:textColor="@color/blue"
+            android:maxLines="1"
+            android:textColor="@color/search_text_color"
             android:textCursorDrawable="@null" />
 
         <ImageButton
@@ -62,10 +64,17 @@
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="8dp"
             android:background="@null"
+            android:contentDescription="@string/search_clear_description"
             android:src="@drawable/ic_close"
             android:visibility="gone" />
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trackListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
 </LinearLayout>
