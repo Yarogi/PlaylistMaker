@@ -6,12 +6,17 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.model.Track
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -37,6 +42,13 @@ class SearchActivity : AppCompatActivity() {
         }
 
         val searchTextEdit = getSearchTextEditView()
+        searchTextEdit.setOnEditorActionListener{_,actionId,_ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE){
+                searchTrack()
+                true
+            }
+            false
+        }
 
         val clearSearchText = findViewById<ImageButton>(R.id.clearSearchText)
         clearSearchText.setOnClickListener {
@@ -133,6 +145,29 @@ class SearchActivity : AppCompatActivity() {
         )
     )
 
+    private fun searchTrack(){
+        trackSearchService.search(savedSearchText)
+            .enqueue(object : Callback<TrackResponse>{
+                override fun onResponse(
+                    call: Call<TrackResponse>,
+                    response: Response<TrackResponse>
+                ) {
+                    Toast.makeText(
+                        this@SearchActivity,
+                        "GOOD",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                    Toast.makeText(
+                        this@SearchActivity,
+                        t.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
 
     companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
