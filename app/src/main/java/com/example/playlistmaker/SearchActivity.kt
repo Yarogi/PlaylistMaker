@@ -24,6 +24,7 @@ class SearchActivity : AppCompatActivity() {
 
     private var savedSearchText: String = SEARCH_DEF
 
+    //Retrofit - GSON
     private val trackBaseUrl = "https://itunes.apple.com";
     private val retrofit = Retrofit.Builder()
         .baseUrl(trackBaseUrl)
@@ -36,26 +37,31 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        //Initializing views
         val exitButton = findViewById<Button>(R.id.exitBtn)
+        val searchTextEdit = getSearchTextEditView()
+        val clearSearchText = findViewById<ImageButton>(R.id.clearSearchText)
+        val trackListView = findViewById<RecyclerView>(R.id.trackListView)
+
+        //Exit
         exitButton.setOnClickListener {
             this.finish()
         }
 
-        val searchTextEdit = getSearchTextEditView()
-        searchTextEdit.setOnEditorActionListener{_,actionId,_ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE){
-                searchTrack()
-                true
-            }
-            false
-        }
-
-        val clearSearchText = findViewById<ImageButton>(R.id.clearSearchText)
+        //Clear text
         clearSearchText.setOnClickListener {
             setTextInSearchEdit(SEARCH_DEF, searchTextEdit)
             hideKeyboard()
         }
 
+        //Search text
+        searchTextEdit.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                searchTrack()
+                true
+            }
+            false
+        }
         val searchTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -69,7 +75,6 @@ class SearchActivity : AppCompatActivity() {
         searchTextEdit.addTextChangedListener(searchTextWatcher)
 
         //TrackList
-        val trackListView = findViewById<RecyclerView>(R.id.trackListView)
         val trackListContent = testTrackList
         trackListView.adapter = TrackAdapter(trackListContent)
 
@@ -145,9 +150,9 @@ class SearchActivity : AppCompatActivity() {
         )
     )
 
-    private fun searchTrack(){
+    private fun searchTrack() {
         trackSearchService.search(savedSearchText)
-            .enqueue(object : Callback<TrackResponse>{
+            .enqueue(object : Callback<TrackResponse> {
                 override fun onResponse(
                     call: Call<TrackResponse>,
                     response: Response<TrackResponse>
