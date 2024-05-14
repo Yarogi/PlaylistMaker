@@ -41,7 +41,6 @@ class SearchActivity : AppCompatActivity() {
         val exitButton = findViewById<Button>(R.id.exitBtn)
         val searchTextEdit = getSearchTextEditView()
         val clearSearchText = findViewById<ImageButton>(R.id.clearSearchText)
-        val trackListView = findViewById<RecyclerView>(R.id.trackListView)
 
         //Exit
         exitButton.setOnClickListener {
@@ -75,8 +74,10 @@ class SearchActivity : AppCompatActivity() {
         searchTextEdit.addTextChangedListener(searchTextWatcher)
 
         //TrackList
-        val trackListContent = testTrackList
-        trackListView.adapter = TrackAdapter(trackListContent)
+        showTrackList(testTrackList)
+
+        //Errors holders
+
 
     }
 
@@ -103,6 +104,10 @@ class SearchActivity : AppCompatActivity() {
         return findViewById<EditText>(R.id.searchTextEdit)
     }
 
+    private fun getTrackListView(): RecyclerView {
+        return findViewById<RecyclerView>(R.id.trackListView)
+    }
+
     private fun setTextInSearchEdit(text: String, searchTextEdit: EditText? = null) {
         val textEdit = searchTextEdit ?: getSearchTextEditView()
         textEdit.setText(text)
@@ -117,7 +122,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private val testTrackList = listOf<Track>(
+    private val testTrackList = arrayListOf<Track>(
         Track(
             "Smells Like Teen Spirit",
             "Nirvana",
@@ -149,6 +154,11 @@ class SearchActivity : AppCompatActivity() {
             "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"
         )
     )
+
+    private fun showTrackList(trackList: ArrayList<Track>){
+        val trackListView = getTrackListView()
+        trackListView.adapter = TrackAdapter(trackList)
+    }
 
     private fun searchTrack() {
         trackSearchService.search(savedSearchText)
