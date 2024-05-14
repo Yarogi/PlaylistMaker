@@ -72,6 +72,16 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/errorHoldersGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="0dp"
+        android:layout_margin="0dp"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trackListView"
         android:layout_width="match_parent"
