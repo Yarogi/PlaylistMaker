@@ -92,15 +92,19 @@ class SearchActivity : AppCompatActivity() {
             .inflate(R.layout.search_no_found_view, errorGroupView, false)
         errorHolderNoConnection = LayoutInflater.from(this@SearchActivity)
             .inflate(R.layout.search_no_connection_view, errorGroupView, false)
+        val updateBtn = errorHolderNoConnection.findViewById<Button>(R.id.updateButton)
+        updateBtn.setOnClickListener{
+            searchTrack()
+        }
 
         errorGroupView.addView(errorHolderEmpty)
         errorGroupView.addView(errorHolderNoConnection)
+
 
         //TrackList
         trackListView = getTrackListView()
         trackListView.adapter = trackListAdapter
         trackListAdapter.tracks = trackList
-        //fillTrackList(testTrackList)
 
         updateVisibiltyViews()
 

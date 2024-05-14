@@ -73,4 +73,11 @@
         <item name="fontFamily">@font/ys_display_medium</item>
     </style>
 
+    <style name="ErrorUpdateButton">
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingHorizontal">14dp</item>
+        <item name="android:paddingVertical">10dp</item>
+        <item name="android:background">@color/search_text_color</item>
+    </style>
+
 </resources>
