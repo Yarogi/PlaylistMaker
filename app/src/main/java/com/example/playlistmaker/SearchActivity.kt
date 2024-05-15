@@ -64,6 +64,10 @@ class SearchActivity : AppCompatActivity() {
         clearSearchText.setOnClickListener {
             setTextInSearchEdit(SEARCH_DEF, searchTextEdit)
             hideKeyboard()
+
+            trackList.clear()
+            updateVisibiltyViews(hideList = true)
+
         }
 
         //Search text
@@ -120,8 +124,8 @@ class SearchActivity : AppCompatActivity() {
         savedSearchText = savedInstanceState.getString(
             SEARCH_TEXT, SEARCH_DEF
         )
-
         setTextInSearchEdit(savedSearchText)
+        if(savedSearchText != SEARCH_DEF) searchTrack()
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -205,6 +209,7 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
         const val SEARCH_DEF = ""
+        const val SEARCH_RESULT = "SEARCH_RESULT"
     }
 
 }

@@ -75,4 +75,16 @@
 
     </style>
 
+    <style name="SearchNoConnectionHolder" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:paddingHorizontal">14dp</item>
+        <item name="android:paddingVertical">10dp</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/search_text_color</item>
+        <item name="cornerRadius">54dp</item>
+        <item name="elevation">0dp</item>
+    </style>
+
 </resources>

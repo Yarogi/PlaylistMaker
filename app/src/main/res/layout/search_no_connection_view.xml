@@ -30,10 +30,10 @@
 
         <Button
             android:id="@+id/updateButton"
+            style="@style/SearchNoConnectionHolder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/update"
-            android:theme="@style/Theme.PlaylistMaker.SearchErrorHolder.Button" />
+            android:text="@string/update"/>
 
     </LinearLayout>
 
