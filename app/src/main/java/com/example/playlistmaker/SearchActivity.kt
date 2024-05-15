@@ -1,8 +1,6 @@
 package com.example.playlistmaker
 
-import android.annotation.SuppressLint
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,11 +12,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.Toast
-import androidx.cardview.widget.CardView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.model.Track
-import com.google.gson.GsonBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,11 +28,9 @@ class SearchActivity : AppCompatActivity() {
 
     //Retrofit - GSON
     private val trackBaseUrl = "https://itunes.apple.com";
-    private val retrofit =
-        Retrofit.Builder().baseUrl(trackBaseUrl).addConverterFactory(
-            GsonConverterFactory.create()
-        )
-            .build()
+    private val retrofit = Retrofit.Builder().baseUrl(trackBaseUrl).addConverterFactory(
+        GsonConverterFactory.create()
+    ).build()
     val trackSearchService = retrofit.create(TrackSearchApi::class.java)
 
     //Global-Views
@@ -97,7 +91,7 @@ class SearchActivity : AppCompatActivity() {
         errorHolderNoConnection = LayoutInflater.from(this@SearchActivity)
             .inflate(R.layout.search_no_connection_view, errorGroupView, false)
         val updateBtn = errorHolderNoConnection.findViewById<Button>(R.id.updateButton)
-        updateBtn.setOnClickListener{
+        updateBtn.setOnClickListener {
             searchTrack()
         }
 
@@ -125,7 +119,7 @@ class SearchActivity : AppCompatActivity() {
             SEARCH_TEXT, SEARCH_DEF
         )
         setTextInSearchEdit(savedSearchText)
-        if(savedSearchText != SEARCH_DEF) searchTrack()
+        if (savedSearchText != SEARCH_DEF) searchTrack()
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -209,7 +203,6 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
         const val SEARCH_DEF = ""
-        const val SEARCH_RESULT = "SEARCH_RESULT"
     }
 
 }
