@@ -86,19 +86,7 @@ class SearchActivity : AppCompatActivity() {
         searchTextEdit.addTextChangedListener(searchTextWatcher)
 
         //Errors holders
-        val errorGroupView = findViewById<LinearLayout>(R.id.errorHoldersGroup)
-        errorHolderEmpty = LayoutInflater.from(this@SearchActivity)
-            .inflate(R.layout.search_no_found_view, errorGroupView, false)
-        errorHolderNoConnection = LayoutInflater.from(this@SearchActivity)
-            .inflate(R.layout.search_no_connection_view, errorGroupView, false)
-        val updateBtn = errorHolderNoConnection.findViewById<Button>(R.id.updateButton)
-        updateBtn.setOnClickListener {
-            searchTrack()
-        }
-
-        errorGroupView.addView(errorHolderEmpty)
-        errorGroupView.addView(errorHolderNoConnection)
-
+        initErrorHolders()
 
         //TrackList
         trackListView = getTrackListView()
@@ -165,6 +153,22 @@ class SearchActivity : AppCompatActivity() {
             !hideList -> trackListView.visibility = View.VISIBLE
         }
 
+    }
+
+    private fun initErrorHolders(){
+
+        val errorGroupView = findViewById<LinearLayout>(R.id.errorHoldersGroup)
+        errorHolderEmpty = LayoutInflater.from(this@SearchActivity)
+            .inflate(R.layout.search_no_found_view, errorGroupView, false)
+        errorHolderNoConnection = LayoutInflater.from(this@SearchActivity)
+            .inflate(R.layout.search_no_connection_view, errorGroupView, false)
+        val updateBtn = errorHolderNoConnection.findViewById<Button>(R.id.updateButton)
+        updateBtn.setOnClickListener {
+            searchTrack()
+        }
+
+        errorGroupView.addView(errorHolderEmpty)
+        errorGroupView.addView(errorHolderNoConnection)
     }
 
     private fun searchTrack() {

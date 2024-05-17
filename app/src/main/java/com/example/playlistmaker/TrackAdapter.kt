@@ -2,6 +2,7 @@ package com.example.playlistmaker
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.model.Track
 
@@ -19,6 +20,9 @@ class TrackAdapter():RecyclerView.Adapter<TrackViewHolder>() {
     override fun getItemCount() = tracks.size
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(tracks[position])
+        holder.itemView.setOnClickListener {
+            Toast.makeText(holder.itemView.context, it.toString(), Toast.LENGTH_SHORT).show()
+        }
     }
 
 }
