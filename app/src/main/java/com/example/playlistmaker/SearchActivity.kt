@@ -28,9 +28,10 @@ class SearchActivity : AppCompatActivity() {
 
     //Retrofit - GSON
     private val trackBaseUrl = "https://itunes.apple.com";
-    private val retrofit = Retrofit.Builder().baseUrl(trackBaseUrl).addConverterFactory(
-        GsonConverterFactory.create()
-    ).build()
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(trackBaseUrl)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
     val trackSearchService = retrofit.create(TrackSearchApi::class.java)
 
     //Global-Views
@@ -149,19 +150,19 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun updateVisibiltyViews(
-        noConnection: Boolean = false, empty: Boolean = false, hideList: Boolean = false
+        noConnection: Boolean = false,
+        empty: Boolean = false,
+        hideList: Boolean = false
     ) {
 
         errorHolderNoConnection.visibility = View.GONE
         errorHolderEmpty.visibility = View.GONE
         trackListView.visibility = View.GONE
 
-        if (noConnection) {
-            errorHolderNoConnection.visibility = View.VISIBLE
-        } else if (empty) {
-            errorHolderEmpty.visibility = View.VISIBLE
-        } else if (!hideList) {
-            trackListView.visibility = View.VISIBLE
+        when {
+            noConnection -> errorHolderNoConnection.visibility = View.VISIBLE
+            empty -> errorHolderEmpty.visibility = View.VISIBLE
+            !hideList -> trackListView.visibility = View.VISIBLE
         }
 
     }
