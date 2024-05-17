@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.model.Track
@@ -38,8 +39,27 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var errorHolderEmpty: View
     private lateinit var errorHolderNoConnection: View
 
+    //TrackList
     private lateinit var trackListView: RecyclerView
-    private val trackListAdapter = TrackAdapter()
+    private val trackListClickListener = object : TrackAdapter.Listener {
+        override fun onClickTrackListener(track: Track) {
+            addTrackInHistory(track)
+            startingTrack(track)
+        }
+
+    }
+    private val trackListAdapter = TrackAdapter(trackListClickListener)
+
+    //Search history
+    private val searchHistory = ArrayList<Track>()
+    private val searchHistoryClickListener = object : TrackAdapter.Listener {
+        override fun onClickTrackListener(track: Track) {
+            startingTrack(track)
+        }
+    }
+    private val searchHistoryAdapter = TrackAdapter(searchHistoryClickListener)
+    private lateinit var historyHolder: View
+    private lateinit var historyListView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -155,7 +175,7 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    private fun initErrorHolders(){
+    private fun initErrorHolders() {
 
         val errorGroupView = findViewById<LinearLayout>(R.id.errorHoldersGroup)
         errorHolderEmpty = LayoutInflater.from(this@SearchActivity)
@@ -203,6 +223,34 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showSomethingWrong() {
         updateVisibiltyViews(true)
+    }
+
+    private fun addTrackInHistory(track: Track) {
+
+        if (searchHistory.isNotEmpty()) {
+            val index = searchHistory.indexOfFirst { el -> el.trackId == track.trackId }
+            if (index >= 0) {
+                if (index == 0) {
+                    return
+                }
+                searchHistory.removeAt(index)
+            }
+        }
+
+        searchHistory.add(0, track)
+        if (searchHistory.size > 10) {
+            while (searchHistory.size != 10) {
+                searchHistory.removeLast()
+            }
+        }
+    }
+
+    private fun startingTrack(track: Track) {
+        Toast.makeText(
+            this@SearchActivity,
+            "Start track ID-${track.trackId}",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     companion object {

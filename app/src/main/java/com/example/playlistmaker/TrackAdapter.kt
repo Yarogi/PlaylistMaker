@@ -1,14 +1,16 @@
 package com.example.playlistmaker
 
+import android.content.DialogInterface.OnClickListener
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.model.Track
 
-class TrackAdapter():RecyclerView.Adapter<TrackViewHolder>() {
+class TrackAdapter(val listener: Listener):RecyclerView.Adapter<TrackViewHolder>() {
 
     var tracks = ArrayList<Track>()
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
 
@@ -21,8 +23,12 @@ class TrackAdapter():RecyclerView.Adapter<TrackViewHolder>() {
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(tracks[position])
         holder.itemView.setOnClickListener {
-            Toast.makeText(holder.itemView.context, it.toString(), Toast.LENGTH_SHORT).show()
+            listener.onClickTrackListener(tracks[position])
         }
+    }
+
+    interface Listener {
+        fun onClickTrackListener(track: Track)
     }
 
 }
