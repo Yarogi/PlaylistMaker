@@ -30,9 +30,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(settingsIntent)
         }
 
-//       Прочая рабочая область
-
-
     }
 
 }

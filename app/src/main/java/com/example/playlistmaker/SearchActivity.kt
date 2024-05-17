@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.model.Track
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,7 +34,7 @@ class SearchActivity : AppCompatActivity() {
         .baseUrl(trackBaseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-    val trackSearchService = retrofit.create(TrackSearchApi::class.java)
+    private val trackSearchService = retrofit.create(TrackSearchApi::class.java)
 
     //Global-Views
     private lateinit var errorHolderEmpty: View
@@ -51,14 +52,14 @@ class SearchActivity : AppCompatActivity() {
     private val trackListAdapter = TrackAdapter(trackListClickListener)
 
     //Search history
-    private val searchHistory = ArrayList<Track>()
-    private val searchHistoryClickListener = object : TrackAdapter.Listener {
+    private val history = ArrayList<Track>()
+    private val historyClickListener = object : TrackAdapter.Listener {
         override fun onClickTrackListener(track: Track) {
             startingTrack(track)
         }
     }
-    private val searchHistoryAdapter = TrackAdapter(searchHistoryClickListener)
-    private lateinit var historyHolder: View
+    private val historyAdapter = TrackAdapter(historyClickListener)
+    private lateinit var historyHolder: LinearLayout
     private lateinit var historyListView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,20 +100,34 @@ class SearchActivity : AppCompatActivity() {
 
                 savedSearchText = if (s.isNullOrEmpty()) SEARCH_DEF else s.toString()
                 clearSearchText.visibility = clearButtonVisibility(s)
+
+                val visibility =
+                    if (searchTextEdit.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+                updateHistoryVisible(visibility)
+
             }
 
             override fun afterTextChanged(s: Editable?) {}
         }
         searchTextEdit.addTextChangedListener(searchTextWatcher)
+        searchTextEdit.setOnFocusChangeListener { _, hasFocus ->
+
+            val visibility =
+                if (hasFocus && searchTextEdit.text.isEmpty()) View.VISIBLE else View.GONE
+            updateHistoryVisible(visibility)
+
+        }
 
         //Errors holders
         initErrorHolders()
 
         //TrackList
-        trackListView = getTrackListView()
-        trackListView.adapter = trackListAdapter
-        trackListAdapter.tracks = trackList
+        initTrackList()
 
+        //History holder
+        initHistoryHolder()
+
+        //Visibility
         updateVisibiltyViews()
 
     }
@@ -136,11 +151,11 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun getSearchTextEditView(): EditText {
-        return findViewById<EditText>(R.id.searchTextEdit)
+        return findViewById(R.id.searchTextEdit)
     }
 
     private fun getTrackListView(): RecyclerView {
-        return findViewById<RecyclerView>(R.id.trackListView)
+        return findViewById(R.id.trackListView)
     }
 
     private fun setTextInSearchEdit(text: String, searchTextEdit: EditText? = null) {
@@ -175,6 +190,12 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+    private fun initTrackList() {
+        trackListView = getTrackListView()
+        trackListView.adapter = trackListAdapter
+        trackListAdapter.tracks = trackList
+    }
+
     private fun initErrorHolders() {
 
         val errorGroupView = findViewById<LinearLayout>(R.id.errorHoldersGroup)
@@ -189,6 +210,45 @@ class SearchActivity : AppCompatActivity() {
 
         errorGroupView.addView(errorHolderEmpty)
         errorGroupView.addView(errorHolderNoConnection)
+    }
+
+    private fun initHistoryHolder() {
+
+        historyHolder = findViewById(R.id.historyHolder)
+        historyListView = findViewById(R.id.historyListView)
+
+        historyListView.adapter = historyAdapter
+
+        readSavedHistory()
+        historyAdapter.tracks = history
+
+        val visibility = if (getSearchTextEditView().hasFocus()) View.VISIBLE else View.GONE
+        updateHistoryVisible(visibility)
+
+        val clearHistoryBtn = findViewById<Button>(R.id.clearHistory)
+        clearHistoryBtn.setOnClickListener {
+            history.clear()
+            saveHistory()
+            updateHistoryVisible(View.GONE)
+        }
+
+
+    }
+
+    private fun updateHistoryVisible(forceVisibileValue: Int? = null) {
+
+        val visibility =
+            when {
+                history.isEmpty() -> View.GONE
+                else -> forceVisibileValue ?: View.VISIBLE
+            }
+
+        if (visibility == View.VISIBLE && historyAdapter.hasChange) {
+            historyAdapter.notifyDataSetChanged()
+        }
+
+        historyHolder.visibility = visibility
+
     }
 
     private fun searchTrack() {
@@ -227,22 +287,23 @@ class SearchActivity : AppCompatActivity() {
 
     private fun addTrackInHistory(track: Track) {
 
-        if (searchHistory.isNotEmpty()) {
-            val index = searchHistory.indexOfFirst { el -> el.trackId == track.trackId }
+        if (history.isNotEmpty()) {
+            val index = history.indexOfFirst { el -> el.trackId == track.trackId }
             if (index >= 0) {
                 if (index == 0) {
                     return
                 }
-                searchHistory.removeAt(index)
+                history.removeAt(index)
             }
         }
 
-        searchHistory.add(0, track)
-        if (searchHistory.size > 10) {
-            while (searchHistory.size != 10) {
-                searchHistory.removeLast()
+        history.add(0, track)
+        if (history.size > 10) {
+            while (history.size != 10) {
+                history.removeLast()
             }
         }
+        saveHistory()
     }
 
     private fun startingTrack(track: Track) {
@@ -253,9 +314,30 @@ class SearchActivity : AppCompatActivity() {
         ).show()
     }
 
+    private fun readSavedHistory() {
+        val json = getSearchPref().getString(HISTORY_KEY, null) ?: return
+        history.addAll(Gson().fromJson(json, Array<Track>::class.java))
+    }
+
+    private fun saveHistory() {
+
+        historyAdapter.hasChange = true
+
+        val json = Gson().toJson(history)
+        getSearchPref().edit()
+            .putString(HISTORY_KEY, json)
+            .apply()
+    }
+
+    private fun getSearchPref() = getSharedPreferences(SEARCH_PREFERENCES, MODE_PRIVATE)
+
     companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
         const val SEARCH_DEF = ""
+
+        //search preferences
+        const val SEARCH_PREFERENCES = "playlistmaker_search_preferences"
+        const val HISTORY_KEY = "search_history"
     }
 
 }
