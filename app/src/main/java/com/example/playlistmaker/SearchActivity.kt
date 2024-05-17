@@ -12,9 +12,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.model.Track
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,17 +30,37 @@ class SearchActivity : AppCompatActivity() {
 
     //Retrofit - GSON
     private val trackBaseUrl = "https://itunes.apple.com";
-    private val retrofit = Retrofit.Builder().baseUrl(trackBaseUrl).addConverterFactory(
-        GsonConverterFactory.create()
-    ).build()
-    val trackSearchService = retrofit.create(TrackSearchApi::class.java)
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(trackBaseUrl)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+    private val trackSearchService = retrofit.create(TrackSearchApi::class.java)
 
     //Global-Views
     private lateinit var errorHolderEmpty: View
     private lateinit var errorHolderNoConnection: View
 
+    //TrackList
     private lateinit var trackListView: RecyclerView
-    private val trackListAdapter = TrackAdapter()
+    private val trackListClickListener = object : TrackAdapter.Listener {
+        override fun onClickTrackListener(track: Track) {
+            addTrackInHistory(track)
+            startingTrack(track)
+        }
+
+    }
+    private val trackListAdapter = TrackAdapter(trackListClickListener)
+
+    //Search history
+    private val history = ArrayList<Track>()
+    private val historyClickListener = object : TrackAdapter.Listener {
+        override fun onClickTrackListener(track: Track) {
+            startingTrack(track)
+        }
+    }
+    private val historyAdapter = TrackAdapter(historyClickListener)
+    private lateinit var historyHolder: LinearLayout
+    private lateinit var historyListView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,32 +100,34 @@ class SearchActivity : AppCompatActivity() {
 
                 savedSearchText = if (s.isNullOrEmpty()) SEARCH_DEF else s.toString()
                 clearSearchText.visibility = clearButtonVisibility(s)
+
+                val visibility =
+                    if (searchTextEdit.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+                updateHistoryVisible(visibility)
+
             }
 
             override fun afterTextChanged(s: Editable?) {}
         }
         searchTextEdit.addTextChangedListener(searchTextWatcher)
+        searchTextEdit.setOnFocusChangeListener { _, hasFocus ->
 
-        //Errors holders
-        val errorGroupView = findViewById<LinearLayout>(R.id.errorHoldersGroup)
-        errorHolderEmpty = LayoutInflater.from(this@SearchActivity)
-            .inflate(R.layout.search_no_found_view, errorGroupView, false)
-        errorHolderNoConnection = LayoutInflater.from(this@SearchActivity)
-            .inflate(R.layout.search_no_connection_view, errorGroupView, false)
-        val updateBtn = errorHolderNoConnection.findViewById<Button>(R.id.updateButton)
-        updateBtn.setOnClickListener {
-            searchTrack()
+            val visibility =
+                if (hasFocus && searchTextEdit.text.isEmpty()) View.VISIBLE else View.GONE
+            updateHistoryVisible(visibility)
+
         }
 
-        errorGroupView.addView(errorHolderEmpty)
-        errorGroupView.addView(errorHolderNoConnection)
-
+        //Errors holders
+        initErrorHolders()
 
         //TrackList
-        trackListView = getTrackListView()
-        trackListView.adapter = trackListAdapter
-        trackListAdapter.tracks = trackList
+        initTrackList()
 
+        //History holder
+        initHistoryHolder()
+
+        //Visibility
         updateVisibiltyViews()
 
     }
@@ -127,11 +151,11 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun getSearchTextEditView(): EditText {
-        return findViewById<EditText>(R.id.searchTextEdit)
+        return findViewById(R.id.searchTextEdit)
     }
 
     private fun getTrackListView(): RecyclerView {
-        return findViewById<RecyclerView>(R.id.trackListView)
+        return findViewById(R.id.trackListView)
     }
 
     private fun setTextInSearchEdit(text: String, searchTextEdit: EditText? = null) {
@@ -149,20 +173,81 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun updateVisibiltyViews(
-        noConnection: Boolean = false, empty: Boolean = false, hideList: Boolean = false
+        noConnection: Boolean = false,
+        empty: Boolean = false,
+        hideList: Boolean = false
     ) {
 
         errorHolderNoConnection.visibility = View.GONE
         errorHolderEmpty.visibility = View.GONE
         trackListView.visibility = View.GONE
 
-        if (noConnection) {
-            errorHolderNoConnection.visibility = View.VISIBLE
-        } else if (empty) {
-            errorHolderEmpty.visibility = View.VISIBLE
-        } else if (!hideList) {
-            trackListView.visibility = View.VISIBLE
+        when {
+            noConnection -> errorHolderNoConnection.visibility = View.VISIBLE
+            empty -> errorHolderEmpty.visibility = View.VISIBLE
+            !hideList -> trackListView.visibility = View.VISIBLE
         }
+
+    }
+
+    private fun initTrackList() {
+        trackListView = getTrackListView()
+        trackListView.adapter = trackListAdapter
+        trackListAdapter.tracks = trackList
+    }
+
+    private fun initErrorHolders() {
+
+        val errorGroupView = findViewById<LinearLayout>(R.id.errorHoldersGroup)
+        errorHolderEmpty = LayoutInflater.from(this@SearchActivity)
+            .inflate(R.layout.search_no_found_view, errorGroupView, false)
+        errorHolderNoConnection = LayoutInflater.from(this@SearchActivity)
+            .inflate(R.layout.search_no_connection_view, errorGroupView, false)
+        val updateBtn = errorHolderNoConnection.findViewById<Button>(R.id.updateButton)
+        updateBtn.setOnClickListener {
+            searchTrack()
+        }
+
+        errorGroupView.addView(errorHolderEmpty)
+        errorGroupView.addView(errorHolderNoConnection)
+    }
+
+    private fun initHistoryHolder() {
+
+        historyHolder = findViewById(R.id.historyHolder)
+        historyListView = findViewById(R.id.historyListView)
+
+        historyListView.adapter = historyAdapter
+
+        readSavedHistory()
+        historyAdapter.tracks = history
+
+        val visibility = if (getSearchTextEditView().hasFocus()) View.VISIBLE else View.GONE
+        updateHistoryVisible(visibility)
+
+        val clearHistoryBtn = findViewById<Button>(R.id.clearHistory)
+        clearHistoryBtn.setOnClickListener {
+            history.clear()
+            saveHistory()
+            updateHistoryVisible(View.GONE)
+        }
+
+
+    }
+
+    private fun updateHistoryVisible(forceVisibileValue: Int? = null) {
+
+        val visibility =
+            when {
+                history.isEmpty() -> View.GONE
+                else -> forceVisibileValue ?: View.VISIBLE
+            }
+
+        if (visibility == View.VISIBLE && historyAdapter.hasChange) {
+            historyAdapter.notifyDataSetChanged()
+        }
+
+        historyHolder.visibility = visibility
 
     }
 
@@ -200,9 +285,59 @@ class SearchActivity : AppCompatActivity() {
         updateVisibiltyViews(true)
     }
 
+    private fun addTrackInHistory(track: Track) {
+
+        if (history.isNotEmpty()) {
+            val index = history.indexOfFirst { el -> el.trackId == track.trackId }
+            if (index >= 0) {
+                if (index == 0) {
+                    return
+                }
+                history.removeAt(index)
+            }
+        }
+
+        history.add(0, track)
+        if (history.size > 10) {
+            while (history.size != 10) {
+                history.removeLast()
+            }
+        }
+        saveHistory()
+    }
+
+    private fun startingTrack(track: Track) {
+        Toast.makeText(
+            this@SearchActivity,
+            "Start track ID-${track.trackId}",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun readSavedHistory() {
+        val json = getSearchPref().getString(HISTORY_KEY, null) ?: return
+        history.addAll(Gson().fromJson(json, Array<Track>::class.java))
+    }
+
+    private fun saveHistory() {
+
+        historyAdapter.hasChange = true
+
+        val json = Gson().toJson(history)
+        getSearchPref().edit()
+            .putString(HISTORY_KEY, json)
+            .apply()
+    }
+
+    private fun getSearchPref() = getSharedPreferences(SEARCH_PREFERENCES, MODE_PRIVATE)
+
     companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
         const val SEARCH_DEF = ""
+
+        //search preferences
+        const val SEARCH_PREFERENCES = "playlistmaker_search_preferences"
+        const val HISTORY_KEY = "search_history"
     }
 
 }

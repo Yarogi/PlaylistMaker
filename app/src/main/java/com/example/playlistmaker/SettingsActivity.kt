@@ -6,17 +6,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
+        //Exit
         val exitButton = findViewById<Button>(R.id.exitBtn)
         exitButton.setOnClickListener {
             this.finish()
         }
 
+        //Shared
         val shareAppButton = findViewById<Button>(R.id.shareApp)
         shareAppButton.setOnClickListener {
             val message = getString(R.string.praktikum_andoid_dev_url)
@@ -28,6 +31,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        //Write to support
         val writeToSupportButton = findViewById<Button>(R.id.writeToSupport)
         writeToSupportButton.setOnClickListener {
 
@@ -45,6 +49,7 @@ class SettingsActivity : AppCompatActivity() {
 
         }
 
+        //Terms of use
         val termsOfUseButton = findViewById<Button>(R.id.termsOfUse)
         termsOfUseButton.setOnClickListener {
             val url = getString(R.string.praktikum_andoid_dev_term_of_use)
@@ -54,6 +59,13 @@ class SettingsActivity : AppCompatActivity() {
             )
 
             startActivity(intent)
+        }
+
+        //Night mode
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+        themeSwitcher.isChecked = (applicationContext as App).darkTheme
+        themeSwitcher.setOnCheckedChangeListener { switcher, cheked ->
+            (applicationContext as App).switchTheme(cheked)
         }
 
     }

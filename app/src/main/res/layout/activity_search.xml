@@ -73,12 +73,50 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/historyHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/ys_display_medium"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="12dp"
+            android:text="@string/you_were_looking_for"
+            android:textSize="19sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/historyListView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <Button
+            android:id="@+id/clearHistory"
+            style="@style/SearchNoConnectionHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:text="@string/clear_history" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/errorHoldersGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="0dp"
         android:layout_margin="0dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="0dp">
 
     </LinearLayout>
 
@@ -88,5 +126,6 @@
         android:layout_height="match_parent"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
 
 </LinearLayout>
