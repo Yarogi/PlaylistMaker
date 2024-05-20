@@ -308,14 +308,18 @@ class SearchActivity : AppCompatActivity() {
         saveHistory()
     }
 
-    private fun replaceTrackInHistory(track:Track){
-        if(history.isNotEmpty() && history[0].trackId != track.trackId){
+    private fun replaceTrackInHistory(track: Track) {
+        if (history.isNotEmpty() && history[0].trackId != track.trackId) {
+
             val i = history.indexOf(track)
+
             history.removeAt(i)
             history.add(0, track)
+
             historyAdapter.notifyItemMoved(i, 0)
-            historyAdapter.notifyItemRangeChanged(0, i)
-            saveHistory(updateAdapter = false)
+            historyAdapter.notifyItemRangeChanged(0, history.size)
+
+            saveHistory()
         }
     }
 
@@ -332,7 +336,7 @@ class SearchActivity : AppCompatActivity() {
         history.addAll(Gson().fromJson(json, Array<Track>::class.java))
     }
 
-    private fun saveHistory(updateAdapter:Boolean = true) {
+    private fun saveHistory(updateAdapter: Boolean = true) {
 
         historyAdapter.hasChange = updateAdapter
 
