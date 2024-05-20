@@ -55,6 +55,8 @@ class SearchActivity : AppCompatActivity() {
     private val history = ArrayList<Track>()
     private val historyClickListener = object : TrackAdapter.Listener {
         override fun onClickTrackListener(track: Track) {
+            //replace track in history
+            replaceTrackInHistory(track)
             startingTrack(track)
         }
     }
@@ -306,6 +308,21 @@ class SearchActivity : AppCompatActivity() {
         saveHistory()
     }
 
+    private fun replaceTrackInHistory(track: Track) {
+        if (history.isNotEmpty() && history[0].trackId != track.trackId) {
+
+            val i = history.indexOf(track)
+
+            history.removeAt(i)
+            history.add(0, track)
+
+            historyAdapter.notifyItemMoved(i, 0)
+            historyAdapter.notifyItemRangeChanged(0, history.size)
+
+            saveHistory()
+        }
+    }
+
     private fun startingTrack(track: Track) {
         Toast.makeText(
             this@SearchActivity,
@@ -319,9 +336,9 @@ class SearchActivity : AppCompatActivity() {
         history.addAll(Gson().fromJson(json, Array<Track>::class.java))
     }
 
-    private fun saveHistory() {
+    private fun saveHistory(updateAdapter: Boolean = true) {
 
-        historyAdapter.hasChange = true
+        historyAdapter.hasChange = updateAdapter
 
         val json = Gson().toJson(history)
         getSearchPref().edit()
