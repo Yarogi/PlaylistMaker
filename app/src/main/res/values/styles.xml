@@ -66,6 +66,7 @@
         <item name="iconGravity">end</item>
         <item name="iconPadding">@dimen/menu_text_icon_padding</item>
         <item name="iconTint">@color/text_gray</item>
+        <item name="thumbTint">@color/text_gray</item>
         <item name="android:textColor">@color/black</item>
     </style>
 

@@ -21,9 +21,12 @@
             android:text="@string/settings"/>
     </LinearLayout>
 
-    <Switch
-        android:id="@+id/switchNightMode"
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/themeSwitcher"
         style="@style/MenuItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
         android:paddingEnd="@dimen/menu_text_icon_padding"
         android:text="@string/dark_theme"
         tools:ignore="RtlSymmetry,UseSwitchCompatOrMaterialXml" />
