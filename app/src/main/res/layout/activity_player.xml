@@ -124,6 +124,7 @@
         android:id="@+id/durationTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:text="@string/track_duration_title"
         app:layout_constraintStart_toEndOf="@id/startBorder"
         app:layout_constraintTag="description"
@@ -175,6 +176,46 @@
         android:layout_height="0dp"
         app:barrierDirection="end"
         app:constraint_referenced_tags="description" />
+
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/endBorder"
+        app:layout_constraintTop_toTopOf="@id/durationTitle"
+        tools:text="5:35" />
+
+    <TextView
+        android:id="@+id/album"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/endBorder"
+        app:layout_constraintTop_toTopOf="@id/albumTitle"
+        tools:text="@string/example_text_track_name" />
+
+    <TextView
+        android:id="@+id/releaseDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/endBorder"
+        app:layout_constraintTop_toTopOf="@id/releaseDateTitle"
+        tools:text="1965" />
+
+    <TextView
+        android:id="@+id/genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/endBorder"
+        app:layout_constraintTop_toTopOf="@id/genreTitle"
+        tools:text="Rock" />
+
+    <TextView
+        android:id="@+id/country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/endBorder"
+        app:layout_constraintTop_toTopOf="@id/countryTitle"
+        tools:text="Великобритания" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
