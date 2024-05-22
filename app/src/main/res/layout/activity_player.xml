@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    style="@style/Player"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PlayerActivity">
@@ -56,8 +57,10 @@
 
     <TextView
         android:id="@+id/trackName"
+        style="@style/Player.TrackTitle.Track"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toStartOf="@+id/endBorder"
         app:layout_constraintStart_toStartOf="@id/startBorder"
         app:layout_constraintTop_toBottomOf="@id/cover"
@@ -65,8 +68,10 @@
 
     <TextView
         android:id="@+id/artistName"
+        style="@style/Player.TrackTitle.Artist"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toStartOf="@+id/endBorder"
         app:layout_constraintStart_toStartOf="@id/startBorder"
         app:layout_constraintTop_toBottomOf="@id/trackName"
@@ -76,9 +81,8 @@
     <!--  Кнопки управления  -->
     <ImageButton
         android:id="@+id/addPlaylist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
+        style="@style/Player.SecondaryButton"
+        android:contentDescription="@string/player_add_to_playlist_description"
         android:src="@drawable/add_playlist_button"
         app:layout_constraintBottom_toBottomOf="@id/playTrack"
         app:layout_constraintEnd_toStartOf="@+id/playTrack"
@@ -88,10 +92,12 @@
 
     <ImageButton
         android:id="@+id/playTrack"
+        style="@style/Player.PlayButton"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginTop="30dp"
         android:background="@null"
+        android:contentDescription="@string/player_play_description"
         android:src="@drawable/play_button"
         app:layout_constraintDimensionRatio="h, 1:1"
         app:layout_constraintEnd_toStartOf="@+id/like"
@@ -100,9 +106,8 @@
 
     <ImageButton
         android:id="@+id/like"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
+        style="@style/Player.SecondaryButton"
+        android:contentDescription="@string/player_add_to_favorites_description"
         android:src="@drawable/add_like_button"
         app:layout_constraintBottom_toBottomOf="@id/playTrack"
         app:layout_constraintEnd_toStartOf="@+id/endBorder"
@@ -111,6 +116,7 @@
 
     <TextView
         android:id="@+id/playTime"
+        style="@style/Player.TrackTitle.PlayTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -122,8 +128,7 @@
     <!-- Детальное описание трека -->
     <TextView
         android:id="@+id/durationTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Player.TrackDescription.Key"
         android:layout_marginTop="30dp"
         android:text="@string/track_duration_title"
         app:layout_constraintStart_toEndOf="@id/startBorder"
@@ -132,6 +137,7 @@
 
     <TextView
         android:id="@+id/albumTitle"
+        style="@style/Player.TrackDescription.Key"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
@@ -142,9 +148,7 @@
 
     <TextView
         android:id="@+id/releaseDateTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
+        style="@style/Player.TrackDescription.Key"
         android:text="@string/track_release_date_title"
         app:layout_constraintStart_toEndOf="@id/startBorder"
         app:layout_constraintTag="description"
@@ -152,9 +156,7 @@
 
     <TextView
         android:id="@+id/genreTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
+        style="@style/Player.TrackDescription.Key"
         android:text="@string/track_genre_title"
         app:layout_constraintStart_toEndOf="@id/startBorder"
         app:layout_constraintTag="description"
@@ -162,9 +164,7 @@
 
     <TextView
         android:id="@+id/countryTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
+        style="@style/Player.TrackDescription.Key"
         android:text="@string/track_country_title"
         app:layout_constraintStart_toEndOf="@id/startBorder"
         app:layout_constraintTag="description"
@@ -179,43 +179,37 @@
 
     <TextView
         android:id="@+id/duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Player.TrackDescription.Value"
         app:layout_constraintEnd_toEndOf="@id/endBorder"
         app:layout_constraintTop_toTopOf="@id/durationTitle"
         tools:text="5:35" />
 
     <TextView
         android:id="@+id/album"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Player.TrackDescription.Value"
         app:layout_constraintEnd_toEndOf="@id/endBorder"
         app:layout_constraintTop_toTopOf="@id/albumTitle"
         tools:text="@string/example_text_track_name" />
 
     <TextView
         android:id="@+id/releaseDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Player.TrackDescription.Value"
         app:layout_constraintEnd_toEndOf="@id/endBorder"
         app:layout_constraintTop_toTopOf="@id/releaseDateTitle"
         tools:text="1965" />
 
     <TextView
         android:id="@+id/genre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Player.TrackDescription.Value"
         app:layout_constraintEnd_toEndOf="@id/endBorder"
         app:layout_constraintTop_toTopOf="@id/genreTitle"
         tools:text="Rock" />
 
     <TextView
         android:id="@+id/country"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Player.TrackDescription.Value"
         app:layout_constraintEnd_toEndOf="@id/endBorder"
         app:layout_constraintTop_toTopOf="@id/countryTitle"
         tools:text="Великобритания" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
