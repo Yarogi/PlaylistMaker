@@ -1,6 +1,8 @@
 package com.example.playlistmaker.model
 
 import java.io.Serializable
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 data class Track(
     val trackId: Int,
@@ -14,4 +16,13 @@ data class Track(
     val country: String
 ) : Serializable {
     fun getCoverArtwork() = artworkUrl100.replaceAfterLast("/", "512x512bb.jpg")
+
+    fun getReleaseYear(): String {
+
+        val secondApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        val date = LocalDate.parse(releaseDate, secondApiFormat)
+
+        return date.year.toString()
+
+    }
 }
