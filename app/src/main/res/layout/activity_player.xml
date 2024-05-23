@@ -126,6 +126,17 @@
         tools:text="@string/example_text_play_time" />
 
     <!-- Детальное описание трека -->
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/collectionNameGroup"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:constraint_referenced_ids="albumTitle, album"
+        app:layout_constraintBottom_toBottomOf="@id/albumTitle"
+        app:layout_constraintEnd_toEndOf="@id/album"
+        app:layout_constraintStart_toStartOf="@id/albumTitle"
+        app:layout_constraintTop_toTopOf="@id/albumTitle" />
+
     <TextView
         android:id="@+id/durationTitle"
         style="@style/Player.TrackDescription.Key"
@@ -213,5 +224,6 @@
         app:layout_constraintEnd_toEndOf="@id/endBorder"
         app:layout_constraintTop_toTopOf="@id/countryTitle"
         tools:text="Великобритания" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
