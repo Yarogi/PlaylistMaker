@@ -86,7 +86,10 @@
     </style>
 
     <!-- Player -->
-    <style name="Player" />
+    <style name="Player">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+    </style>
 
     <style name="Player.TrackTitle">
         <item name="android:fontFamily">@font/ys_display_medium</item>
@@ -104,8 +107,9 @@
     <style name="Player.PlayButton" parent="Player" />
 
     <style name="Player.SecondaryButton" parent="Player">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">54dp</item>
+        <item name="layout_constraintDimensionRatio">h, 1:1"</item>
         <item name="android:background">@null</item>
     </style>
 
@@ -127,7 +131,8 @@
     </style>
 
     <style name="Player.TrackDescription.Value" parent="Player.TrackDescription">
-
+        <item name="layout_constraintHorizontal_bias">1</item>
+        <item name="layout_constrainedWidth">true</item>
     </style>
 
 </resources>

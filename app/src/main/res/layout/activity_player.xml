@@ -181,6 +181,7 @@
         android:id="@+id/duration"
         style="@style/Player.TrackDescription.Value"
         app:layout_constraintEnd_toEndOf="@id/endBorder"
+        app:layout_constraintStart_toEndOf="@id/descriptionTitleBarrier"
         app:layout_constraintTop_toTopOf="@id/durationTitle"
         tools:text="5:35" />
 
@@ -188,6 +189,7 @@
         android:id="@+id/album"
         style="@style/Player.TrackDescription.Value"
         app:layout_constraintEnd_toEndOf="@id/endBorder"
+        app:layout_constraintStart_toEndOf="@id/descriptionTitleBarrier"
         app:layout_constraintTop_toTopOf="@id/albumTitle"
         tools:text="@string/example_text_track_name" />
 
