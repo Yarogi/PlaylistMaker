@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.model.Track
 
-class TrackAdapter(val listener: Listener):RecyclerView.Adapter<TrackViewHolder>() {
+class TrackAdapter(val listener: Listener) : RecyclerView.Adapter<TrackViewHolder>() {
 
     var tracks = ArrayList<Track>()
     var hasChange = false
@@ -15,8 +15,8 @@ class TrackAdapter(val listener: Listener):RecyclerView.Adapter<TrackViewHolder>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
 
-      val view = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
-      return TrackViewHolder(view)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
+        return TrackViewHolder(view)
 
     }
 

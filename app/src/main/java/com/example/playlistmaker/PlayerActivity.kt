@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.model.Track
+import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -29,7 +30,8 @@ class PlayerActivity : AppCompatActivity() {
         val backBtn = findViewById<ImageButton>(R.id.panelBackArrow)
         backBtn.setOnClickListener { finish() }
 
-        track = intent.getSerializableExtra("track") as Track
+        val json = intent.getStringExtra("track")
+        track = Gson().fromJson(json, Track::class.java)
         fill()
 
     }
@@ -79,7 +81,7 @@ class PlayerActivity : AppCompatActivity() {
         durationView.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
 
-        val hasCollectionInfo = !track.collectionName.isNullOrEmpty();
+        val hasCollectionInfo = !track.collectionName.isNullOrEmpty()
         collectionNameGroupView.isVisible = hasCollectionInfo
         if (hasCollectionInfo) {
             albumView.text = track.collectionName
