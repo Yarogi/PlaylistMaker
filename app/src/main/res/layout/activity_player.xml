@@ -6,6 +6,7 @@
     style="@style/Player"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
     tools:context=".PlayerActivity">
 
     <androidx.constraintlayout.widget.Guideline
@@ -40,6 +41,7 @@
         android:layout_height="0dp"
         app:barrierDirection="bottom"
         app:constraint_referenced_tags="panelTag" />
+
 
     <ImageView
         android:id="@+id/cover"
@@ -142,18 +144,13 @@
         style="@style/Player.TrackDescription.Key"
         android:layout_marginTop="30dp"
         android:text="@string/track_duration_title"
-        app:layout_constraintStart_toEndOf="@id/startBorder"
         app:layout_constraintTag="description"
         app:layout_constraintTop_toBottomOf="@id/playTime" />
 
     <TextView
         android:id="@+id/albumTitle"
         style="@style/Player.TrackDescription.Key"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
         android:text="@string/track_album_title"
-        app:layout_constraintStart_toEndOf="@id/startBorder"
         app:layout_constraintTag="description"
         app:layout_constraintTop_toBottomOf="@id/durationTitle" />
 
@@ -161,7 +158,6 @@
         android:id="@+id/releaseDateTitle"
         style="@style/Player.TrackDescription.Key"
         android:text="@string/track_release_date_title"
-        app:layout_constraintStart_toEndOf="@id/startBorder"
         app:layout_constraintTag="description"
         app:layout_constraintTop_toBottomOf="@id/albumTitle" />
 
@@ -169,7 +165,6 @@
         android:id="@+id/genreTitle"
         style="@style/Player.TrackDescription.Key"
         android:text="@string/track_genre_title"
-        app:layout_constraintStart_toEndOf="@id/startBorder"
         app:layout_constraintTag="description"
         app:layout_constraintTop_toBottomOf="@id/releaseDateTitle" />
 
@@ -177,7 +172,6 @@
         android:id="@+id/countryTitle"
         style="@style/Player.TrackDescription.Key"
         android:text="@string/track_country_title"
-        app:layout_constraintStart_toEndOf="@id/startBorder"
         app:layout_constraintTag="description"
         app:layout_constraintTop_toBottomOf="@id/genreTitle" />
 
@@ -191,7 +185,6 @@
     <TextView
         android:id="@+id/duration"
         style="@style/Player.TrackDescription.Value"
-        app:layout_constraintEnd_toEndOf="@id/endBorder"
         app:layout_constraintStart_toEndOf="@id/descriptionTitleBarrier"
         app:layout_constraintTop_toTopOf="@id/durationTitle"
         tools:text="5:35" />
@@ -199,7 +192,6 @@
     <TextView
         android:id="@+id/album"
         style="@style/Player.TrackDescription.Value"
-        app:layout_constraintEnd_toEndOf="@id/endBorder"
         app:layout_constraintStart_toEndOf="@id/descriptionTitleBarrier"
         app:layout_constraintTop_toTopOf="@id/albumTitle"
         tools:text="@string/example_text_track_name" />
@@ -207,21 +199,18 @@
     <TextView
         android:id="@+id/releaseDate"
         style="@style/Player.TrackDescription.Value"
-        app:layout_constraintEnd_toEndOf="@id/endBorder"
         app:layout_constraintTop_toTopOf="@id/releaseDateTitle"
         tools:text="1965" />
 
     <TextView
         android:id="@+id/genre"
         style="@style/Player.TrackDescription.Value"
-        app:layout_constraintEnd_toEndOf="@id/endBorder"
         app:layout_constraintTop_toTopOf="@id/genreTitle"
         tools:text="Rock" />
 
     <TextView
         android:id="@+id/country"
         style="@style/Player.TrackDescription.Value"
-        app:layout_constraintEnd_toEndOf="@id/endBorder"
         app:layout_constraintTop_toTopOf="@id/countryTitle"
         tools:text="Великобритания" />
 
