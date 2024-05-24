@@ -33,7 +33,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         trackTimeView.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
 
-        val artWorkRadius = toDP(itemView.context,2)
+        val artWorkRadius = pxToDP(itemView.context, 2)
 
         Glide.with(artworkView)
             .load(model.artworkUrl100)
@@ -43,10 +43,11 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .into(artworkView)
 
     }
+}
 
-    private fun toDP(context: Context, value: Int): Int {
-        return  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-            value.toFloat(),context.resources.displayMetrics).toInt()
-    }
-
+fun pxToDP(context: Context, value: Int): Int {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        value.toFloat(), context.resources.displayMetrics
+    ).toInt()
 }

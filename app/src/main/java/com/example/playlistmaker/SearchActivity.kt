@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -324,11 +325,13 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun startingTrack(track: Track) {
-        Toast.makeText(
-            this@SearchActivity,
-            "Start track ID-${track.trackId}",
-            Toast.LENGTH_SHORT
-        ).show()
+
+        val json = Gson().toJson(track)
+
+        val intent = Intent(this, PlayerActivity::class.java)
+        intent.putExtra("track", json)
+        startActivity(intent)
+
     }
 
     private fun readSavedHistory() {
