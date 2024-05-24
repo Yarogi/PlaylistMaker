@@ -326,8 +326,10 @@ class SearchActivity : AppCompatActivity() {
 
     private fun startingTrack(track: Track) {
 
+        val json = Gson().toJson(track)
+
         val intent = Intent(this, PlayerActivity::class.java)
-        intent.putExtra("track", track)
+        intent.putExtra("track", json)
         startActivity(intent)
 
     }

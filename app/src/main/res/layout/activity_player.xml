@@ -42,18 +42,30 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_tags="panelTag" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topCoverEdge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="82dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomCoverEdge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="438dp" />
 
     <ImageView
         android:id="@+id/cover"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="46dp"
         android:contentDescription="@string/track_album_cover"
         android:src="@drawable/track_placeholder"
-        app:layout_constraintDimensionRatio="h, 1:1"
+        app:layout_constraintBottom_toTopOf="@id/bottomCoverEdge"
         app:layout_constraintEnd_toEndOf="@id/endBorder"
         app:layout_constraintStart_toStartOf="@id/startBorder"
-        app:layout_constraintTop_toTopOf="@id/panelBarrier" />
+        app:layout_constraintTop_toTopOf="@id/topCoverEdge" />
 
     <!--  Описание трека  -->
 
@@ -65,7 +77,7 @@
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toStartOf="@+id/endBorder"
         app:layout_constraintStart_toStartOf="@id/startBorder"
-        app:layout_constraintTop_toBottomOf="@id/cover"
+        app:layout_constraintTop_toBottomOf="@id/bottomCoverEdge"
         tools:text="@string/example_text_track_name" />
 
     <TextView
@@ -81,6 +93,7 @@
 
 
     <!--  Кнопки управления  -->
+
     <ImageButton
         android:id="@+id/addPlaylist"
         style="@style/Player.SecondaryButton"
@@ -90,7 +103,8 @@
         app:layout_constraintEnd_toStartOf="@+id/playTrack"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="@id/startBorder"
-        app:layout_constraintTop_toTopOf="@id/playTrack" />
+        app:layout_constraintTop_toTopOf="@id/playTrack"
+        app:layout_constraintVertical_bias="0.521" />
 
     <ImageButton
         android:id="@+id/playTrack"
@@ -144,6 +158,8 @@
         style="@style/Player.TrackDescription.Key"
         android:layout_marginTop="30dp"
         android:text="@string/track_duration_title"
+        app:layout_constraintBottom_toTopOf="@id/albumTitle"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintTag="description"
         app:layout_constraintTop_toBottomOf="@id/playTime" />
 
@@ -151,6 +167,7 @@
         android:id="@+id/albumTitle"
         style="@style/Player.TrackDescription.Key"
         android:text="@string/track_album_title"
+        app:layout_constraintBottom_toTopOf="@id/releaseDateTitle"
         app:layout_constraintTag="description"
         app:layout_constraintTop_toBottomOf="@id/durationTitle" />
 
@@ -158,6 +175,7 @@
         android:id="@+id/releaseDateTitle"
         style="@style/Player.TrackDescription.Key"
         android:text="@string/track_release_date_title"
+        app:layout_constraintBottom_toTopOf="@id/genreTitle"
         app:layout_constraintTag="description"
         app:layout_constraintTop_toBottomOf="@id/albumTitle" />
 
@@ -165,13 +183,16 @@
         android:id="@+id/genreTitle"
         style="@style/Player.TrackDescription.Key"
         android:text="@string/track_genre_title"
+        app:layout_constraintBottom_toTopOf="@id/countryTitle"
         app:layout_constraintTag="description"
         app:layout_constraintTop_toBottomOf="@id/releaseDateTitle" />
 
     <TextView
         android:id="@+id/countryTitle"
         style="@style/Player.TrackDescription.Key"
+        android:layout_marginBottom="20dp"
         android:text="@string/track_country_title"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTag="description"
         app:layout_constraintTop_toBottomOf="@id/genreTitle" />
 

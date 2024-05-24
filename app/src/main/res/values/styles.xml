@@ -127,7 +127,6 @@
 
     <style name="Player.TrackDescription.Key" parent="Player.TrackDescription">
         <item name="android:textColor">@color/text_gray</item>
-        <item name="android:layout_marginTop">9dp</item>
         <item name="layout_constraintStart_toStartOf">parent</item>
         <item name="android:layout_marginStart">16dp</item>
     </style>
