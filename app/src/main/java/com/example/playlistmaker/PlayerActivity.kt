@@ -1,11 +1,9 @@
 package com.example.playlistmaker
 
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Group
 import androidx.core.view.isVisible
@@ -14,14 +12,12 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.model.Track
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
 
     lateinit var track: Track
-    val defPlayDuration = 30000
+    var playDuration = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +26,7 @@ class PlayerActivity : AppCompatActivity() {
         val backBtn = findViewById<ImageButton>(R.id.panelBackArrow)
         backBtn.setOnClickListener { finish() }
 
-        val json = intent.getStringExtra("track")
+        val json = intent.getStringExtra(CURRENT_TRACK_KEY)
         track = Gson().fromJson(json, Track::class.java)
         fill()
 
@@ -75,7 +71,7 @@ class PlayerActivity : AppCompatActivity() {
         artistNameView.text = track.artistName
 
         //Play duration
-        playTimeView.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(defPlayDuration)
+        playTimeView.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(playDuration)
 
         //Descriptions
         durationView.text =
@@ -90,6 +86,10 @@ class PlayerActivity : AppCompatActivity() {
         genreView.text = track.primaryGenreName
         countryView.text = track.country
 
+    }
+
+    companion object {
+        const val CURRENT_TRACK_KEY = "track"
     }
 
 }

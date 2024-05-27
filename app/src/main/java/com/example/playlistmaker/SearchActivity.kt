@@ -13,7 +13,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.model.Track
@@ -329,7 +328,7 @@ class SearchActivity : AppCompatActivity() {
         val json = Gson().toJson(track)
 
         val intent = Intent(this, PlayerActivity::class.java)
-        intent.putExtra("track", json)
+        intent.putExtra(CURRENT_TRACK_KEY, json)
         startActivity(intent)
 
     }
@@ -358,6 +357,7 @@ class SearchActivity : AppCompatActivity() {
         //search preferences
         const val SEARCH_PREFERENCES = "playlistmaker_search_preferences"
         const val HISTORY_KEY = "search_history"
+        const val CURRENT_TRACK_KEY = "track"
     }
 
 }
