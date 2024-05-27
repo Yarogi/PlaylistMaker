@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:ns1="http://schemas.android.com/tools">
 
+    <!--  Control panel-->
+    <style name="ControlPanel">
+        <item name="android:tint">@color/white</item>
+    </style>
+
     <style name="PanelHeader">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/panel_header_height</item>
@@ -93,6 +98,7 @@
     <style name="Player">
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
+        <item name="android:background">@color/light_black</item>
     </style>
 
     <style name="Player.TrackTitle">

@@ -25,6 +25,7 @@
 
     <ImageButton
         android:id="@+id/panelBackArrow"
+        style="@style/ControlPanel"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_margin="20dp"
@@ -60,6 +61,7 @@
         android:id="@+id/cover"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@null"
         android:contentDescription="@string/track_album_cover"
         android:src="@drawable/track_placeholder"
         app:layout_constraintBottom_toTopOf="@id/bottomCoverEdge"
@@ -147,6 +149,7 @@
         android:id="@+id/collectionNameGroup"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@null"
         app:constraint_referenced_ids="albumTitle, album"
         app:layout_constraintBottom_toBottomOf="@id/albumTitle"
         app:layout_constraintEnd_toEndOf="@id/album"
