@@ -328,7 +328,7 @@ class SearchActivity : AppCompatActivity() {
         val json = Gson().toJson(track)
 
         val intent = Intent(this, PlayerActivity::class.java)
-        intent.putExtra(CURRENT_TRACK_KEY, json)
+        intent.putExtra(PlayerActivity.CURRENT_TRACK_KEY, json)
         startActivity(intent)
 
     }
@@ -357,7 +357,6 @@ class SearchActivity : AppCompatActivity() {
         //search preferences
         const val SEARCH_PREFERENCES = "playlistmaker_search_preferences"
         const val HISTORY_KEY = "search_history"
-        const val CURRENT_TRACK_KEY = "track"
     }
 
 }
