@@ -1,5 +1,6 @@
 package com.example.playlistmaker
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -19,6 +20,11 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var track: Track
     var playDuration = 0
 
+    //Player
+    private lateinit var playTrackBtn: ImageButton
+    private var mediaPlayer = MediaPlayer()
+    private var playerState = STATE_DEFAULT
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -28,8 +34,22 @@ class PlayerActivity : AppCompatActivity() {
 
         val json = intent.getStringExtra(CURRENT_TRACK_KEY)
         track = Gson().fromJson(json, Track::class.java)
-        fill()
 
+        //initializing form views
+        fill()
+        //prepare
+        preparePlayer()
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
     }
 
     private fun fill() {
@@ -42,8 +62,10 @@ class PlayerActivity : AppCompatActivity() {
         val artistNameView = findViewById<TextView>(R.id.artistName)
 
         //Views: Controls
+        playTrackBtn = findViewById(R.id.playTrack)
+        playTrackBtn.isEnabled = false
+        playTrackBtn.setOnClickListener { playbacklControl() }
         val addPlaylistBtn = findViewById<ImageButton>(R.id.addPlaylist)
-        val playTrackBtn = findViewById<ImageButton>(R.id.playTrack)
         val addFavoriteBtn = findViewById<ImageButton>(R.id.like)
 
         //View: Play duration
@@ -88,8 +110,54 @@ class PlayerActivity : AppCompatActivity() {
 
     }
 
+    private fun preparePlayer() {
+
+        mediaPlayer.setDataSource(track.previewUrl)
+        mediaPlayer.prepareAsync()
+
+        mediaPlayer.setOnPreparedListener {
+            playTrackBtn.isEnabled = true
+            playerState = STATE_PREPARED
+        }
+        mediaPlayer.setOnCompletionListener {
+            playTrackBtn.setImageResource(R.drawable.play_button)
+            playerState = STATE_PREPARED
+        }
+    }
+
+    private fun startPlayer() {
+        mediaPlayer.start()
+        playTrackBtn.setImageResource(R.drawable.pause_button)
+        playerState = STATE_PLAYING
+    }
+
+    private fun pausePlayer() {
+        mediaPlayer.pause()
+        playTrackBtn.setImageResource(R.drawable.play_button)
+        playerState = STATE_PAUSED
+    }
+
+    private fun playbacklControl() {
+        when (playerState) {
+            STATE_PLAYING -> {
+                pausePlayer()
+            }
+
+            STATE_PREPARED, STATE_PAUSED -> {
+                startPlayer()
+            }
+        }
+    }
+
     companion object {
         const val CURRENT_TRACK_KEY = "track"
+
+        //Player state
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
+
     }
 
 }
