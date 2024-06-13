@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.model.Track
@@ -64,6 +65,8 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var historyHolder: LinearLayout
     private lateinit var historyListView: RecyclerView
 
+    private lateinit var progressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -72,6 +75,7 @@ class SearchActivity : AppCompatActivity() {
         val exitButton = findViewById<Button>(R.id.exitBtn)
         val searchTextEdit = getSearchTextEditView()
         val clearSearchText = findViewById<ImageButton>(R.id.clearSearchText)
+        progressBar = findViewById(R.id.progressBar)
 
         //Exit
         exitButton.setOnClickListener {
@@ -183,6 +187,7 @@ class SearchActivity : AppCompatActivity() {
         errorHolderNoConnection.visibility = View.GONE
         errorHolderEmpty.visibility = View.GONE
         trackListView.visibility = View.GONE
+        progressBar.visibility = View.GONE
 
         when {
             noConnection -> errorHolderNoConnection.visibility = View.VISIBLE
@@ -254,6 +259,9 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchTrack() {
+
+        progressBar.visibility = View.VISIBLE
+
         trackSearchService.search(savedSearchText).enqueue(object : Callback<TrackResponse> {
             override fun onResponse(
                 call: Call<TrackResponse>, response: Response<TrackResponse>
