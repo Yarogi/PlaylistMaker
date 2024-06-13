@@ -28,4 +28,17 @@
     <string name="update">Обновить</string>
     <string name="clear_history">Очистить историю</string>
     <string name="you_were_looking_for">Вы искали</string>
+    <string name="example_text_track_name" translatable="false">Yesterday (Remastered 2009)</string>
+    <string name="example_text_artist_name" translatable="false">The Beatles </string>
+    <string name="example_text_play_time" translatable="false">0:30</string>
+    <!--  Player  -->
+    <string name="track_duration_title">Длительность</string>
+    <string name="track_album_title">Альбом</string>
+    <string name="track_release_date_title">Год</string>
+    <string name="track_genre_title">Жанр</string>
+    <string name="track_country_title">Страна</string>
+    <string name="player_play_description">Играть</string>
+    <string name="player_add_to_playlist_description">Добавить в плейлист</string>
+    <string name="player_add_to_favorites_description">Добавить в избранное</string>
+
 </resources>

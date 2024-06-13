@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,7 +13,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.model.Track
@@ -324,11 +324,13 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun startingTrack(track: Track) {
-        Toast.makeText(
-            this@SearchActivity,
-            "Start track ID-${track.trackId}",
-            Toast.LENGTH_SHORT
-        ).show()
+
+        val json = Gson().toJson(track)
+
+        val intent = Intent(this, PlayerActivity::class.java)
+        intent.putExtra(CURRENT_TRACK_KEY, json)
+        startActivity(intent)
+
     }
 
     private fun readSavedHistory() {
@@ -355,6 +357,7 @@ class SearchActivity : AppCompatActivity() {
         //search preferences
         const val SEARCH_PREFERENCES = "playlistmaker_search_preferences"
         const val HISTORY_KEY = "search_history"
+        const val CURRENT_TRACK_KEY = "track"
     }
 
 }

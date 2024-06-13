@@ -20,4 +20,13 @@
     <string name="update">Update</string>
     <string name="clear_history">Clear history</string>
     <string name="you_were_looking_for">You were looking for</string>
+    <!--  Player  -->
+    <string name="track_duration_title">Duration</string>
+    <string name="track_album_title">Album</string>
+    <string name="track_release_date_title">Year</string>
+    <string name="track_genre_title">Genre</string>
+    <string name="track_country_title">Country</string>
+    <string name="player_play_description">Play</string>
+    <string name="player_add_to_playlist_description">Add to playlist</string>
+    <string name="player_add_to_favorites_description">Add to favorites</string>
 </resources>
