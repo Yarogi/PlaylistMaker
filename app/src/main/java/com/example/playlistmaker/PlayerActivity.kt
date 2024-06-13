@@ -2,6 +2,8 @@ package com.example.playlistmaker
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,12 +20,21 @@ import java.util.Locale
 class PlayerActivity : AppCompatActivity() {
 
     lateinit var track: Track
-    var playDuration = 0
 
     //Player
     private lateinit var playTrackBtn: ImageButton
+    private lateinit var playTimeView: TextView
     private var mediaPlayer = MediaPlayer()
     private var playerState = STATE_DEFAULT
+    private val handler = Handler(Looper.getMainLooper())
+
+    private val showDurationRunnable = object : Runnable {
+        override fun run() {
+            showCurrentDuration()
+            handler.postDelayed(this, DURATION_DELAY)
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +80,7 @@ class PlayerActivity : AppCompatActivity() {
         val addFavoriteBtn = findViewById<ImageButton>(R.id.like)
 
         //View: Play duration
-        val playTimeView = findViewById<TextView>(R.id.playTime)
+        playTimeView = findViewById(R.id.playTime)
 
         //Views: Descriptions
         val durationView = findViewById<TextView>(R.id.duration)
@@ -93,7 +104,7 @@ class PlayerActivity : AppCompatActivity() {
         artistNameView.text = track.artistName
 
         //Play duration
-        playTimeView.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(playDuration)
+        showDuration()
 
         //Descriptions
         durationView.text =
@@ -110,6 +121,14 @@ class PlayerActivity : AppCompatActivity() {
 
     }
 
+    private fun showCurrentDuration() {
+        showDuration(mediaPlayer.getCurrentPosition())
+    }
+
+    private fun showDuration(playDuration: Int = 0) {
+        playTimeView.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(playDuration)
+    }
+
     private fun preparePlayer() {
 
         mediaPlayer.setDataSource(track.previewUrl)
@@ -122,6 +141,8 @@ class PlayerActivity : AppCompatActivity() {
         mediaPlayer.setOnCompletionListener {
             playTrackBtn.setImageResource(R.drawable.play_button)
             playerState = STATE_PREPARED
+            handler.removeCallbacks(showDurationRunnable)
+            showDuration()
         }
     }
 
@@ -129,12 +150,16 @@ class PlayerActivity : AppCompatActivity() {
         mediaPlayer.start()
         playTrackBtn.setImageResource(R.drawable.pause_button)
         playerState = STATE_PLAYING
+        handler.postDelayed(
+            showDurationRunnable, DURATION_DELAY
+        )
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
         playTrackBtn.setImageResource(R.drawable.play_button)
         playerState = STATE_PAUSED
+        handler.removeCallbacks(showDurationRunnable)
     }
 
     private fun playbacklControl() {
@@ -151,6 +176,8 @@ class PlayerActivity : AppCompatActivity() {
 
     companion object {
         const val CURRENT_TRACK_KEY = "track"
+
+        private const val DURATION_DELAY = 300L
 
         //Player state
         private const val STATE_DEFAULT = 0

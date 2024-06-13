@@ -110,7 +110,7 @@ class SearchActivity : AppCompatActivity() {
         //Search text
         searchTextEdit.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchTrack()
+                searchTrackDebounce()
                 true
             }
             false
@@ -127,7 +127,7 @@ class SearchActivity : AppCompatActivity() {
                 updateHistoryVisible(visibility)
 
                 //Search track
-                searchTrackDebounce()
+                searchTrackDebounce(useDelay = true)
 
             }
 
@@ -167,7 +167,7 @@ class SearchActivity : AppCompatActivity() {
             SEARCH_TEXT, SEARCH_DEF
         )
         setTextInSearchEdit(savedSearchText)
-        if (savedSearchText != SEARCH_DEF) searchTrack()
+        if (savedSearchText != SEARCH_DEF) searchTrackDebounce()
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -227,7 +227,7 @@ class SearchActivity : AppCompatActivity() {
             .inflate(R.layout.search_no_connection_view, errorGroupView, false)
         val updateBtn = errorHolderNoConnection.findViewById<Button>(R.id.updateButton)
         updateBtn.setOnClickListener {
-            searchTrack()
+            searchTrackDebounce()
         }
 
         errorGroupView.addView(errorHolderEmpty)
@@ -273,12 +273,16 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    private fun searchTrackDebounce() {
+    private fun searchTrackDebounce(useDelay: Boolean = false) {
 
         mainHandler.removeCallbacks(searchRunnable)
 
         if (searchTextEdit.text.isNotEmpty()) {
-            mainHandler.postDelayed(searchRunnable, SEARCH_DELAY)
+            if (useDelay) {
+                mainHandler.postDelayed(searchRunnable, SEARCH_DELAY)
+            } else {
+                mainHandler.postAtFrontOfQueue(searchRunnable)
+            }
         } else {
             progressBar.visibility = View.GONE
         }
