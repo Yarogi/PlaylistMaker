@@ -3,6 +3,8 @@ package com.example.playlistmaker
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -13,6 +15,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.model.Track
@@ -24,6 +27,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
+
+    private var trackSelectionIsProcessed = false
 
     private var savedSearchText: String = SEARCH_DEF
     private val trackList = ArrayList<Track>()
@@ -39,6 +44,7 @@ class SearchActivity : AppCompatActivity() {
     //Global-Views
     private lateinit var errorHolderEmpty: View
     private lateinit var errorHolderNoConnection: View
+    private lateinit var searchTextEdit: EditText
 
     //TrackList
     private lateinit var trackListView: RecyclerView
@@ -55,14 +61,26 @@ class SearchActivity : AppCompatActivity() {
     private val history = ArrayList<Track>()
     private val historyClickListener = object : TrackAdapter.Listener {
         override fun onClickTrackListener(track: Track) {
+
+            if (trackSelectionIsProcessed) return
+            trackSelectionIsProcessed = true
+
             //replace track in history
             replaceTrackInHistory(track)
             startingTrack(track)
+
+            trackSelectionIsProcessed = false
+
         }
     }
     private val historyAdapter = TrackAdapter(historyClickListener)
     private lateinit var historyHolder: LinearLayout
     private lateinit var historyListView: RecyclerView
+
+    //Search sync
+    private lateinit var progressBar: ProgressBar
+    private val searchRunnable = Runnable { searchTrack() }
+    private val mainHandler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,8 +88,9 @@ class SearchActivity : AppCompatActivity() {
 
         //Initializing views
         val exitButton = findViewById<Button>(R.id.exitBtn)
-        val searchTextEdit = getSearchTextEditView()
         val clearSearchText = findViewById<ImageButton>(R.id.clearSearchText)
+        searchTextEdit = findViewById(R.id.searchTextEdit)
+        progressBar = findViewById(R.id.progressBar)
 
         //Exit
         exitButton.setOnClickListener {
@@ -80,7 +99,7 @@ class SearchActivity : AppCompatActivity() {
 
         //Clear text
         clearSearchText.setOnClickListener {
-            setTextInSearchEdit(SEARCH_DEF, searchTextEdit)
+            setTextInSearchEdit(SEARCH_DEF)
             hideKeyboard()
 
             trackList.clear()
@@ -91,7 +110,7 @@ class SearchActivity : AppCompatActivity() {
         //Search text
         searchTextEdit.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchTrack()
+                searchTrackDebounce()
                 true
             }
             false
@@ -106,6 +125,9 @@ class SearchActivity : AppCompatActivity() {
                 val visibility =
                     if (searchTextEdit.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
                 updateHistoryVisible(visibility)
+
+                //Search track
+                searchTrackDebounce(useDelay = true)
 
             }
 
@@ -145,24 +167,19 @@ class SearchActivity : AppCompatActivity() {
             SEARCH_TEXT, SEARCH_DEF
         )
         setTextInSearchEdit(savedSearchText)
-        if (savedSearchText != SEARCH_DEF) searchTrack()
+        if (savedSearchText != SEARCH_DEF) searchTrackDebounce()
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
     }
 
-    private fun getSearchTextEditView(): EditText {
-        return findViewById(R.id.searchTextEdit)
-    }
-
     private fun getTrackListView(): RecyclerView {
         return findViewById(R.id.trackListView)
     }
 
-    private fun setTextInSearchEdit(text: String, searchTextEdit: EditText? = null) {
-        val textEdit = searchTextEdit ?: getSearchTextEditView()
-        textEdit.setText(text)
+    private fun setTextInSearchEdit(text: String) {
+        searchTextEdit.setText(text)
     }
 
     private fun hideKeyboard() {
@@ -177,16 +194,19 @@ class SearchActivity : AppCompatActivity() {
     private fun updateVisibiltyViews(
         noConnection: Boolean = false,
         empty: Boolean = false,
-        hideList: Boolean = false
+        hideList: Boolean = false,
+        showProgressBar: Boolean = false
     ) {
 
         errorHolderNoConnection.visibility = View.GONE
         errorHolderEmpty.visibility = View.GONE
         trackListView.visibility = View.GONE
+        progressBar.visibility = View.GONE
 
         when {
             noConnection -> errorHolderNoConnection.visibility = View.VISIBLE
             empty -> errorHolderEmpty.visibility = View.VISIBLE
+            showProgressBar -> progressBar.visibility = View.VISIBLE
             !hideList -> trackListView.visibility = View.VISIBLE
         }
 
@@ -207,7 +227,7 @@ class SearchActivity : AppCompatActivity() {
             .inflate(R.layout.search_no_connection_view, errorGroupView, false)
         val updateBtn = errorHolderNoConnection.findViewById<Button>(R.id.updateButton)
         updateBtn.setOnClickListener {
-            searchTrack()
+            searchTrackDebounce()
         }
 
         errorGroupView.addView(errorHolderEmpty)
@@ -224,7 +244,7 @@ class SearchActivity : AppCompatActivity() {
         readSavedHistory()
         historyAdapter.tracks = history
 
-        val visibility = if (getSearchTextEditView().hasFocus()) View.VISIBLE else View.GONE
+        val visibility = if (searchTextEdit.hasFocus()) View.VISIBLE else View.GONE
         updateHistoryVisible(visibility)
 
         val clearHistoryBtn = findViewById<Button>(R.id.clearHistory)
@@ -253,11 +273,36 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+    private fun searchTrackDebounce(useDelay: Boolean = false) {
+
+        mainHandler.removeCallbacks(searchRunnable)
+
+        if (searchTextEdit.text.isNotEmpty()) {
+            if (useDelay) {
+                mainHandler.postDelayed(searchRunnable, SEARCH_DELAY)
+            } else {
+                mainHandler.postAtFrontOfQueue(searchRunnable)
+            }
+        } else {
+            progressBar.visibility = View.GONE
+        }
+
+    }
+
     private fun searchTrack() {
+
+        updateVisibiltyViews(
+            showProgressBar = true
+        )
+
         trackSearchService.search(savedSearchText).enqueue(object : Callback<TrackResponse> {
             override fun onResponse(
                 call: Call<TrackResponse>, response: Response<TrackResponse>
             ) {
+
+                if (searchTextEdit.text.isEmpty()) {
+                    return
+                }
 
                 if (response.code() == 200) {
 
@@ -328,7 +373,7 @@ class SearchActivity : AppCompatActivity() {
         val json = Gson().toJson(track)
 
         val intent = Intent(this, PlayerActivity::class.java)
-        intent.putExtra(CURRENT_TRACK_KEY, json)
+        intent.putExtra(PlayerActivity.CURRENT_TRACK_KEY, json)
         startActivity(intent)
 
     }
@@ -357,7 +402,9 @@ class SearchActivity : AppCompatActivity() {
         //search preferences
         const val SEARCH_PREFERENCES = "playlistmaker_search_preferences"
         const val HISTORY_KEY = "search_history"
-        const val CURRENT_TRACK_KEY = "track"
+
+        //search debounce
+        private const val SEARCH_DELAY = 2000L
     }
 
 }
