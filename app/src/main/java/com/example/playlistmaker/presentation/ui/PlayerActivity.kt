@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.model.PlaybackState
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.presentation.ui.search.pxToDP
 import com.google.gson.Gson
@@ -26,8 +27,8 @@ class PlayerActivity : AppCompatActivity() {
     //Player
     private lateinit var playTrackBtn: ImageButton
     private lateinit var playTimeView: TextView
-    private var mediaPlayer = MediaPlayer()
-    private var playerState = STATE_DEFAULT
+    private val mediaPlayer = MediaPlayer()
+    private var playerState = PlaybackState.DEFAULT
     private val handler = Handler(Looper.getMainLooper())
 
     private val showDurationRunnable = object : Runnable {
@@ -138,11 +139,11 @@ class PlayerActivity : AppCompatActivity() {
 
         mediaPlayer.setOnPreparedListener {
             playTrackBtn.isEnabled = true
-            playerState = STATE_PREPARED
+            playerState = PlaybackState.PREPARED
         }
         mediaPlayer.setOnCompletionListener {
             playTrackBtn.setImageResource(R.drawable.play_button)
-            playerState = STATE_PREPARED
+            playerState = PlaybackState.PREPARED
             handler.removeCallbacks(showDurationRunnable)
             showDuration()
         }
@@ -151,7 +152,7 @@ class PlayerActivity : AppCompatActivity() {
     private fun startPlayer() {
         mediaPlayer.start()
         playTrackBtn.setImageResource(R.drawable.pause_button)
-        playerState = STATE_PLAYING
+        playerState = PlaybackState.PLAYING
         handler.postDelayed(
             showDurationRunnable, DURATION_DELAY
         )
@@ -160,32 +161,28 @@ class PlayerActivity : AppCompatActivity() {
     private fun pausePlayer() {
         mediaPlayer.pause()
         playTrackBtn.setImageResource(R.drawable.play_button)
-        playerState = STATE_PAUSED
+        playerState = PlaybackState.PAUSED
         handler.removeCallbacks(showDurationRunnable)
     }
 
     private fun playbacklControl() {
         when (playerState) {
-            STATE_PLAYING -> {
+            PlaybackState.PLAYING -> {
                 pausePlayer()
             }
 
-            STATE_PREPARED, STATE_PAUSED -> {
+            PlaybackState.PREPARED, PlaybackState.PAUSED -> {
                 startPlayer()
             }
+
+            PlaybackState.DEFAULT -> {}
         }
     }
 
     companion object {
+
         const val CURRENT_TRACK_KEY = "track"
-
         private const val DURATION_DELAY = 300L
-
-        //Player state
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
 
     }
 

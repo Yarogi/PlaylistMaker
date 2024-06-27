@@ -16,7 +16,6 @@ data class Track(
     val previewUrl: String
 ) {
     fun getCoverArtwork() = artworkUrl100.replaceAfterLast("/", "512x512bb.jpg")
-
     fun getReleaseYear(): String {
 
         val secondApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
