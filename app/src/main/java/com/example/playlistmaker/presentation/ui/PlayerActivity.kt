@@ -1,6 +1,5 @@
 package com.example.playlistmaker.presentation.ui
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,6 +12,8 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
+import com.example.playlistmaker.creator.Creator
+import com.example.playlistmaker.domain.api.PlayerRepository
 import com.example.playlistmaker.domain.model.PlaybackState
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.presentation.ui.search.pxToDP
@@ -27,16 +28,19 @@ class PlayerActivity : AppCompatActivity() {
     //Player
     private lateinit var playTrackBtn: ImageButton
     private lateinit var playTimeView: TextView
-    private val mediaPlayer = MediaPlayer()
-    private var playerState = PlaybackState.DEFAULT
-    private val handler = Handler(Looper.getMainLooper())
 
-    private val showDurationRunnable = object : Runnable {
-        override fun run() {
-            showCurrentDuration()
-            handler.postDelayed(this, DURATION_DELAY)
+    private val mediaPlayer by lazy { Creator.provideGetPlayerRepository() }
+
+    private val handler by lazy { Handler(Looper.getMainLooper()) }
+
+     private val showDurationRunnable by lazy {
+        object : Runnable {
+            override fun run() {
+                showCurrentDuration()
+                handler.postDelayed(this, DURATION_DELAY)
+            }
+
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -134,39 +138,42 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun preparePlayer() {
 
-        mediaPlayer.setDataSource(track.previewUrl)
-        mediaPlayer.prepareAsync()
+        val listener = object : PlayerRepository.Listener {
+            override fun onPrepareListener() {
+                playTrackBtn.isEnabled = true
+            }
 
-        mediaPlayer.setOnPreparedListener {
-            playTrackBtn.isEnabled = true
-            playerState = PlaybackState.PREPARED
+            override fun onCompletionListener() {
+                playTrackBtn.setImageResource(R.drawable.play_button)
+                handler.removeCallbacks(showDurationRunnable)
+                showDuration()
+            }
+
         }
-        mediaPlayer.setOnCompletionListener {
-            playTrackBtn.setImageResource(R.drawable.play_button)
-            playerState = PlaybackState.PREPARED
-            handler.removeCallbacks(showDurationRunnable)
-            showDuration()
-        }
+        mediaPlayer.prepared(track = track, listener)
+
     }
 
     private fun startPlayer() {
-        mediaPlayer.start()
+
+        mediaPlayer.played()
         playTrackBtn.setImageResource(R.drawable.pause_button)
-        playerState = PlaybackState.PLAYING
         handler.postDelayed(
             showDurationRunnable, DURATION_DELAY
         )
+
     }
 
     private fun pausePlayer() {
-        mediaPlayer.pause()
+
+        mediaPlayer.paused()
+
         playTrackBtn.setImageResource(R.drawable.play_button)
-        playerState = PlaybackState.PAUSED
         handler.removeCallbacks(showDurationRunnable)
     }
 
     private fun playbacklControl() {
-        when (playerState) {
+        when (mediaPlayer.getCurrentState()) {
             PlaybackState.PLAYING -> {
                 pausePlayer()
             }
