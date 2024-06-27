@@ -1,6 +1,5 @@
-package com.example.playlistmaker.model
+package com.example.playlistmaker.domain.model
 
-import java.io.Serializable
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
