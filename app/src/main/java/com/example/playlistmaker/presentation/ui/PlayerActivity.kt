@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.creator.Creator
-import com.example.playlistmaker.domain.api.PlayerRepository
+import com.example.playlistmaker.domain.api.PlayerInteractor
 import com.example.playlistmaker.domain.model.PlaybackState
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.presentation.ui.search.pxToDP
@@ -29,11 +29,11 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var playTrackBtn: ImageButton
     private lateinit var playTimeView: TextView
 
-    private val mediaPlayer by lazy { Creator.provideGetPlayerRepository() }
+    private val playerInteractor by lazy { Creator.providePlayerInteractor() }
 
     private val handler by lazy { Handler(Looper.getMainLooper()) }
 
-     private val showDurationRunnable by lazy {
+    private val showDurationRunnable by lazy {
         object : Runnable {
             override fun run() {
                 showCurrentDuration()
@@ -67,7 +67,7 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer.release()
+        playerInteractor.release()
     }
 
     private fun fill() {
@@ -129,7 +129,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun showCurrentDuration() {
-        showDuration(mediaPlayer.getCurrentPosition())
+        showDuration(playerInteractor.getCurrentPosition())
     }
 
     private fun showDuration(playDuration: Int = 0) {
@@ -138,7 +138,8 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun preparePlayer() {
 
-        val listener = object : PlayerRepository.Listener {
+        val listener = object : PlayerInteractor.PrepareListener {
+
             override fun onPrepareListener() {
                 playTrackBtn.isEnabled = true
             }
@@ -150,13 +151,16 @@ class PlayerActivity : AppCompatActivity() {
             }
 
         }
-        mediaPlayer.prepared(track = track, listener)
+        playerInteractor.prepared(
+            track = track,
+            listener = listener
+        )
 
     }
 
     private fun startPlayer() {
 
-        mediaPlayer.played()
+        playerInteractor.played()
         playTrackBtn.setImageResource(R.drawable.pause_button)
         handler.postDelayed(
             showDurationRunnable, DURATION_DELAY
@@ -166,14 +170,14 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun pausePlayer() {
 
-        mediaPlayer.paused()
+        playerInteractor.played()
 
         playTrackBtn.setImageResource(R.drawable.play_button)
         handler.removeCallbacks(showDurationRunnable)
     }
 
     private fun playbacklControl() {
-        when (mediaPlayer.getCurrentState()) {
+        when (playerInteractor.getPlaybackState()) {
             PlaybackState.PLAYING -> {
                 pausePlayer()
             }
