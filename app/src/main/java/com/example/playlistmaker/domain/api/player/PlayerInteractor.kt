@@ -1,6 +1,5 @@
-package com.example.playlistmaker.domain.api
+package com.example.playlistmaker.domain.api.player
 
-import android.media.MediaPlayer
 import com.example.playlistmaker.domain.model.PlaybackState
 import com.example.playlistmaker.domain.model.Track
 
@@ -20,6 +19,6 @@ interface PlayerInteractor {
 
     fun getPlaybackState(): PlaybackState
 
-    interface PrepareListener:PlayerRepository.Listener{}
+    interface PrepareListener: PlayerRepository.Listener {}
 
 }
