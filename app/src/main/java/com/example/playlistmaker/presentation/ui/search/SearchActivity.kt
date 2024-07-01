@@ -34,7 +34,12 @@ class SearchActivity : AppCompatActivity() {
     private var savedSearchText: String = SEARCH_DEF
     private val trackList = ArrayList<Track>()
 
-    private val tracksInteractor = Creator.provideTracksInteractor()
+    private val tracksInteractor by lazy { Creator.provideTracksInteractor() }
+    private val searchHistoryInteractor by lazy {
+        Creator.provideSearchHistoryInteractor(
+            context = applicationContext
+        )
+    }
 
     //Global-Views
     private lateinit var errorHolderEmpty: View
@@ -411,29 +416,23 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun readSavedHistory() {
-        val json = getSearchPref().getString(HISTORY_KEY, null) ?: return
-        history.addAll(Gson().fromJson(json, Array<Track>::class.java))
+
+        val savedHistory = searchHistoryInteractor.read()
+        history.addAll(savedHistory)
+
     }
 
     private fun saveHistory(updateAdapter: Boolean = true) {
 
         historyAdapter.hasChange = updateAdapter
+        searchHistoryInteractor.save(history)
 
-        val json = Gson().toJson(history)
-        getSearchPref().edit()
-            .putString(HISTORY_KEY, json)
-            .apply()
     }
 
-    private fun getSearchPref() = getSharedPreferences(SEARCH_PREFERENCES, MODE_PRIVATE)
 
     companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
         const val SEARCH_DEF = ""
-
-        //search preferences
-        const val SEARCH_PREFERENCES = "playlistmaker_search_preferences"
-        const val HISTORY_KEY = "search_history"
 
         //search debounce
         private const val SEARCH_DELAY = 2000L

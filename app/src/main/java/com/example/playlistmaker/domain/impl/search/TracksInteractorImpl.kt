@@ -2,6 +2,7 @@ package com.example.playlistmaker.domain.impl.search
 
 import com.example.playlistmaker.domain.api.search.TracksInteractor
 import com.example.playlistmaker.domain.api.search.TracksRepository
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.domain.model.TrackSearchStructure
 import java.util.concurrent.Executors
 
