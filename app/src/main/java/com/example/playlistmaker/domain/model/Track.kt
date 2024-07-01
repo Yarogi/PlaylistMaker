@@ -1,6 +1,5 @@
-package com.example.playlistmaker.model
+package com.example.playlistmaker.domain.model
 
-import java.io.Serializable
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -17,7 +16,6 @@ data class Track(
     val previewUrl: String
 ) {
     fun getCoverArtwork() = artworkUrl100.replaceAfterLast("/", "512x512bb.jpg")
-
     fun getReleaseYear(): String {
 
         val secondApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
