@@ -4,7 +4,7 @@ import com.example.playlistmaker.data.dto.TrackDto
 import com.example.playlistmaker.domain.model.Track
 
 object TrackFromTrackDtoMapper {
-    fun get(trackDto: TrackDto): Track {
+    fun getTrack(trackDto: TrackDto): Track {
         val track = Track(
             trackId = trackDto.trackId,
             trackName = trackDto.trackName,
@@ -19,4 +19,9 @@ object TrackFromTrackDtoMapper {
         )
         return track
     }
+
+    fun getTrackList(traksDto:List<TrackDto>):List<Track>{
+        return traksDto.map { trackDto ->  getTrack(trackDto) }
+    }
+
 }

@@ -170,7 +170,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun pausePlayer() {
 
-        playerInteractor.played()
+        playerInteractor.paused()
 
         playTrackBtn.setImageResource(R.drawable.play_button)
         handler.removeCallbacks(showDurationRunnable)

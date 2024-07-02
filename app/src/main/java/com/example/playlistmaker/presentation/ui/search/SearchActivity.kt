@@ -292,6 +292,7 @@ class SearchActivity : AppCompatActivity() {
             }
         } else {
             progressBar.visibility = View.GONE
+            updateVisibiltyViews(empty = false)
         }
 
     }
