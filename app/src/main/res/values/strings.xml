@@ -40,5 +40,6 @@
     <string name="player_play_description">Играть</string>
     <string name="player_add_to_playlist_description">Добавить в плейлист</string>
     <string name="player_add_to_favorites_description">Добавить в избранное</string>
+    <string name="network_error_message">Произошла сетевая ошибка</string>
 
 </resources>

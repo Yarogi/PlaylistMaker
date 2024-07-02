@@ -8,6 +8,7 @@ import com.example.playlistmaker.domain.api.search.TracksRepository
 import com.example.playlistmaker.domain.model.Resource
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.domain.model.TrackSearchStructure
+import com.example.playlistmaker.R
 
 class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRepository {
 
@@ -17,11 +18,9 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRep
 
         val response = networkClient.doRequest(request)
 
-        if (response.resultCode == 200) {
-            val data = (response as TrackResponse).results.map { TrackFromTrackDtoMapper.get(it) }
-            return Resource.Success(data)
-        } else {
-            return Resource.Error("A network error has occurred")
+        return when (response.resultCode) {
+            200 -> Resource.Success(data = TrackFromTrackDtoMapper.getTrackList((response as TrackResponse).results))
+            else -> Resource.Error(R.string.network_error_message.toString())
         }
 
     }
