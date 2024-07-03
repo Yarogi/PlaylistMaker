@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.ui.search
 
 import android.content.Context
 import android.content.Intent
@@ -18,13 +18,14 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.model.Track
+import com.example.playlistmaker.R
+import com.example.playlistmaker.creator.Creator
+import com.example.playlistmaker.domain.api.search.TracksInteractor
+import com.example.playlistmaker.domain.model.Resource
+import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.domain.model.TrackSearchStructure
+import com.example.playlistmaker.presentation.ui.PlayerActivity
 import com.google.gson.Gson
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
 
@@ -33,13 +34,12 @@ class SearchActivity : AppCompatActivity() {
     private var savedSearchText: String = SEARCH_DEF
     private val trackList = ArrayList<Track>()
 
-    //Retrofit - GSON
-    private val trackBaseUrl = "https://itunes.apple.com";
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(trackBaseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    private val trackSearchService = retrofit.create(TrackSearchApi::class.java)
+    private val tracksInteractor by lazy { Creator.provideTracksInteractor() }
+    private val searchHistoryInteractor by lazy {
+        Creator.provideSearchHistoryInteractor(
+            context = applicationContext
+        )
+    }
 
     //Global-Views
     private lateinit var errorHolderEmpty: View
@@ -79,8 +79,9 @@ class SearchActivity : AppCompatActivity() {
 
     //Search sync
     private lateinit var progressBar: ProgressBar
-    private val searchRunnable = Runnable { searchTrack() }
     private val mainHandler = Handler(Looper.getMainLooper())
+    private val searchRunnable = Runnable { searchTrack() }
+    private var consumerRunnable: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -168,6 +169,12 @@ class SearchActivity : AppCompatActivity() {
         )
         setTextInSearchEdit(savedSearchText)
         if (savedSearchText != SEARCH_DEF) searchTrackDebounce()
+    }
+
+    override fun onDestroy() {
+        removeConsumerRunnable()
+        removeSearchRunnable()
+        super.onDestroy()
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -275,7 +282,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchTrackDebounce(useDelay: Boolean = false) {
 
-        mainHandler.removeCallbacks(searchRunnable)
+        removeSearchRunnable()
 
         if (searchTextEdit.text.isNotEmpty()) {
             if (useDelay) {
@@ -285,6 +292,7 @@ class SearchActivity : AppCompatActivity() {
             }
         } else {
             progressBar.visibility = View.GONE
+            updateVisibiltyViews(empty = false)
         }
 
     }
@@ -294,38 +302,68 @@ class SearchActivity : AppCompatActivity() {
         updateVisibiltyViews(
             showProgressBar = true
         )
+        startSearchTrack()
 
-        trackSearchService.search(savedSearchText).enqueue(object : Callback<TrackResponse> {
-            override fun onResponse(
-                call: Call<TrackResponse>, response: Response<TrackResponse>
-            ) {
+    }
 
-                if (searchTextEdit.text.isEmpty()) {
-                    return
+    private fun removeConsumerRunnable() {
+
+        removeRunnable(consumerRunnable)
+
+    }
+
+    private fun removeSearchRunnable() {
+        removeRunnable(searchRunnable)
+    }
+
+    private fun removeRunnable(runnable: Runnable?) {
+        runnable?.let { rnb ->
+            mainHandler.removeCallbacks(rnb)
+        }
+    }
+
+    private fun startSearchTrack() {
+
+        val searchStructure = TrackSearchStructure(term = savedSearchText)
+        tracksInteractor.searchTracks(searchStructure = searchStructure,
+            object : TracksInteractor.TracksConsumer {
+                override fun consume(resource: Resource<List<Track>>) {
+                    processSearchResult(resource)
                 }
+            })
 
-                if (response.code() == 200) {
+    }
 
-                    trackList.clear()
+    private fun processSearchResult(resource: Resource<List<Track>>) {
 
-                    if (response.body()?.results?.isNotEmpty() == true) {
-                        trackList.addAll(response.body()?.results!!)
-                        trackListAdapter.notifyDataSetChanged()
-                    }
+        removeConsumerRunnable()
 
-                    updateVisibiltyViews(false, trackList.isEmpty())
+        if (resource is Resource.Success) {
 
-                } else {
-                    showSomethingWrong()
-                }
+            trackList.clear()
+
+            val foundTracks = resource.data
+            var notify = false
+
+            if (foundTracks.isNotEmpty()) {
+                trackList.addAll(foundTracks)
+                notify = true
             }
 
-            override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-
-                showSomethingWrong()
-
+            consumerRunnable = Runnable {
+                if (notify) {
+                    trackListAdapter.notifyDataSetChanged()
+                }
+                updateVisibiltyViews(false, trackList.isEmpty())
             }
-        })
+
+        } else {
+
+            consumerRunnable = Runnable { showSomethingWrong() }
+        }
+
+        mainHandler.post(consumerRunnable!!)
+
     }
 
     private fun showSomethingWrong() {
@@ -379,29 +417,23 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun readSavedHistory() {
-        val json = getSearchPref().getString(HISTORY_KEY, null) ?: return
-        history.addAll(Gson().fromJson(json, Array<Track>::class.java))
+
+        val savedHistory = searchHistoryInteractor.read()
+        history.addAll(savedHistory)
+
     }
 
     private fun saveHistory(updateAdapter: Boolean = true) {
 
         historyAdapter.hasChange = updateAdapter
+        searchHistoryInteractor.save(history)
 
-        val json = Gson().toJson(history)
-        getSearchPref().edit()
-            .putString(HISTORY_KEY, json)
-            .apply()
     }
 
-    private fun getSearchPref() = getSharedPreferences(SEARCH_PREFERENCES, MODE_PRIVATE)
 
     companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
         const val SEARCH_DEF = ""
-
-        //search preferences
-        const val SEARCH_PREFERENCES = "playlistmaker_search_preferences"
-        const val HISTORY_KEY = "search_history"
 
         //search debounce
         private const val SEARCH_DELAY = 2000L
