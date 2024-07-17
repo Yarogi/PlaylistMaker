@@ -1,8 +1,8 @@
-package com.example.playlistmaker.domain.impl.player
+package com.example.playlistmaker.domain.player.impl
 
-import com.example.playlistmaker.domain.api.player.PlayerInteractor
-import com.example.playlistmaker.domain.api.player.PlayerRepository
-import com.example.playlistmaker.domain.model.PlaybackState
+import com.example.playlistmaker.domain.player.api.PlayerInteractor
+import com.example.playlistmaker.domain.player.api.PlayerRepository
+import com.example.playlistmaker.domain.player.model.PlaybackState
 import com.example.playlistmaker.domain.model.Track
 
 class PlayerInteractorImp(override val player: PlayerRepository) : PlayerInteractor {

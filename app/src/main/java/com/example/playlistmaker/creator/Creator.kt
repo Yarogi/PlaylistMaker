@@ -6,15 +6,15 @@ import com.example.playlistmaker.data.search.impl.SearchHistoryReposytoryImpl
 import com.example.playlistmaker.data.search.impl.TracksRepositoryImpl
 import com.example.playlistmaker.data.search.network.RetrofitNetworkClient
 import com.example.playlistmaker.data.storage.sharedprefs.SharedPrefHistoryStorage
-import com.example.playlistmaker.domain.api.player.PlayerInteractor
-import com.example.playlistmaker.domain.api.player.PlayerRepository
-import com.example.playlistmaker.domain.api.search.SearchHistoryInteractor
-import com.example.playlistmaker.domain.api.search.SearchHistoryRepository
-import com.example.playlistmaker.domain.api.search.TracksInteractor
-import com.example.playlistmaker.domain.api.search.TracksRepository
-import com.example.playlistmaker.domain.impl.player.PlayerInteractorImp
-import com.example.playlistmaker.domain.impl.search.SearchHistoryInteractorImpl
-import com.example.playlistmaker.domain.impl.search.TracksInteractorImpl
+import com.example.playlistmaker.domain.player.api.PlayerInteractor
+import com.example.playlistmaker.domain.player.api.PlayerRepository
+import com.example.playlistmaker.domain.search.api.SearchHistoryInteractor
+import com.example.playlistmaker.domain.search.api.SearchHistoryRepository
+import com.example.playlistmaker.domain.search.api.TracksInteractor
+import com.example.playlistmaker.domain.search.api.TracksRepository
+import com.example.playlistmaker.domain.player.impl.PlayerInteractorImp
+import com.example.playlistmaker.domain.search.impl.SearchHistoryInteractorImpl
+import com.example.playlistmaker.domain.search.impl.TracksInteractorImpl
 
 object Creator {
 

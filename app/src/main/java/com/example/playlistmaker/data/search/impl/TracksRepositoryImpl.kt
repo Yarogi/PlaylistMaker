@@ -4,10 +4,10 @@ import com.example.playlistmaker.data.search.dto.TrackResponse
 import com.example.playlistmaker.data.search.mapper.TrackFromTrackDtoMapper
 import com.example.playlistmaker.data.search.mapper.TrackRequestFromTrackSearchStructureMapper
 import com.example.playlistmaker.data.search.network.NetworkClient
-import com.example.playlistmaker.domain.api.search.TracksRepository
-import com.example.playlistmaker.domain.model.Resource
+import com.example.playlistmaker.domain.search.api.TracksRepository
+import com.example.playlistmaker.domain.search.model.Resource
 import com.example.playlistmaker.domain.model.Track
-import com.example.playlistmaker.domain.model.TrackSearchStructure
+import com.example.playlistmaker.domain.search.model.TrackSearchStructure
 import com.example.playlistmaker.R
 
 class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRepository {

@@ -13,8 +13,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.creator.Creator
-import com.example.playlistmaker.domain.api.player.PlayerInteractor
-import com.example.playlistmaker.domain.model.PlaybackState
+import com.example.playlistmaker.domain.player.api.PlayerInteractor
+import com.example.playlistmaker.domain.player.model.PlaybackState
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.ui.search.pxToDP
 import com.google.gson.Gson
