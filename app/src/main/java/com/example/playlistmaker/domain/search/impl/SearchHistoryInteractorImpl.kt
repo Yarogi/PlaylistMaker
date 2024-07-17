@@ -2,7 +2,7 @@ package com.example.playlistmaker.domain.search.impl
 
 import com.example.playlistmaker.domain.search.api.SearchHistoryInteractor
 import com.example.playlistmaker.domain.search.api.SearchHistoryRepository
-import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.domain.common.model.Track
 
 class SearchHistoryInteractorImpl(private val repository: SearchHistoryRepository):
     SearchHistoryInteractor {

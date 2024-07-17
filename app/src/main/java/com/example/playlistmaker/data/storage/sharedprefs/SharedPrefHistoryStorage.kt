@@ -2,7 +2,7 @@ package com.example.playlistmaker.data.storage.sharedprefs
 
 import android.content.Context
 import com.example.playlistmaker.data.storage.HistoryStorage
-import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.domain.common.model.Track
 import com.google.gson.Gson
 
 private const val SEARCH_PREFERENCES = "playlistmaker_search_preferences"

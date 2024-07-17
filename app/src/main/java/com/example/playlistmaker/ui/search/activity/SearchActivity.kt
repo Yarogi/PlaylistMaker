@@ -22,7 +22,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.search.api.TracksInteractor
 import com.example.playlistmaker.domain.search.model.Resource
-import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.domain.common.model.Track
 import com.example.playlistmaker.domain.search.model.TrackSearchStructure
 import com.example.playlistmaker.ui.PlayerActivity
 import com.example.playlistmaker.ui.search.TrackAdapter

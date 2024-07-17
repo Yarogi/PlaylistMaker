@@ -3,7 +3,7 @@ package com.example.playlistmaker.domain.player.impl
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.api.PlayerRepository
 import com.example.playlistmaker.domain.player.model.PlaybackState
-import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.domain.common.model.Track
 
 class PlayerInteractorImp(override val player: PlayerRepository) : PlayerInteractor {
 

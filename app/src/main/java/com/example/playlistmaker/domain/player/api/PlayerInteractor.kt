@@ -1,7 +1,7 @@
 package com.example.playlistmaker.domain.player.api
 
 import com.example.playlistmaker.domain.player.model.PlaybackState
-import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.domain.common.model.Track
 
 interface PlayerInteractor {
 
