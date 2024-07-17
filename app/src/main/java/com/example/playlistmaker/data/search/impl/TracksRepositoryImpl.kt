@@ -1,9 +1,9 @@
-package com.example.playlistmaker.data.impl
+package com.example.playlistmaker.data.search.impl
 
-import com.example.playlistmaker.data.dto.TrackResponse
-import com.example.playlistmaker.data.mapper.TrackFromTrackDtoMapper
-import com.example.playlistmaker.data.mapper.TrackRequestFromTrackSearchStructureMapper
-import com.example.playlistmaker.data.network.NetworkClient
+import com.example.playlistmaker.data.search.dto.TrackResponse
+import com.example.playlistmaker.data.search.mapper.TrackFromTrackDtoMapper
+import com.example.playlistmaker.data.search.mapper.TrackRequestFromTrackSearchStructureMapper
+import com.example.playlistmaker.data.search.network.NetworkClient
 import com.example.playlistmaker.domain.api.search.TracksRepository
 import com.example.playlistmaker.domain.model.Resource
 import com.example.playlistmaker.domain.model.Track

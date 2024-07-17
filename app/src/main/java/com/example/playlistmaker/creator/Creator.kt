@@ -1,11 +1,10 @@
 package com.example.playlistmaker.creator
 
 import android.content.Context
-import com.example.playlistmaker.data.impl.PlayerRepositoryImpl
-import com.example.playlistmaker.data.impl.SearchHistoryReposytoryImpl
-import com.example.playlistmaker.data.impl.TracksRepositoryImpl
-import com.example.playlistmaker.data.network.RetrofitNetworkClient
-import com.example.playlistmaker.data.storage.HistoryStorage
+import com.example.playlistmaker.data.player.impl.PlayerRepositoryImpl
+import com.example.playlistmaker.data.search.impl.SearchHistoryReposytoryImpl
+import com.example.playlistmaker.data.search.impl.TracksRepositoryImpl
+import com.example.playlistmaker.data.search.network.RetrofitNetworkClient
 import com.example.playlistmaker.data.storage.sharedprefs.SharedPrefHistoryStorage
 import com.example.playlistmaker.domain.api.player.PlayerInteractor
 import com.example.playlistmaker.domain.api.player.PlayerRepository

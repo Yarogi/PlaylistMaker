@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.ui
+package com.example.playlistmaker.ui
 
 import android.os.Bundle
 import android.os.Handler
@@ -16,7 +16,7 @@ import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.api.player.PlayerInteractor
 import com.example.playlistmaker.domain.model.PlaybackState
 import com.example.playlistmaker.domain.model.Track
-import com.example.playlistmaker.presentation.ui.search.pxToDP
+import com.example.playlistmaker.ui.search.pxToDP
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Locale

@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.ui.search
+package com.example.playlistmaker.ui.search.activity
 
 import android.content.Context
 import android.content.Intent
@@ -24,7 +24,8 @@ import com.example.playlistmaker.domain.api.search.TracksInteractor
 import com.example.playlistmaker.domain.model.Resource
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.domain.model.TrackSearchStructure
-import com.example.playlistmaker.presentation.ui.PlayerActivity
+import com.example.playlistmaker.ui.PlayerActivity
+import com.example.playlistmaker.ui.search.TrackAdapter
 import com.google.gson.Gson
 
 class SearchActivity : AppCompatActivity() {

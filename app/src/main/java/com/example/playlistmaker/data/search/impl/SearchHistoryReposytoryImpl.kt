@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.impl
+package com.example.playlistmaker.data.search.impl
 
 import com.example.playlistmaker.data.storage.HistoryStorage
 import com.example.playlistmaker.domain.api.search.SearchHistoryRepository
