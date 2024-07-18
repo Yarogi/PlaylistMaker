@@ -9,6 +9,8 @@ class SettingsViewModel(
     private val settingsInterractor: SettingsInteractor
 ): ViewModel() {
 
-        //Код
+        fun go(){
+            sharingInteractor.shareApp()
+        }
 
 }

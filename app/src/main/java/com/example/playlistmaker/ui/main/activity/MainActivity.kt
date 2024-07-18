@@ -1,35 +1,40 @@
 package com.example.playlistmaker.ui.main.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import com.example.playlistmaker.R
-import com.example.playlistmaker.ui.LibraryActivity
-import com.example.playlistmaker.ui.settings.activity.SettingsActivity
+import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.databinding.ActivityMainBinding
+import com.example.playlistmaker.ui.mediaLibrary.activity.LibraryActivity
 import com.example.playlistmaker.ui.search.activity.SearchActivity
 
 
 class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        val btnSearch = findViewById<Button>(R.id.btnSearch)
-        val btnLibrary = findViewById<Button>(R.id.btnLibrary)
-        val btnSettings = findViewById<Button>(R.id.btnSettings)
+    private val binding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        super.onCreate(savedInstanceState)
+        setContentView(binding.root)
+
+        val btnSearch = binding.btnSearch
+        val btnLibrary = binding.btnLibrary
+        val btnSettings = binding.btnSettings
 
         btnSearch.setOnClickListener {
-            val searchIntent = Intent(this, SearchActivity::class.java)
-            startActivity(searchIntent)
+            val intent = Intent(this@MainActivity, SearchActivity::class.java)
+            startActivity(intent)
         }
+
         btnLibrary.setOnClickListener {
-            val libraryIntent = Intent(this, LibraryActivity::class.java)
-            startActivity(libraryIntent)
+            val intent = Intent(this@MainActivity, LibraryActivity::class.java)
+            startActivity(intent)
         }
         btnSettings.setOnClickListener {
-            val settingsIntent = Intent(this, SettingsActivity::class.java)
-            startActivity(settingsIntent)
+            val intent = Intent(this@MainActivity, SearchActivity::class.java)
+            startActivity(intent)
         }
 
     }
