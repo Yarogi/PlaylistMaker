@@ -2,15 +2,14 @@ package com.example.playlistmaker.ui.search.model
 
 import com.example.playlistmaker.domain.main.model.Track
 
-sealed interface SearchState {
+sealed class SearchState(val searchText: String) {
 
     //Search
-    object Loading : SearchState
-    object Empty : SearchState
-    object Error : SearchState
-    data class Content(val tracks: List<Track>) : SearchState
-    data class History(val tracks: List<Track>): SearchState
-
-    object NoContent: SearchState
+    class Loading(searchText: String) : SearchState(searchText)
+    class Empty(searchText: String) : SearchState(searchText)
+    class Error(searchText: String) : SearchState(searchText)
+    class Content(searchText: String, val tracks: List<Track>) : SearchState(searchText)
+    class History(searchText: String, val tracks: List<Track>) : SearchState(searchText)
+    class NoContent(searchText: String) : SearchState(searchText)
 
 }

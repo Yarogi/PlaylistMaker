@@ -21,7 +21,6 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.ui.search.TrackAdapter
-import com.example.playlistmaker.ui.search.model.HistoryState
 import com.example.playlistmaker.ui.search.model.SearchState
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 import com.google.gson.Gson
@@ -37,8 +36,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private var trackSelectionIsProcessed = false
-
-    private var savedSearchText: String = SEARCH_DEF
 
     //Global-Views
     private lateinit var errorHolderEmpty: View
@@ -90,7 +87,6 @@ class SearchActivity : AppCompatActivity() {
 
         //Initializing views
         val exitButton = binding.exitBtn
-        val clearSearchText = binding.clearSearchText
         searchTextEdit = binding.searchTextEdit
         progressBar = binding.progressBar
 
@@ -100,12 +96,10 @@ class SearchActivity : AppCompatActivity() {
         }
 
         //Clear text
-        clearSearchText.setOnClickListener {
+        binding.clearSearchText.setOnClickListener {
 
-            setTextInSearchEdit(SEARCH_DEF)
             hideKeyboard()
-
-            viewModel.searchTrackDebounce(SEARCH_DEF)
+            viewModel.searchTrackDebounce("")
 
         }
 
@@ -124,7 +118,6 @@ class SearchActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
-                clearSearchText.isVisible = !s.isNullOrEmpty()
                 //Search track
                 viewModel.searchTrackDebounce(
                     searchText = s?.toString() ?: "",
@@ -155,28 +148,12 @@ class SearchActivity : AppCompatActivity() {
 
         //observers
         viewModel.observeSearchState().observe(this) { state -> render(state) }
+        viewModel.observeCleaningTextAvailable().observe(this){available ->
+            binding.clearSearchText.isVisible = available
+
+        }
         //--observers
 
-
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_TEXT, savedSearchText)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
-        savedSearchText = savedInstanceState.getString(
-            SEARCH_TEXT, SEARCH_DEF
-        )
-        setTextInSearchEdit(savedSearchText)
-        if (savedSearchText != SEARCH_DEF) viewModel.searchTrackDebounce(savedSearchText)
-    }
-
-    private fun setTextInSearchEdit(text: String) {
-        searchTextEdit.setText(text)
     }
 
     private fun hideKeyboard() {
@@ -240,15 +217,19 @@ class SearchActivity : AppCompatActivity() {
 
     private fun render(state: SearchState) {
 
+        if (state.searchText != searchTextEdit.text.toString()){
+            searchTextEdit.setText(state.searchText)
+        }
+
         when (state) {
             //search
             is SearchState.Loading -> showLoading()
             is SearchState.Content -> showContent(state.tracks)
-            SearchState.Empty -> showEmptyResult()
-            SearchState.Error -> showSomethingWrong()
+            is SearchState.Empty -> showEmptyResult()
+            is SearchState.Error -> showSomethingWrong()
             //history
-            is SearchState.History -> updateHistoryContent(state.tracks)
-            SearchState.NoContent -> showEmptyContent()
+            is SearchState.History -> showHistory(state.tracks)
+            is SearchState.NoContent -> showEmptyContent()
         }
 
     }
@@ -258,11 +239,13 @@ class SearchActivity : AppCompatActivity() {
     }
 
     //history
-    private fun updateHistoryContent(tracks: List<Track>) {
+    private fun showHistory(tracks: List<Track>) {
 
         if (historyAdapter.tracks.isNotEmpty()) historyAdapter.tracks.clear()
         historyAdapter.tracks.addAll(tracks)
         historyAdapter.notifyDataSetChanged()
+
+        updateVisibiltyViews(showHistory = true)
 
     }
     //--history
@@ -289,9 +272,6 @@ class SearchActivity : AppCompatActivity() {
         updateVisibiltyViews(noConnection = true)
     }
 
-    private fun renderHistory(state: HistoryState) {
-
-    }
 
     private fun showHistoryContent(history: List<Track>) {
         historyAdapter.tracks.clear()
@@ -336,7 +316,7 @@ class SearchActivity : AppCompatActivity() {
     companion object {
 
         const val SEARCH_TEXT = "SEARCH_TEXT"
-        const val SEARCH_DEF = ""
+
 
     }
 

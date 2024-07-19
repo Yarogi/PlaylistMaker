@@ -22,6 +22,7 @@ import com.example.playlistmaker.ui.search.model.SearchState
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
 
     companion object {
+        const val SEARCH_DEF = ""
         private const val SEARCH_DELAY = 2000L
         private const val SEARCH_HISTORY_SIZE = 10
         private val SEARCH_REQUEST_TOKEN = Any()
@@ -39,11 +40,13 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     //Search
     private var latestSearchText: String? = null
-    private var latestFocus: Boolean? = null
     private val searchInteractor = Creator.provideTracksInteractor()
 
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeSearchState(): LiveData<SearchState> = stateLiveData
+
+    private val textCleaningIsAvailable = MutableLiveData<Boolean>()
+    fun observeCleaningTextAvailable(): LiveData<Boolean> = textCleaningIsAvailable
     //--Search
 
     //History
@@ -67,10 +70,12 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         }
 
         this.latestSearchText = searchText
+        setTextCleaningIsAvailable()
+
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
 
         if (searchText.isEmpty()) {
-            TODO()
+            renderHistory()
         } else {
             val searchRunnable = Runnable { searchRequest(searchText) }
             if (useDelay) {
@@ -83,9 +88,20 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     }
 
+    private fun renderHistory() {
+        renderState(
+            if (history.isEmpty())
+                SearchState.NoContent(getLatestSearchText())
+            else SearchState.History(
+                searchText = getLatestSearchText(),
+                tracks = history
+            )
+        )
+    }
+
     private fun searchRequest(searchText: String) {
 
-        renderState(SearchState.Loading)
+        renderState(SearchState.Loading(getLatestSearchText()))
         val searchStructure = TrackSearchStructure(term = searchText)
         searchInteractor.searchTracks(
             searchStructure = searchStructure,
@@ -103,15 +119,21 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         when (resource) {
             is Resource.Success -> {
                 if (resource.data.isEmpty()) {
-                    renderState(SearchState.Empty)
+                    renderState(SearchState.Empty(getLatestSearchText()))
                 } else {
-                    renderState(SearchState.Content(resource.data))
+                    renderState(SearchState.Content(
+                        searchText = getLatestSearchText(),
+                        tracks = resource.data))
                 }
             }
 
-            is Resource.Error -> renderState(SearchState.Error)
+            is Resource.Error -> renderState(SearchState.Error(getLatestSearchText()))
         }
 
+    }
+
+    private fun getLatestSearchText(): String {
+        return latestSearchText ?: SEARCH_DEF
     }
     //--Search
 
@@ -119,9 +141,9 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     fun readSearchHistoryDebounce(hasFocus: Boolean) {
         if (hasFocus && latestSearchText?.isEmpty() != false) {
-            renderState(SearchState.History(history))
+            renderHistory()
         } else {
-            renderState(SearchState.NoContent)
+            renderState(SearchState.NoContent(getLatestSearchText()))
         }
 
     }
@@ -162,11 +184,11 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun clearHistory() {
+
         history.clear()
         saveSearchHistory()
 
-        TODO()
-        //renderState(SearchState.HistoryContent(history))
+        renderHistory()
 
     }
 
@@ -179,6 +201,10 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun renderState(state: SearchState) {
         stateLiveData.postValue(state)
+    }
+
+    private fun setTextCleaningIsAvailable(){
+        textCleaningIsAvailable.postValue(getLatestSearchText().isNotEmpty())
     }
 
     private fun getApplicationContext(): Context {
