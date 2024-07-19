@@ -21,6 +21,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.ui.search.TrackAdapter
+import com.example.playlistmaker.ui.search.model.HistoryState
 import com.example.playlistmaker.ui.search.model.SearchState
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 import com.google.gson.Gson
@@ -136,16 +137,17 @@ class SearchActivity : AppCompatActivity() {
         }
         searchTextEdit.addTextChangedListener(searchTextWatcher)
 
-
         //history
         searchTextEdit.setOnFocusChangeListener { _, hasFocus ->
 
-            val historyVisibility = hasFocus && searchTextEdit.text.isEmpty()
-            val listVisibility = trackListView.isVisible
+            val trackListVisible = trackListView.isVisible
+            val historyVisible = !trackListVisible && hasFocus && searchTextEdit.text.isEmpty()
+
             updateVisibiltyViews(
-                showHistory = historyVisibility,
-                hideList = !listVisibility
+                hideList = !trackListVisible,
+                showHistory = historyVisible
             )
+
 
         }
 
@@ -159,7 +161,7 @@ class SearchActivity : AppCompatActivity() {
         updateVisibiltyViews()
 
         //observers
-        viewModel.observeState().observe(this) { state -> render(state) }
+        viewModel.observeSearchState().observe(this) { state -> render(state) }
         //--observers
 
 
@@ -227,6 +229,8 @@ class SearchActivity : AppCompatActivity() {
             viewModel.clearHistory()
         }
 
+        //mvvm
+        viewModel.readSearchHistoryDebounce()
 
     }
 
@@ -246,42 +250,32 @@ class SearchActivity : AppCompatActivity() {
     private fun render(state: SearchState) {
 
         when (state) {
-            is SearchState.SearchLoading -> showLoading()
-            is SearchState.SearchContent -> showContent(state.tracks)
-            SearchState.SearchEmpty -> showEmptyResult()
-            SearchState.SearchError -> showSomethingWrong()
-            is SearchState.HistoryContent -> showHistoryContent(state.tracks)
-            is SearchState.ReplacedHistory -> replaceHistoryContent(
-                state.indexFrom,
-                state.indexTo,
-                state.tracks
-            )
+            //search
+            is SearchState.Loading -> showLoading()
+            is SearchState.Content -> showContent(state.tracks)
+            SearchState.Empty -> showEmptyResult()
+            SearchState.Error -> showSomethingWrong()
+            //history
+            is SearchState.HistoryContent -> updateHistoryContent(state.tracks)
+            is SearchState.ReplaceHistory -> replaceHistoryContent(
+                indexFrom = state.indexFrom,
+                indexTo = state.indexTo,
+                tracks = state.tracks
 
-            SearchState.HistoryEmpty -> showEmptyHistory()
+            )
         }
 
     }
 
-    private fun showHistoryContent(history: List<Track>) {
-        historyAdapter.tracks.clear()
-        historyAdapter.tracks.addAll(history)
+    //history
+    private fun updateHistoryContent(tracks: List<Track>) {
+
+        if (historyAdapter.tracks.isNotEmpty()) historyAdapter.tracks.clear()
+        historyAdapter.tracks.addAll(tracks)
         historyAdapter.notifyDataSetChanged()
-    }
-
-    private fun showEmptyHistory() {
-        historyAdapter.tracks.clear()
-        updateVisibiltyViews(showHistory = false)
-    }
-
-    private fun replaceHistoryContent(indexFrom: Int, indexTo: Int, history: List<Track>) {
-
-        historyAdapter.tracks.clear()
-        historyAdapter.tracks.addAll(history)
-
-        historyAdapter.notifyItemMoved(indexFrom, indexTo)
-        historyAdapter.notifyItemRangeChanged(0, history.size)
 
     }
+    //--history
 
     private fun showContent(foundTracks: List<Track>) {
 
@@ -305,6 +299,31 @@ class SearchActivity : AppCompatActivity() {
         updateVisibiltyViews(noConnection = true)
     }
 
+    private fun renderHistory(state: HistoryState) {
+
+    }
+
+    private fun showHistoryContent(history: List<Track>) {
+        historyAdapter.tracks.clear()
+        historyAdapter.tracks.addAll(history)
+        historyAdapter.notifyDataSetChanged()
+    }
+
+    private fun showEmptyHistory() {
+        historyAdapter.tracks.clear()
+        updateVisibiltyViews(showHistory = false)
+    }
+
+    private fun replaceHistoryContent(indexFrom: Int, indexTo: Int, tracks: List<Track>) {
+
+        historyAdapter.tracks.clear()
+        historyAdapter.tracks.addAll(tracks)
+
+        historyAdapter.notifyItemMoved(indexFrom, indexTo)
+        historyAdapter.notifyItemRangeChanged(0, tracks.size)
+
+    }
+
     private fun updateVisibiltyViews(
         noConnection: Boolean? = null,
         empty: Boolean? = null,
@@ -317,7 +336,7 @@ class SearchActivity : AppCompatActivity() {
         errorHolderEmpty.isVisible = empty ?: false
         trackListView.isVisible = !(hideList ?: true)
         progressBar.isVisible = showProgressBar ?: false
-        historyHolder.isVisible = showHistory ?: false
+        historyHolder.isVisible = showHistory ?: false && historyAdapter.tracks.isNotEmpty()
 
     }
 

@@ -17,6 +17,7 @@ import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.search.api.TracksInteractor
 import com.example.playlistmaker.domain.search.model.Resource
 import com.example.playlistmaker.domain.search.model.TrackSearchStructure
+import com.example.playlistmaker.ui.search.model.HistoryState
 import com.example.playlistmaker.ui.search.model.SearchState
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
@@ -37,25 +38,24 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     private val handler = Handler(Looper.getMainLooper())
 
-    //LiveData
-    private val stateLiveData = MutableLiveData<SearchState>()
-    fun observeState(): LiveData<SearchState> = stateLiveData
-    //--LiveData
-
     //Search
     private var latestSearchText: String? = null
     private val searchInteractor = Creator.provideTracksInteractor()
+
+    private val stateLiveData = MutableLiveData<SearchState>()
+    fun observeSearchState(): LiveData<SearchState> = stateLiveData
     //--Search
 
     //History
-    private val history by lazy {
-        searchHistoryInteractor.read()
-    }
+    private val history by lazy { searchHistoryInteractor.read() }
     private val searchHistoryInteractor by lazy {
         Creator.provideSearchHistoryInteractor(
             context = getApplicationContext()
         )
     }
+
+    private val historyLiveData = MutableLiveData<HistoryState>()
+    fun observeHistoryState(): LiveData<HistoryState> = historyLiveData
     //--History
 
     override fun onCleared() {
@@ -73,7 +73,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
 
         if (searchText.isEmpty()) {
-            renderState(SearchState.HistoryContent(history))
+            TODO()
         } else {
             val searchRunnable = Runnable { searchRequest(searchText) }
             if (useDelay) {
@@ -88,7 +88,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun searchRequest(searchText: String) {
 
-        renderState(SearchState.SearchLoading)
+        renderState(SearchState.Loading)
         val searchStructure = TrackSearchStructure(term = searchText)
         searchInteractor.searchTracks(
             searchStructure = searchStructure,
@@ -106,13 +106,13 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         when (resource) {
             is Resource.Success -> {
                 if (resource.data.isEmpty()) {
-                    renderState(SearchState.SearchEmpty)
+                    renderState(SearchState.Empty)
                 } else {
-                    renderState(SearchState.SearchContent(resource.data))
+                    renderState(SearchState.Content(resource.data))
                 }
             }
 
-            is Resource.Error -> renderState(SearchState.SearchError)
+            is Resource.Error -> renderState(SearchState.Error)
         }
 
     }
@@ -120,7 +120,11 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     //History
 
-    fun addTrackToHistory(track: Track){
+    fun readSearchHistoryDebounce(){
+        renderState(SearchState.HistoryContent(history))
+    }
+
+    fun addTrackToHistory(track: Track) {
 
         if (history.isNotEmpty()) {
             val index = history.indexOfFirst { el -> el.trackId == track.trackId }
@@ -143,7 +147,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     }
 
-    fun replaceTrackInHistory(track: Track){
+    fun replaceTrackInHistory(track: Track) {
         if (history.isNotEmpty() && history[0].trackId != track.trackId) {
 
             val i = history.indexOf(track)
@@ -151,24 +155,27 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             history.removeAt(i)
             history.add(0, track)
 
-            renderState(SearchState.ReplacedHistory(
-                indexFrom = i,
-                indexTo = 0,
-                tracks = history
-            ))
+            renderState(
+                SearchState.ReplaceHistory(
+                    indexFrom = i,
+                    indexTo = 0,
+                    tracks = history
+                )
+            )
 
         }
     }
 
-    fun clearHistory(){
+    fun clearHistory() {
         history.clear()
         saveSearchHistory()
 
-        renderState(SearchState.HistoryContent(history))
+        TODO()
+        //renderState(SearchState.HistoryContent(history))
 
     }
 
-    private fun saveSearchHistory(){
+    private fun saveSearchHistory() {
         searchHistoryInteractor.save(history)
     }
     //--History
@@ -177,6 +184,9 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun renderState(state: SearchState) {
         stateLiveData.postValue(state)
+    }
+    private fun renderHistory(state: HistoryState){
+        historyLiveData.postValue(state)
     }
 
     private fun getApplicationContext(): Context {
