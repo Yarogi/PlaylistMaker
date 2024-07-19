@@ -148,7 +148,7 @@ class SearchActivity : AppCompatActivity() {
 
         //observers
         viewModel.observeSearchState().observe(this) { state -> render(state) }
-        viewModel.observeCleaningTextAvailable().observe(this){available ->
+        viewModel.observeCleaningTextAvailable().observe(this) { available ->
             binding.clearSearchText.isVisible = available
 
         }
@@ -217,7 +217,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun render(state: SearchState) {
 
-        if (state.searchText != searchTextEdit.text.toString()){
+        if (state.searchText != searchTextEdit.text.toString()) {
             searchTextEdit.setText(state.searchText)
         }
 

@@ -39,6 +39,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     private val handler = Handler(Looper.getMainLooper())
 
     //Search
+    private var latestSearchHasFocus:Boolean? = null
     private var latestSearchText: String? = null
     private val searchInteractor = Creator.provideTracksInteractor()
 
@@ -140,6 +141,11 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     //History
 
     fun readSearchHistoryDebounce(hasFocus: Boolean) {
+
+        if (hasFocus == latestSearchHasFocus) return
+
+        this.latestSearchHasFocus = hasFocus
+
         if (hasFocus && latestSearchText?.isEmpty() != false) {
             renderHistory()
         } else {
