@@ -140,14 +140,7 @@ class SearchActivity : AppCompatActivity() {
         //history
         searchTextEdit.setOnFocusChangeListener { _, hasFocus ->
 
-            val trackListVisible = trackListView.isVisible
-            val historyVisible = !trackListVisible && hasFocus && searchTextEdit.text.isEmpty()
-
-            updateVisibiltyViews(
-                hideList = !trackListVisible,
-                showHistory = historyVisible
-            )
-
+            viewModel.readSearchHistoryDebounce(hasFocus)
 
         }
 
@@ -229,8 +222,6 @@ class SearchActivity : AppCompatActivity() {
             viewModel.clearHistory()
         }
 
-        //mvvm
-        viewModel.readSearchHistoryDebounce()
 
     }
 
@@ -256,15 +247,14 @@ class SearchActivity : AppCompatActivity() {
             SearchState.Empty -> showEmptyResult()
             SearchState.Error -> showSomethingWrong()
             //history
-            is SearchState.HistoryContent -> updateHistoryContent(state.tracks)
-            is SearchState.ReplaceHistory -> replaceHistoryContent(
-                indexFrom = state.indexFrom,
-                indexTo = state.indexTo,
-                tracks = state.tracks
-
-            )
+            is SearchState.History -> updateHistoryContent(state.tracks)
+            SearchState.NoContent -> showEmptyContent()
         }
 
+    }
+
+    private fun showEmptyContent() {
+        updateVisibiltyViews()
     }
 
     //history
