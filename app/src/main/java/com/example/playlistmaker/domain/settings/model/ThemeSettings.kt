@@ -1,4 +1,3 @@
 package com.example.playlistmaker.domain.settings.model
 
-class ThemeSettings {
-}
+data class ThemeSettings(var darkMode: Boolean)

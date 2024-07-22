@@ -1,19 +1,31 @@
 package com.example.playlistmaker.data.sharing.impl
 
+import android.content.Context
+import android.content.Intent
 import com.example.playlistmaker.data.sharing.ExternalNavigator
 import com.example.playlistmaker.domain.sharing.model.EmailData
 
-class ExternalNavigatorImpl:ExternalNavigator {
+class ExternalNavigatorImpl(val context: Context):ExternalNavigator {
+
     override fun shareLink(link: String) {
-        TODO("Not yet implemented")
+
+        val intent = Intent()
+        intent.action = Intent.ACTION_SEND
+        intent.putExtra(Intent.EXTRA_TEXT, link)
+        intent.setType("text/plain")
+
+        context.startActivity(intent)
+
     }
 
     override fun openLink(link: String) {
-        TODO("Not yet implemented")
+
+
+
     }
 
     override fun openEmail(mailData: EmailData) {
-        TODO("Not yet implemented")
+
     }
 
 }

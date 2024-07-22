@@ -5,32 +5,37 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.App
 import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.ActivitySettingsBinding
+import com.example.playlistmaker.ui.settings.view_model.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
 
+    private val binding by lazy { ActivitySettingsBinding.inflate(layoutInflater) }
+
+    private lateinit var viewModel: SettingsViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        setContentView(binding.root)
 
         //Exit
-        val exitButton = findViewById<Button>(R.id.exitBtn)
-        exitButton.setOnClickListener {
+        binding.exitBtn.setOnClickListener {
             this.finish()
         }
 
-        //Shared
-        val shareAppButton = findViewById<Button>(R.id.shareApp)
-        shareAppButton.setOnClickListener {
-            val message = getString(R.string.praktikum_andoid_dev_url)
+        viewModel = ViewModelProvider(
+            owner = this,
+            factory = SettingsViewModel.getViewModelFactory()
+        )[SettingsViewModel::class.java]
 
-            val intent = Intent()
-            intent.action = Intent.ACTION_SEND
-            intent.putExtra(Intent.EXTRA_TEXT, message)
-            intent.setType("text/plain")
-            startActivity(intent)
+
+        //Shared
+        binding.shareApp.setOnClickListener {
+            viewModel.shareApp()
         }
 
         //Write to support
@@ -54,6 +59,7 @@ class SettingsActivity : AppCompatActivity() {
         //Terms of use
         val termsOfUseButton = findViewById<Button>(R.id.termsOfUse)
         termsOfUseButton.setOnClickListener {
+
             val url = getString(R.string.praktikum_andoid_dev_term_of_use)
             val intent = Intent(
                 Intent.ACTION_VIEW,
@@ -61,6 +67,7 @@ class SettingsActivity : AppCompatActivity() {
             )
 
             startActivity(intent)
+
         }
 
         //Night mode
