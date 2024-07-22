@@ -18,6 +18,7 @@ import com.example.playlistmaker.domain.search.api.TracksInteractor
 import com.example.playlistmaker.domain.search.model.Resource
 import com.example.playlistmaker.domain.search.model.TrackSearchStructure
 import com.example.playlistmaker.ui.search.model.SearchState
+import java.util.concurrent.atomic.AtomicInteger
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -42,6 +43,8 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     private var latestSearchHasFocus: Boolean? = null
     private var latestSearchText: String? = null
     private val searchInteractor = Creator.provideTracksInteractor()
+
+    private var searchResultDebouncer = AtomicInteger(0)
 
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeSearchState(): LiveData<SearchState> = stateLiveData
@@ -75,10 +78,18 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
 
+        var searchCounter = searchResultDebouncer.get()
+        searchCounter++
+        if (searchCounter >= 100) {
+            searchCounter = 0
+        }
+        searchResultDebouncer.set(searchCounter)
+
         if (searchText.isEmpty()) {
             renderHistory()
         } else {
-            val searchRunnable = Runnable { searchRequest(searchText) }
+
+            val searchRunnable = Runnable { searchRequest(searchText, searchCounter) }
             if (useDelay) {
                 val postTime = SystemClock.uptimeMillis() + SEARCH_DELAY
                 handler.postAtTime(searchRunnable, SEARCH_REQUEST_TOKEN, postTime)
@@ -100,7 +111,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         )
     }
 
-    private fun searchRequest(searchText: String) {
+    private fun searchRequest(searchText: String, searchCounter: Int) {
 
         renderState(SearchState.Loading(getLatestSearchText()))
         val searchStructure = TrackSearchStructure(term = searchText)
@@ -108,14 +119,16 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             searchStructure = searchStructure,
             consumer = object : TracksInteractor.TracksConsumer {
                 override fun consume(resource: Resource<List<Track>>) {
-                    processSearchResult(resource)
+                    processSearchResult(resource, searchCounter)
                 }
 
             })
 
     }
 
-    private fun processSearchResult(resource: Resource<List<Track>>) {
+    private fun processSearchResult(resource: Resource<List<Track>>, searchCounter: Int) {
+
+        if (searchCounter != searchResultDebouncer.get()) return
 
         when (resource) {
             is Resource.Success -> {
@@ -188,6 +201,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             history.removeAt(i)
             history.add(0, track)
 
+            renderHistory()
 
         }
     }
