@@ -272,28 +272,6 @@ class SearchActivity : AppCompatActivity() {
         updateVisibiltyViews(noConnection = true)
     }
 
-
-    private fun showHistoryContent(history: List<Track>) {
-        historyAdapter.tracks.clear()
-        historyAdapter.tracks.addAll(history)
-        historyAdapter.notifyDataSetChanged()
-    }
-
-    private fun showEmptyHistory() {
-        historyAdapter.tracks.clear()
-        updateVisibiltyViews(showHistory = false)
-    }
-
-    private fun replaceHistoryContent(indexFrom: Int, indexTo: Int, tracks: List<Track>) {
-
-        historyAdapter.tracks.clear()
-        historyAdapter.tracks.addAll(tracks)
-
-        historyAdapter.notifyItemMoved(indexFrom, indexTo)
-        historyAdapter.notifyItemRangeChanged(0, tracks.size)
-
-    }
-
     private fun updateVisibiltyViews(
         noConnection: Boolean? = null,
         empty: Boolean? = null,
@@ -307,16 +285,6 @@ class SearchActivity : AppCompatActivity() {
         trackListView.isVisible = !(hideList ?: true)
         progressBar.isVisible = showProgressBar ?: false
         historyHolder.isVisible = showHistory ?: false && historyAdapter.tracks.isNotEmpty()
-
-    }
-
-    //--show_states
-
-
-    companion object {
-
-        const val SEARCH_TEXT = "SEARCH_TEXT"
-
 
     }
 

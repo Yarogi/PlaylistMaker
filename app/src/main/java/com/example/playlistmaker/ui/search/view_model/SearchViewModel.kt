@@ -25,7 +25,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         const val SEARCH_DEF = ""
         private const val SEARCH_DELAY = 2000L
         private const val SEARCH_HISTORY_SIZE = 10
-        private val SEARCH_REQUEST_TOKEN = Any()
+        private val SEARCH_REQUEST_TOKEN = "SEARCH_TRACK_REQUEST"
 
         fun getViewModelFactory(): ViewModelProvider.Factory =
             viewModelFactory {
@@ -39,7 +39,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     private val handler = Handler(Looper.getMainLooper())
 
     //Search
-    private var latestSearchHasFocus:Boolean? = null
+    private var latestSearchHasFocus: Boolean? = null
     private var latestSearchText: String? = null
     private val searchInteractor = Creator.provideTracksInteractor()
 
@@ -122,9 +122,12 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                 if (resource.data.isEmpty()) {
                     renderState(SearchState.Empty(getLatestSearchText()))
                 } else {
-                    renderState(SearchState.Content(
-                        searchText = getLatestSearchText(),
-                        tracks = resource.data))
+                    renderState(
+                        SearchState.Content(
+                            searchText = getLatestSearchText(),
+                            tracks = resource.data
+                        )
+                    )
                 }
             }
 
@@ -209,7 +212,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         stateLiveData.postValue(state)
     }
 
-    private fun setTextCleaningIsAvailable(){
+    private fun setTextCleaningIsAvailable() {
         textCleaningIsAvailable.postValue(getLatestSearchText().isNotEmpty())
     }
 
