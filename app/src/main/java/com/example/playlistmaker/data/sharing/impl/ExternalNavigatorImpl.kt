@@ -13,6 +13,7 @@ class ExternalNavigatorImpl(val context: Context):ExternalNavigator {
         intent.action = Intent.ACTION_SEND
         intent.putExtra(Intent.EXTRA_TEXT, link)
         intent.setType("text/plain")
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
         context.startActivity(intent)
 

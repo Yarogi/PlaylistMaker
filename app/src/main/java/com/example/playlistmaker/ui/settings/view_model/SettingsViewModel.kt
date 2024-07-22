@@ -14,19 +14,20 @@ import com.example.playlistmaker.domain.sharing.SharingInteractor
 
 class SettingsViewModel(
     private val application: Application,
-    private val settingsInterractor: SettingsInteractor,
 ) : AndroidViewModel(application) {
 
     private val sharingInteractor by lazy {
         Creator.provideSharingInteractor(application)
+    }
+    private val settingsInterractor: SettingsInteractor by lazy {
+        Creator.provideSettingsInteractor(application)
     }
 
     companion object {
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 SettingsViewModel(
-                    application = this[APPLICATION_KEY] as Application,
-                    settingsInterractor = Creator.provideSettingsInteractor()
+                    application = this[APPLICATION_KEY] as Application
                 )
             }
         }

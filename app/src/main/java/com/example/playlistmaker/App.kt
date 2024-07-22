@@ -9,12 +9,12 @@ class App : Application() {
 
     lateinit var settings: ThemeSettings
 
-    val settingsInteractor by lazy { Creator.provideSettingsInteractor(applicationContext) }
+    //val settingsInteractor by lazy { Creator.provideSettingsInteractor(applicationContext) }
 
     override fun onCreate() {
 
         super.onCreate()
-        settings = settingsInteractor.getThemeSettings()
+        settings = ThemeSettings(false)
 
         switchTheme(settings.darkMode)
 
@@ -23,7 +23,7 @@ class App : Application() {
     fun switchTheme(darkThemeEnabled: Boolean) {
 
         settings.darkMode = darkThemeEnabled
-        settingsInteractor.updateThemeSettings(settings)
+        //settingsInteractor.updateThemeSettings(settings)
 
         AppCompatDelegate.setDefaultNightMode(
             if (darkThemeEnabled) {

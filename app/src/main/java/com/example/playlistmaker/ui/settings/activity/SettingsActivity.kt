@@ -72,7 +72,7 @@ class SettingsActivity : AppCompatActivity() {
 
         //Night mode
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
-        themeSwitcher.isChecked = (applicationContext as App).darkTheme
+        themeSwitcher.isChecked = (applicationContext as App).settings.darkMode
         themeSwitcher.setOnCheckedChangeListener { switcher, cheked ->
             (applicationContext as App).switchTheme(cheked)
         }
