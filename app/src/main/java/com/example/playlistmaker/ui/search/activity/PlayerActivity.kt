@@ -1,103 +1,72 @@
 package com.example.playlistmaker.ui.search.activity
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.Group
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.creator.Creator
-import com.example.playlistmaker.domain.player.api.PlayerInteractor
-import com.example.playlistmaker.domain.player.model.PlaybackState
+import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.domain.main.model.Track
+import com.example.playlistmaker.ui.search.model.PlayerState
 import com.example.playlistmaker.ui.search.pxToDP
-import com.google.gson.Gson
+import com.example.playlistmaker.ui.search.view_model.PlayerViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
 
-    lateinit var track: Track
+    companion object {
+        const val CURRENT_TRACK_KEY = "track"
+    }
+
+    private lateinit var viewModel: PlayerViewModel
+    val binding by lazy {
+        ActivityPlayerBinding.inflate(layoutInflater)
+    }
 
     //Player
     private lateinit var playTrackBtn: ImageButton
-    private lateinit var playTimeView: TextView
-
-    private val playerInteractor by lazy { Creator.providePlayerInteractor() }
-
-    private val handler by lazy { Handler(Looper.getMainLooper()) }
-
-    private val showDurationRunnable by lazy {
-        object : Runnable {
-            override fun run() {
-                showCurrentDuration()
-                handler.postDelayed(this, DURATION_DELAY)
-            }
-
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_player)
-
-        val backBtn = findViewById<ImageButton>(R.id.panelBackArrow)
-        backBtn.setOnClickListener { finish() }
+        setContentView(binding.root)
 
         val json = intent.getStringExtra(CURRENT_TRACK_KEY)
-        track = Gson().fromJson(json, Track::class.java)
+        viewModel = ViewModelProvider(
+            owner = this,
+            factory = PlayerViewModel.getViewModelFactory(json)
+        )[PlayerViewModel::class.java]
 
-        //initializing form views
-        fill()
-        //prepare
-        preparePlayer()
 
+        viewModel.trackObserver().observe(this) { track ->
+            fillTrackInformation(track)
+        }
+        viewModel.playerStateObserver().observe(this) { state ->
+            renderState(state)
+        }
+
+        binding.panelBackArrow.setOnClickListener { finish() }
+
+        playTrackBtn = binding.playTrack
+        playTrackBtn.setOnClickListener {
+            viewModel.changePlayState()
+        }
+
+        viewModel.preparePlayer()
     }
 
     override fun onPause() {
         super.onPause()
-        pausePlayer()
+        viewModel.pausePlayer()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        playerInteractor.release()
-    }
+    private fun fillTrackInformation(track: Track) {
 
-    private fun fill() {
-
-        //Views: Cover image
-        val coverImgView = findViewById<ImageView>(R.id.cover)
-
-        //Views: Track title
-        val trackNameView = findViewById<TextView>(R.id.trackName)
-        val artistNameView = findViewById<TextView>(R.id.artistName)
-
-        //Views: Controls
-        playTrackBtn = findViewById(R.id.playTrack)
-        playTrackBtn.isEnabled = false
-        playTrackBtn.setOnClickListener { playbacklControl() }
-        val addPlaylistBtn = findViewById<ImageButton>(R.id.addPlaylist)
-        val addFavoriteBtn = findViewById<ImageButton>(R.id.like)
-
-        //View: Play duration
-        playTimeView = findViewById(R.id.playTime)
-
-        //Views: Descriptions
-        val durationView = findViewById<TextView>(R.id.duration)
-        val collectionNameGroupView = findViewById<Group>(R.id.collectionNameGroup)
-        val albumView = findViewById<TextView>(R.id.album)
-        val releaseDateView = findViewById<TextView>(R.id.releaseDate)
-        val genreView = findViewById<TextView>(R.id.genre)
-        val countryView = findViewById<TextView>(R.id.country)
-
-        //Cover image
+        //Cover
+        val coverImgView = binding.cover
         val artWorkRadius = pxToDP(coverImgView.context, 8)
         Glide.with(coverImgView)
             .load(track.getCoverArtwork())
@@ -106,95 +75,52 @@ class PlayerActivity : AppCompatActivity() {
             .transform(RoundedCorners(artWorkRadius))
             .into(coverImgView)
 
-        //Track title
-        trackNameView.text = track.trackName
-        artistNameView.text = track.artistName
-
-        //Play duration
-        showDuration()
-
-        //Descriptions
-        durationView.text =
+        binding.trackName.text = track.trackName
+        binding.artistName.text = track.artistName
+        binding.duration.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
 
         val hasCollectionInfo = !track.collectionName.isNullOrEmpty()
-        collectionNameGroupView.isVisible = hasCollectionInfo
+        binding.collectionNameGroup.isVisible = hasCollectionInfo
         if (hasCollectionInfo) {
-            albumView.text = track.collectionName
+            binding.album.text = track.collectionName
         }
-        releaseDateView.text = track.getReleaseYear()
-        genreView.text = track.primaryGenreName
-        countryView.text = track.country
+
+        binding.releaseDate.text = track.getReleaseYear()
+        binding.genre.text = track.primaryGenreName
+        binding.country.text = track.country
 
     }
 
-    private fun showCurrentDuration() {
-        showDuration(playerInteractor.getCurrentPosition())
+    private fun renderState(state: PlayerState) {
+
+        showDuration(state.currentDuartion)
+
+        when (state) {
+
+            PlayerState.Loading -> {
+                playTrackBtn.isEnabled = false
+            }
+
+            is PlayerState.Paused -> {
+                playTrackBtn.setImageResource(R.drawable.play_button)
+            }
+
+            is PlayerState.Played -> {
+                playTrackBtn.setImageResource(R.drawable.pause_button)
+            }
+
+            PlayerState.Ready -> {
+                playTrackBtn.isEnabled = true
+                playTrackBtn.setImageResource(R.drawable.play_button)
+            }
+
+        }
+
     }
 
     private fun showDuration(playDuration: Int = 0) {
-        playTimeView.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(playDuration)
-    }
-
-    private fun preparePlayer() {
-
-        val listener = object : PlayerInteractor.PrepareListener {
-
-            override fun onPrepareListener() {
-                playTrackBtn.isEnabled = true
-            }
-
-            override fun onCompletionListener() {
-                playTrackBtn.setImageResource(R.drawable.play_button)
-                handler.removeCallbacks(showDurationRunnable)
-                showDuration()
-            }
-
-        }
-        playerInteractor.prepared(
-            track = track,
-            listener = listener
-        )
-
-    }
-
-    private fun startPlayer() {
-
-        playerInteractor.played()
-        playTrackBtn.setImageResource(R.drawable.pause_button)
-        handler.postDelayed(
-            showDurationRunnable, DURATION_DELAY
-        )
-
-    }
-
-    private fun pausePlayer() {
-
-        playerInteractor.paused()
-
-        playTrackBtn.setImageResource(R.drawable.play_button)
-        handler.removeCallbacks(showDurationRunnable)
-    }
-
-    private fun playbacklControl() {
-        when (playerInteractor.getPlaybackState()) {
-            PlaybackState.PLAYING -> {
-                pausePlayer()
-            }
-
-            PlaybackState.PREPARED, PlaybackState.PAUSED -> {
-                startPlayer()
-            }
-
-            PlaybackState.DEFAULT -> {}
-        }
-    }
-
-    companion object {
-
-        const val CURRENT_TRACK_KEY = "track"
-        private const val DURATION_DELAY = 300L
-
+        binding.playTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(playDuration)
     }
 
 }
