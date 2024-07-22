@@ -6,7 +6,7 @@ import com.example.playlistmaker.data.search.mapper.TrackRequestFromTrackSearchS
 import com.example.playlistmaker.data.search.network.NetworkClient
 import com.example.playlistmaker.domain.search.api.TracksRepository
 import com.example.playlistmaker.domain.search.model.Resource
-import com.example.playlistmaker.domain.common.model.Track
+import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.search.model.TrackSearchStructure
 import com.example.playlistmaker.R
 

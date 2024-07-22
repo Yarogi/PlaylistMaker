@@ -1,7 +1,7 @@
 package com.example.playlistmaker.data.search.mapper
 
 import com.example.playlistmaker.data.search.dto.TrackDto
-import com.example.playlistmaker.domain.common.model.Track
+import com.example.playlistmaker.domain.main.model.Track
 
 object TrackFromTrackDtoMapper {
     fun getTrack(trackDto: TrackDto): Track {

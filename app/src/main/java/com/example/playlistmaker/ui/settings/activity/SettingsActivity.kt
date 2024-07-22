@@ -10,6 +10,7 @@ import com.example.playlistmaker.R
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)

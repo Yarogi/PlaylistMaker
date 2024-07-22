@@ -1,6 +1,6 @@
 package com.example.playlistmaker.domain.search.api
 
-import com.example.playlistmaker.domain.common.model.Track
+import com.example.playlistmaker.domain.main.model.Track
 
 interface SearchHistoryInteractor {
     fun save(searchHistory: ArrayList<Track>):Boolean
