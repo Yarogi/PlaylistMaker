@@ -33,8 +33,8 @@ class PlayerViewModel(val track: Track) : ViewModel() {
     private val playerInteractor by lazy { Creator.providePlayerInteractor() }
     private val handler by lazy { Handler(Looper.getMainLooper()) }
 
-    private val trackLiverData = MutableLiveData(track)
-    fun trackObserver(): LiveData<Track> = trackLiverData
+    private val trackLiveData = MutableLiveData(track)
+    fun trackObserver(): LiveData<Track> = trackLiveData
 
     private val playerState = MutableLiveData<PlayerState>()
     fun playerStateObserver(): LiveData<PlayerState> = playerState

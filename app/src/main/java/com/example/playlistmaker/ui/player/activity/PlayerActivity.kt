@@ -102,17 +102,17 @@ class PlayerActivity : AppCompatActivity() {
                 playTrackBtn.isEnabled = false
             }
 
+            PlayerState.Ready -> {
+                playTrackBtn.isEnabled = true
+                playTrackBtn.setImageResource(R.drawable.play_button)
+            }
+
             is PlayerState.Paused -> {
                 playTrackBtn.setImageResource(R.drawable.play_button)
             }
 
             is PlayerState.Played -> {
                 playTrackBtn.setImageResource(R.drawable.pause_button)
-            }
-
-            PlayerState.Ready -> {
-                playTrackBtn.isEnabled = true
-                playTrackBtn.setImageResource(R.drawable.play_button)
             }
 
         }

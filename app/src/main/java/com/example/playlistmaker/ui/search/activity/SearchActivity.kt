@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
@@ -42,6 +43,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var errorHolderEmpty: View
     private lateinit var errorHolderNoConnection: View
     private lateinit var searchTextEdit: EditText
+    private lateinit var clearSearchText: ImageButton
 
     //TrackList
     private lateinit var trackListView: RecyclerView
@@ -97,7 +99,8 @@ class SearchActivity : AppCompatActivity() {
         }
 
         //Clear text
-        binding.clearSearchText.setOnClickListener {
+        clearSearchText = binding.clearSearchText
+        clearSearchText.setOnClickListener {
 
             hideKeyboard()
             viewModel.searchTrackDebounce("")
@@ -149,10 +152,6 @@ class SearchActivity : AppCompatActivity() {
 
         //observers
         viewModel.observeSearchState().observe(this) { state -> render(state) }
-        viewModel.observeCleaningTextAvailable().observe(this) { available ->
-            binding.clearSearchText.isVisible = available
-
-        }
         //--observers
 
     }
@@ -181,7 +180,9 @@ class SearchActivity : AppCompatActivity() {
             .inflate(R.layout.search_no_connection_view, errorGroupView, false)
         val updateBtn = errorHolderNoConnection.findViewById<Button>(R.id.updateButton)
         updateBtn.setOnClickListener {
-            viewModel.searchTrackDebounce(searchTextEdit.text?.toString() ?: "")
+            viewModel.searchTrackDebounce(
+                searchText = searchTextEdit.text?.toString() ?: "",
+                forceMode = true)
         }
 
         errorGroupView.addView(errorHolderEmpty)
@@ -220,6 +221,8 @@ class SearchActivity : AppCompatActivity() {
         if (state.searchText != searchTextEdit.text.toString()) {
             searchTextEdit.setText(state.searchText)
         }
+
+        clearSearchText.isVisible = state.searchText.isNotEmpty()
 
         when (state) {
             //search
