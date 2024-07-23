@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.util
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
@@ -9,21 +9,21 @@ class App : Application() {
 
     lateinit var settings: ThemeSettings
 
-    //val settingsInteractor by lazy { Creator.provideSettingsInteractor(applicationContext) }
-
     override fun onCreate() {
-
         super.onCreate()
-        settings = ThemeSettings(false)
 
-        switchTheme(settings.darkMode)
+        val settingsInteractor = Creator.provideSettingsInteractor(this)
+
+        settings = settingsInteractor.getThemeSettings()
+        switchTheme(settings)
 
     }
 
-    fun switchTheme(darkThemeEnabled: Boolean) {
+    fun switchTheme(newSettings: ThemeSettings) {
 
-        settings.darkMode = darkThemeEnabled
-        //settingsInteractor.updateThemeSettings(settings)
+        settings = newSettings
+
+        val darkThemeEnabled = newSettings.darkMode
 
         AppCompatDelegate.setDefaultNightMode(
             if (darkThemeEnabled) {

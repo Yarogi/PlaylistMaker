@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.search.view_model
+package com.example.playlistmaker.ui.player.view_model
 
 import android.os.Handler
 import android.os.Looper
@@ -13,7 +13,7 @@ import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.model.PlaybackState
-import com.example.playlistmaker.ui.search.model.PlayerState
+import com.example.playlistmaker.ui.player.model.PlayerState
 import com.google.gson.Gson
 
 class PlayerViewModel(val track: Track) : ViewModel() {

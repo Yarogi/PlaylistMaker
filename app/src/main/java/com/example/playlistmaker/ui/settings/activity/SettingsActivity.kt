@@ -1,14 +1,10 @@
 package com.example.playlistmaker.ui.settings.activity
 
-import android.content.Intent
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.playlistmaker.App
-import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
+import com.example.playlistmaker.ui.settings.model.SettingsState
 import com.example.playlistmaker.ui.settings.view_model.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
 
@@ -17,8 +13,10 @@ class SettingsActivity : AppCompatActivity() {
     private val binding by lazy { ActivitySettingsBinding.inflate(layoutInflater) }
 
     private lateinit var viewModel: SettingsViewModel
+    private lateinit var themeSwitcher: SwitchMaterial
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
@@ -32,50 +30,41 @@ class SettingsActivity : AppCompatActivity() {
             factory = SettingsViewModel.getViewModelFactory()
         )[SettingsViewModel::class.java]
 
+        viewModel.observerStateLiveData().observe(this) { state -> renderState(state) }
 
         //Shared
         binding.shareApp.setOnClickListener {
             viewModel.shareApp()
         }
-
         //Write to support
-        val writeToSupportButton = findViewById<Button>(R.id.writeToSupport)
-        writeToSupportButton.setOnClickListener {
-
-            val mailTheme = getString(R.string.write_to_support_theme)
-            val message = getString(R.string.write_to_support_message)
-            val supportEmail = getString(R.string.support_email)
-
-            val intent = Intent(Intent.ACTION_SENDTO)
-            intent.data = Uri.parse("mailto:")
-            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(supportEmail))
-            intent.putExtra(Intent.EXTRA_SUBJECT, mailTheme)
-            intent.putExtra(Intent.EXTRA_TEXT, message)
-
-            startActivity(intent)
-
+        binding.writeToSupport.setOnClickListener {
+            viewModel.openSupport()
         }
-
         //Terms of use
-        val termsOfUseButton = findViewById<Button>(R.id.termsOfUse)
-        termsOfUseButton.setOnClickListener {
-
-            val url = getString(R.string.praktikum_andoid_dev_term_of_use)
-            val intent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(url)
-            )
-
-            startActivity(intent)
-
+        binding.termsOfUse.setOnClickListener {
+            viewModel.openTerms()
         }
 
-        //Night mode
-        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
-        themeSwitcher.isChecked = (applicationContext as App).settings.darkMode
+        //Settings
+        themeSwitcher = binding.themeSwitcher
         themeSwitcher.setOnCheckedChangeListener { switcher, cheked ->
-            (applicationContext as App).switchTheme(cheked)
+            viewModel.switchMode(cheked)
         }
 
     }
+
+    private fun renderState(state: SettingsState) {
+
+        when (state) {
+            is SettingsState.Content -> {
+                val darkModeEnable = state.settings.darkMode
+                if (themeSwitcher.isChecked != darkModeEnable) {
+                    themeSwitcher.isChecked = darkModeEnable
+                }
+
+            }
+        }
+
+    }
+
 }

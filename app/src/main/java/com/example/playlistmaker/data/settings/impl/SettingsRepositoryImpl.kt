@@ -7,7 +7,7 @@ import com.example.playlistmaker.domain.settings.model.ThemeSettings
 private const val PLAYLIST_MAKER_PREFERENCE = "playlistmaker_search_preferences"
 private const val DARK_THEME_KEY = "search_history"
 
-class SettingsRepositoryImpl(context: Context) : SettingsRepository {
+class SettingsRepositoryImpl(val context: Context) : SettingsRepository {
 
     private val sharedPreferences = context.getSharedPreferences(
         PLAYLIST_MAKER_PREFERENCE,
@@ -22,8 +22,10 @@ class SettingsRepositoryImpl(context: Context) : SettingsRepository {
     }
 
     override fun updateThemeSetting(settings: ThemeSettings) {
+
         sharedPreferences.edit()
             ?.putBoolean(DARK_THEME_KEY, settings.darkMode)
             ?.apply()
+
     }
 }

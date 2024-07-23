@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.storage
+package com.example.playlistmaker.data.search.storage
 
 import com.example.playlistmaker.domain.main.model.Track
 

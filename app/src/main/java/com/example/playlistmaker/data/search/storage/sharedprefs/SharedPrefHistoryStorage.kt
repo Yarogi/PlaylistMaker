@@ -1,7 +1,7 @@
-package com.example.playlistmaker.data.storage.sharedprefs
+package com.example.playlistmaker.data.search.storage.sharedprefs
 
 import android.content.Context
-import com.example.playlistmaker.data.storage.HistoryStorage
+import com.example.playlistmaker.data.search.storage.HistoryStorage
 import com.example.playlistmaker.domain.main.model.Track
 import com.google.gson.Gson
 

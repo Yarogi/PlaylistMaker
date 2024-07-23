@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.search.activity
+package com.example.playlistmaker.ui.player.actiity
 
 import android.os.Bundle
 import android.widget.ImageButton
@@ -10,9 +10,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.domain.main.model.Track
-import com.example.playlistmaker.ui.search.model.PlayerState
+import com.example.playlistmaker.ui.player.model.PlayerState
 import com.example.playlistmaker.ui.search.pxToDP
-import com.example.playlistmaker.ui.search.view_model.PlayerViewModel
+import com.example.playlistmaker.ui.player.view_model.PlayerViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 

@@ -9,7 +9,7 @@ import com.example.playlistmaker.data.settings.SettingsRepository
 import com.example.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import com.example.playlistmaker.data.sharing.ExternalNavigator
 import com.example.playlistmaker.data.sharing.impl.ExternalNavigatorImpl
-import com.example.playlistmaker.data.storage.sharedprefs.SharedPrefHistoryStorage
+import com.example.playlistmaker.data.search.storage.sharedprefs.SharedPrefHistoryStorage
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.api.PlayerRepository
 import com.example.playlistmaker.domain.search.api.SearchHistoryInteractor
