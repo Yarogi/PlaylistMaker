@@ -2,7 +2,7 @@ package com.example.playlistmaker.domain.player.impl
 
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.api.PlayerRepository
-import com.example.playlistmaker.domain.player.model.PlaybackState
+import com.example.playlistmaker.domain.player.model.PlaybackStatus
 import com.example.playlistmaker.domain.main.model.Track
 
 class PlayerInteractorImp(override val player: PlayerRepository) : PlayerInteractor {
@@ -30,7 +30,7 @@ class PlayerInteractorImp(override val player: PlayerRepository) : PlayerInterac
         return player.getCurrentPosition()
     }
 
-    override fun getPlaybackState(): PlaybackState {
+    override fun getPlaybackState(): PlaybackStatus {
         return player.getCurrentState()
     }
 

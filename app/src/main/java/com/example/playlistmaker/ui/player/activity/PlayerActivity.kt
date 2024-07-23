@@ -10,9 +10,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.domain.main.model.Track
-import com.example.playlistmaker.ui.player.model.PlayerState
-import com.example.playlistmaker.ui.search.pxToDP
+import com.example.playlistmaker.ui.player.model.TrackPlaybackState
+import com.example.playlistmaker.ui.player.model.TrackScreenState
 import com.example.playlistmaker.ui.player.view_model.PlayerViewModel
+import com.example.playlistmaker.ui.search.pxToDP
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -41,9 +42,13 @@ class PlayerActivity : AppCompatActivity() {
         )[PlayerViewModel::class.java]
 
 
-        viewModel.trackObserver().observe(this) { track ->
-            fillTrackInformation(track)
+        viewModel.trackScreenStateObserver().observe(this) { state ->
+            when (state) {
+                is TrackScreenState.Content -> fillTrackInformation(state.track)
+                TrackScreenState.Loading -> {}
+            }
         }
+
         viewModel.playerStateObserver().observe(this) { state ->
             renderState(state)
         }
@@ -51,11 +56,7 @@ class PlayerActivity : AppCompatActivity() {
         binding.panelBackArrow.setOnClickListener { finish() }
 
         playTrackBtn = binding.playTrack
-        playTrackBtn.setOnClickListener {
-            viewModel.changePlayState()
-        }
-
-        viewModel.preparePlayer()
+        playTrackBtn.setOnClickListener {viewModel.changePlayState()}
     }
 
     override fun onPause() {
@@ -92,35 +93,37 @@ class PlayerActivity : AppCompatActivity() {
 
     }
 
-    private fun renderState(state: PlayerState) {
+    private fun renderState(state: TrackPlaybackState) {
 
-        showDuration(state.currentDuartion)
+        changeButtonStyle(state)
 
+        binding.playTime.text =
+            SimpleDateFormat("mm:ss", Locale.getDefault())
+                .format(state.currentDuartion)
+
+    }
+
+    private fun changeButtonStyle(state: TrackPlaybackState) {
         when (state) {
 
-            PlayerState.Loading -> {
+            TrackPlaybackState.Loading -> {
                 playTrackBtn.isEnabled = false
             }
 
-            PlayerState.Ready -> {
+            TrackPlaybackState.Ready -> {
                 playTrackBtn.isEnabled = true
                 playTrackBtn.setImageResource(R.drawable.play_button)
             }
 
-            is PlayerState.Paused -> {
+            is TrackPlaybackState.Paused -> {
                 playTrackBtn.setImageResource(R.drawable.play_button)
             }
 
-            is PlayerState.Played -> {
+            is TrackPlaybackState.Played -> {
                 playTrackBtn.setImageResource(R.drawable.pause_button)
             }
 
         }
-
-    }
-
-    private fun showDuration(playDuration: Int = 0) {
-        binding.playTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(playDuration)
     }
 
 }

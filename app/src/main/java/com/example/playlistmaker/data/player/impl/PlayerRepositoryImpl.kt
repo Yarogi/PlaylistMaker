@@ -2,13 +2,13 @@ package com.example.playlistmaker.data.player.impl
 
 import android.media.MediaPlayer
 import com.example.playlistmaker.domain.player.api.PlayerRepository
-import com.example.playlistmaker.domain.player.model.PlaybackState
+import com.example.playlistmaker.domain.player.model.PlaybackStatus
 import com.example.playlistmaker.domain.main.model.Track
 
 class PlayerRepositoryImpl : PlayerRepository {
 
     private val mediaPlayer = MediaPlayer()
-    private var state = PlaybackState.DEFAULT
+    private var state = PlaybackStatus.DEFAULT
 
     override fun prepared(track: Track, listener: PlayerRepository.Listener) {
 
@@ -16,23 +16,23 @@ class PlayerRepositoryImpl : PlayerRepository {
         mediaPlayer.prepareAsync()
 
         mediaPlayer.setOnPreparedListener {
-            state = PlaybackState.PREPARED
+            state = PlaybackStatus.PREPARED
             listener.onPrepareListener()
         }
         mediaPlayer.setOnCompletionListener {
-            state = PlaybackState.PREPARED
+            state = PlaybackStatus.PREPARED
             listener.onCompletionListener()
         }
     }
 
     override fun played() {
         mediaPlayer.start()
-        state = PlaybackState.PLAYING
+        state = PlaybackStatus.PLAYING
     }
 
     override fun paused() {
         mediaPlayer.pause()
-        state = PlaybackState.PAUSED
+        state = PlaybackStatus.PAUSED
     }
 
     override fun release() {
@@ -43,7 +43,7 @@ class PlayerRepositoryImpl : PlayerRepository {
         return mediaPlayer.getCurrentPosition()
     }
 
-    override fun getCurrentState(): PlaybackState {
+    override fun getCurrentState(): PlaybackStatus {
         return state
     }
 
