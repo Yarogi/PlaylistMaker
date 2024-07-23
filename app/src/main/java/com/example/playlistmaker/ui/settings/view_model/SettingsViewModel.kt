@@ -62,6 +62,8 @@ class SettingsViewModel(
         this.currentSettings.darkMode = darkModeEnable
         (application as App).switchTheme(currentSettings)
 
+        settingsInterractor.updateThemeSettings(currentSettings)
+
         render(SettingsState.Content(currentSettings))
 
     }

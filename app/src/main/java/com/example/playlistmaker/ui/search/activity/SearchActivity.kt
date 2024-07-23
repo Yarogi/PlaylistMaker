@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.domain.main.model.Track
-import com.example.playlistmaker.ui.player.actiity.PlayerActivity
+import com.example.playlistmaker.ui.player.activity.PlayerActivity
 import com.example.playlistmaker.ui.search.TrackAdapter
 import com.example.playlistmaker.ui.search.model.SearchState
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
@@ -199,7 +199,6 @@ class SearchActivity : AppCompatActivity() {
         clearHistoryBtn.setOnClickListener {
             viewModel.clearHistory()
         }
-
 
     }
 

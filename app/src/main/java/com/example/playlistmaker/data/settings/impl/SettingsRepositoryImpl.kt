@@ -4,10 +4,12 @@ import android.content.Context
 import com.example.playlistmaker.data.settings.SettingsRepository
 import com.example.playlistmaker.domain.settings.model.ThemeSettings
 
-private const val PLAYLIST_MAKER_PREFERENCE = "playlistmaker_search_preferences"
-private const val DARK_THEME_KEY = "search_history"
-
 class SettingsRepositoryImpl(val context: Context) : SettingsRepository {
+
+    companion object{
+        private const val PLAYLIST_MAKER_PREFERENCE = "playlistmaker_settings_preferences"
+        private const val DARK_THEME_KEY = "dark_mode"
+    }
 
     private val sharedPreferences = context.getSharedPreferences(
         PLAYLIST_MAKER_PREFERENCE,

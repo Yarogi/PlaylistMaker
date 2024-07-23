@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.player.actiity
+package com.example.playlistmaker.ui.player.activity
 
 import android.os.Bundle
 import android.widget.ImageButton
