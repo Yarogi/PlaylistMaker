@@ -12,17 +12,20 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
-import com.example.playlistmaker.domain.player.model.PlaybackState
-import com.example.playlistmaker.ui.player.model.PlayerState
+import com.example.playlistmaker.domain.player.model.PlaybackStatus
+import com.example.playlistmaker.ui.player.model.TrackPlaybackState
+import com.example.playlistmaker.ui.player.model.TrackScreenState
 import com.google.gson.Gson
 
-class PlayerViewModel(val track: Track) : ViewModel() {
+class PlayerViewModel(val track: Track, val playerInteractor: PlayerInteractor) : ViewModel() {
 
     companion object {
         fun getViewModelFactory(trackJson: String?): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val track = Gson().fromJson(trackJson, Track::class.java)
-                PlayerViewModel(track)
+                PlayerViewModel(
+                    track = track,
+                    playerInteractor = Creator.providePlayerInteractor())
             }
         }
 
@@ -30,16 +33,21 @@ class PlayerViewModel(val track: Track) : ViewModel() {
         private val DURATION_TOKEN = Any()
     }
 
-    private val playerInteractor by lazy { Creator.providePlayerInteractor() }
+    private val trackScreenStateLiveData = MutableLiveData<TrackScreenState>()
+    private val playerState = MutableLiveData<TrackPlaybackState>()
+
+    init {
+        trackScreenStateLiveData.postValue(TrackScreenState.Content(track))
+        preparePlayer()
+    }
+
+    fun trackScreenStateObserver(): LiveData<TrackScreenState> = trackScreenStateLiveData
+    fun playerStateObserver(): LiveData<TrackPlaybackState> = playerState
+
+    //private val playerInteractor by lazy { Creator.providePlayerInteractor() }
     private val handler by lazy { Handler(Looper.getMainLooper()) }
 
-    private val trackLiveData = MutableLiveData(track)
-    fun trackObserver(): LiveData<Track> = trackLiveData
-
-    private val playerState = MutableLiveData<PlayerState>()
-    fun playerStateObserver(): LiveData<PlayerState> = playerState
-
-    private var playerPrepared = false
+//    private var playerPrepared = false
 
     override fun onCleared() {
         super.onCleared()
@@ -48,15 +56,15 @@ class PlayerViewModel(val track: Track) : ViewModel() {
 
     fun preparePlayer() {
 
-        if (playerPrepared) return
+//        if (playerPrepared) return
 
-        renderState(PlayerState.Loading)
+        renderState(TrackPlaybackState.Loading)
 
         val listener = object : PlayerInteractor.PrepareListener {
 
             override fun onPrepareListener() {
-                playerPrepared = true
-                renderState(PlayerState.Ready)
+//                playerPrepared = true
+                renderState(TrackPlaybackState.Ready)
             }
 
             override fun onCompletionListener() {
@@ -78,16 +86,16 @@ class PlayerViewModel(val track: Track) : ViewModel() {
     fun pausePlayer() {
         playerInteractor.paused()
         handler.removeCallbacksAndMessages(DURATION_TOKEN)
-        renderState(PlayerState.Paused(getCurrentDuration()))
+        renderState(TrackPlaybackState.Paused(getCurrentDuration()))
     }
 
     private fun startPlayer() {
 
-        renderState(PlayerState.Played(getCurrentDuration()))
+        renderState(TrackPlaybackState.Played(getCurrentDuration()))
 
         val showDurationRunnable = object : Runnable {
             override fun run() {
-                renderState(PlayerState.Played(getCurrentDuration()))
+                renderState(TrackPlaybackState.Played(getCurrentDuration()))
 
                 val postTime = SystemClock.uptimeMillis() + DURATION_DELAY
                 handler.postAtTime(this, DURATION_TOKEN, postTime)
@@ -102,7 +110,7 @@ class PlayerViewModel(val track: Track) : ViewModel() {
 
     }
 
-    private fun renderState(state: PlayerState) {
+    private fun renderState(state: TrackPlaybackState) {
         playerState.postValue(state)
     }
 
@@ -112,15 +120,15 @@ class PlayerViewModel(val track: Track) : ViewModel() {
 
     private fun playbacklControl() {
         when (playerInteractor.getPlaybackState()) {
-            PlaybackState.PLAYING -> {
+            PlaybackStatus.PLAYING -> {
                 pausePlayer()
             }
 
-            PlaybackState.PREPARED, PlaybackState.PAUSED -> {
+            PlaybackStatus.PREPARED, PlaybackStatus.PAUSED -> {
                 startPlayer()
             }
 
-            PlaybackState.DEFAULT -> {}
+            PlaybackStatus.DEFAULT -> {}
         }
     }
 

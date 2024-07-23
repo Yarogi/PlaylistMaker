@@ -1,6 +1,6 @@
 package com.example.playlistmaker.domain.player.api
 
-import com.example.playlistmaker.domain.player.model.PlaybackState
+import com.example.playlistmaker.domain.player.model.PlaybackStatus
 import com.example.playlistmaker.domain.main.model.Track
 
 interface PlayerInteractor {
@@ -17,7 +17,7 @@ interface PlayerInteractor {
 
     fun getCurrentPosition(): Int
 
-    fun getPlaybackState(): PlaybackState
+    fun getPlaybackState(): PlaybackStatus
 
     interface PrepareListener: PlayerRepository.Listener {}
 
