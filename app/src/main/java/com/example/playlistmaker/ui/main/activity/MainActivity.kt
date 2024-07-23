@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.databinding.ActivityMainBinding
 import com.example.playlistmaker.ui.media_library.activity.LibraryActivity
 import com.example.playlistmaker.ui.search.activity.SearchActivity
+import com.example.playlistmaker.ui.settings.activity.SettingsActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         btnSettings.setOnClickListener {
-            val intent = Intent(this@MainActivity, SearchActivity::class.java)
+            val intent = Intent(this@MainActivity, SettingsActivity::class.java)
             startActivity(intent)
         }
 

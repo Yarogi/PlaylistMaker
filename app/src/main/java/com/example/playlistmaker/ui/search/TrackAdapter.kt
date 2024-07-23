@@ -9,8 +9,6 @@ import com.example.playlistmaker.domain.main.model.Track
 class TrackAdapter(val listener: Listener) : RecyclerView.Adapter<TrackViewHolder>() {
 
     var tracks = ArrayList<Track>()
-    var hasChange = false
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
 

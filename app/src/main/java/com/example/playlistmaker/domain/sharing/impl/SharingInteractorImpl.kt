@@ -19,15 +19,19 @@ class SharingInteractorImpl(private val externalNavigator: ExternalNavigator) : 
     }
 
     private fun getShareAppLink():String{
-        TODO("Not yet implemented")
+        return "https://practicum.yandex.ru/android-developer"
     }
 
     private fun getSupportEmailData():EmailData{
-        TODO("Not yet implemented")
+        return EmailData(
+            recipient = "yachmenyov.igor@yandex.ru",
+            theme = "Сообщение разработчикам и разработчицам приложения Playlist Maker",
+            body = "Спасибо разработчикам и разработчицам за крутое приложение!"
+        )
     }
 
     private fun getTermLink():String{
-        TODO("Not yet implemented")
+        return "https://yandex.ru/legal/practicum_offer"
     }
 
 }
