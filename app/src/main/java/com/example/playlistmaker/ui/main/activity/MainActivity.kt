@@ -20,20 +20,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val btnSearch = binding.btnSearch
-        val btnLibrary = binding.btnLibrary
-        val btnSettings = binding.btnSettings
-
-        btnSearch.setOnClickListener {
+        binding.btnSearch.setOnClickListener {
             val intent = Intent(this@MainActivity, SearchActivity::class.java)
             startActivity(intent)
         }
 
-        btnLibrary.setOnClickListener {
+        binding.btnLibrary.setOnClickListener {
             val intent = Intent(this@MainActivity, LibraryActivity::class.java)
             startActivity(intent)
         }
-        btnSettings.setOnClickListener {
+        binding.btnSettings.setOnClickListener {
             val intent = Intent(this@MainActivity, SettingsActivity::class.java)
             startActivity(intent)
         }

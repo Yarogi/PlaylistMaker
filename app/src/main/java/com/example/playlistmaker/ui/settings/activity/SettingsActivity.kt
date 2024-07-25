@@ -13,7 +13,6 @@ class SettingsActivity : AppCompatActivity() {
     private val binding by lazy { ActivitySettingsBinding.inflate(layoutInflater) }
 
     private lateinit var viewModel: SettingsViewModel
-    private lateinit var themeSwitcher: SwitchMaterial
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -46,8 +45,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         //Settings
-        themeSwitcher = binding.themeSwitcher
-        themeSwitcher.setOnCheckedChangeListener { switcher, cheked ->
+        binding.themeSwitcher.setOnCheckedChangeListener { switcher, cheked ->
             viewModel.switchMode(cheked)
         }
 
@@ -58,8 +56,8 @@ class SettingsActivity : AppCompatActivity() {
         when (state) {
             is SettingsState.Content -> {
                 val darkModeEnable = state.settings.darkMode
-                if (themeSwitcher.isChecked != darkModeEnable) {
-                    themeSwitcher.isChecked = darkModeEnable
+                if (binding.themeSwitcher.isChecked != darkModeEnable) {
+                    binding.themeSwitcher.isChecked = darkModeEnable
                 }
 
             }

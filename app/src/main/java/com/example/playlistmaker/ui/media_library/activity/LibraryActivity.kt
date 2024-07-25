@@ -4,14 +4,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.ActivityLibraryBinding
+import com.example.playlistmaker.databinding.ActivityMainBinding
 
 class LibraryActivity : AppCompatActivity() {
+
+    private val binding by lazy {
+       ActivityLibraryBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_library)
+        setContentView(binding.root)
 
-        val exitButton = findViewById<Button>(R.id.exitBtn)
-        exitButton.setOnClickListener {
+        binding.exitBtn.setOnClickListener {
             this.finish()
         }
 

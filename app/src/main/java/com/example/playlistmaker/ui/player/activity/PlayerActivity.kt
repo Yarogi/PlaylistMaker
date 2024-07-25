@@ -28,9 +28,6 @@ class PlayerActivity : AppCompatActivity() {
         ActivityPlayerBinding.inflate(layoutInflater)
     }
 
-    //Player
-    private lateinit var playTrackBtn: ImageButton
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -55,8 +52,7 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.panelBackArrow.setOnClickListener { finish() }
 
-        playTrackBtn = binding.playTrack
-        playTrackBtn.setOnClickListener {viewModel.changePlayState()}
+        binding.playTrack.setOnClickListener {viewModel.changePlayState()}
     }
 
     override fun onPause() {
@@ -107,20 +103,20 @@ class PlayerActivity : AppCompatActivity() {
         when (state) {
 
             TrackPlaybackState.Loading -> {
-                playTrackBtn.isEnabled = false
+                binding.playTrack.isEnabled = false
             }
 
             TrackPlaybackState.Ready -> {
-                playTrackBtn.isEnabled = true
-                playTrackBtn.setImageResource(R.drawable.play_button)
+                binding.playTrack.isEnabled = true
+                binding.playTrack.setImageResource(R.drawable.play_button)
             }
 
             is TrackPlaybackState.Paused -> {
-                playTrackBtn.setImageResource(R.drawable.play_button)
+                binding.playTrack.setImageResource(R.drawable.play_button)
             }
 
             is TrackPlaybackState.Played -> {
-                playTrackBtn.setImageResource(R.drawable.pause_button)
+                binding.playTrack.setImageResource(R.drawable.pause_button)
             }
 
         }
