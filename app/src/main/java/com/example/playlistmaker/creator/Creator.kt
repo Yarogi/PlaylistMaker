@@ -2,14 +2,14 @@ package com.example.playlistmaker.creator
 
 import android.content.Context
 import com.example.playlistmaker.data.player.impl.PlayerRepositoryImpl
-import com.example.playlistmaker.data.search.impl.SearchHistoryReposytoryImpl
+import com.example.playlistmaker.data.search.impl.SearchHistoryRepositoryImpl
 import com.example.playlistmaker.data.search.impl.TracksRepositoryImpl
 import com.example.playlistmaker.data.search.network.RetrofitNetworkClient
 import com.example.playlistmaker.domain.settings.api.SettingsRepository
 import com.example.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import com.example.playlistmaker.data.sharing.ExternalNavigator
 import com.example.playlistmaker.data.sharing.impl.ExternalNavigatorImpl
-import com.example.playlistmaker.data.search.storage.sharedprefs.SharedPrefHistoryStorage
+import com.example.playlistmaker.data.search.storage.impl.HistoryStorageImpl
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.api.PlayerRepository
 import com.example.playlistmaker.domain.search.api.SearchHistoryInteractor
@@ -55,7 +55,7 @@ object Creator {
     }
 
     private fun getSearchHistoryRepository(context: Context): SearchHistoryRepository {
-        return SearchHistoryReposytoryImpl(SharedPrefHistoryStorage(context = context))
+        return SearchHistoryRepositoryImpl(HistoryStorageImpl(context = context))
     }
 
     private fun getSettingsRepository(context: Context): SettingsRepository {
