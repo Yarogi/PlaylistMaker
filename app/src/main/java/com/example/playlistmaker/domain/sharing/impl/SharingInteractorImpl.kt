@@ -1,10 +1,14 @@
 package com.example.playlistmaker.domain.sharing.impl
 
-import com.example.playlistmaker.data.sharing.ExternalNavigator
+import com.example.playlistmaker.domain.sharing.api.ExternalNavigator
 import com.example.playlistmaker.domain.sharing.SharingInteractor
+import com.example.playlistmaker.domain.sharing.api.SharringResoursesStore
 import com.example.playlistmaker.domain.sharing.model.EmailData
 
-class SharingInteractorImpl(private val externalNavigator: ExternalNavigator) : SharingInteractor {
+class SharingInteractorImpl(
+    private val externalNavigator: ExternalNavigator,
+    private val resoursesStore: SharringResoursesStore,
+) : SharingInteractor {
 
     override fun shareApp() {
         externalNavigator.shareLink(getShareAppLink())
@@ -18,20 +22,16 @@ class SharingInteractorImpl(private val externalNavigator: ExternalNavigator) : 
         externalNavigator.openEmail(getSupportEmailData())
     }
 
-    private fun getShareAppLink():String{
-        return "https://practicum.yandex.ru/android-developer"
+    private fun getShareAppLink(): String {
+        return resoursesStore.getShareAppLink()
     }
 
-    private fun getSupportEmailData():EmailData{
-        return EmailData(
-            recipient = "yachmenyov.igor@yandex.ru",
-            theme = "Сообщение разработчикам и разработчицам приложения Playlist Maker",
-            body = "Спасибо разработчикам и разработчицам за крутое приложение!"
-        )
+    private fun getSupportEmailData(): EmailData {
+        return resoursesStore.getSupportEmailData()
     }
 
-    private fun getTermLink():String{
-        return "https://yandex.ru/legal/practicum_offer"
+    private fun getTermLink(): String {
+        return resoursesStore.getTermLink()
     }
 
 }

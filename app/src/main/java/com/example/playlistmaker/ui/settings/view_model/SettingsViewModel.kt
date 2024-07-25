@@ -16,8 +16,8 @@ import com.example.playlistmaker.ui.settings.model.SettingsState
 
 class SettingsViewModel(
     private val application: Application,
-    private val sharingInteractor:SharingInteractor,
-    private val settingsInterractor: SettingsInteractor
+    private val sharingInteractor: SharingInteractor,
+    private val settingsInterractor: SettingsInteractor,
 ) : AndroidViewModel(application) {
 
     companion object {

@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.sharing
+package com.example.playlistmaker.domain.sharing.api
 
 import com.example.playlistmaker.domain.sharing.model.EmailData
 
