@@ -57,7 +57,7 @@
             android:maxLines="1"
             android:singleLine="true"
             android:textColor="@color/search_text_color"
-            android:textCursorDrawable="@null" />
+            android:textCursorDrawable="@drawable/cursor" />
 
         <ImageButton
             android:id="@+id/clearSearchText"
