@@ -12,7 +12,12 @@ class SettingsActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivitySettingsBinding.inflate(layoutInflater) }
 
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel: SettingsViewModel by lazy {
+        ViewModelProvider(
+            owner = this,
+            factory = SettingsViewModel.getViewModelFactory()
+        )[SettingsViewModel::class.java]
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -23,11 +28,6 @@ class SettingsActivity : AppCompatActivity() {
         binding.exitBtn.setOnClickListener {
             this.finish()
         }
-
-        viewModel = ViewModelProvider(
-            owner = this,
-            factory = SettingsViewModel.getViewModelFactory()
-        )[SettingsViewModel::class.java]
 
         viewModel.observerStateLiveData().observe(this) { state -> renderState(state) }
 

@@ -30,7 +30,12 @@ import com.google.gson.Gson
 class SearchActivity : AppCompatActivity() {
 
     //MVVM
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel: SearchViewModel by lazy {
+        ViewModelProvider(
+            owner = this,
+            factory = SearchViewModel.getViewModelFactory()
+        )[SearchViewModel::class.java]
+    }
     //
 
     private val binding by lazy {
@@ -39,7 +44,7 @@ class SearchActivity : AppCompatActivity() {
 
     private var trackSelectionIsProcessed = false
 
-    //DInamic-views
+    //Dinamic-views
     private lateinit var errorHolderEmpty: View
     private lateinit var errorHolderNoConnection: View
 
@@ -75,11 +80,6 @@ class SearchActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-        viewModel = ViewModelProvider(
-            owner = this,
-            factory = SearchViewModel.getViewModelFactory()
-        )[SearchViewModel::class.java]
 
         //Exit
         binding.exitBtn.setOnClickListener {
