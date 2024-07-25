@@ -5,7 +5,7 @@ import com.example.playlistmaker.data.player.impl.PlayerRepositoryImpl
 import com.example.playlistmaker.data.search.impl.SearchHistoryReposytoryImpl
 import com.example.playlistmaker.data.search.impl.TracksRepositoryImpl
 import com.example.playlistmaker.data.search.network.RetrofitNetworkClient
-import com.example.playlistmaker.data.settings.SettingsRepository
+import com.example.playlistmaker.domain.settings.api.SettingsRepository
 import com.example.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import com.example.playlistmaker.data.sharing.ExternalNavigator
 import com.example.playlistmaker.data.sharing.impl.ExternalNavigatorImpl
