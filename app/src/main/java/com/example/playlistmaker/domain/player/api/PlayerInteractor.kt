@@ -15,7 +15,7 @@ interface PlayerInteractor {
 
     fun release()
 
-    fun getCurrentPosition(): Int
+    fun getCurrentProgress(): Int
 
     fun getPlaybackState(): PlaybackStatus
 

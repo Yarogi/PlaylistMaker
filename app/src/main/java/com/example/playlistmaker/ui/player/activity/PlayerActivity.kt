@@ -1,7 +1,6 @@
 package com.example.playlistmaker.ui.player.activity
 
 import android.os.Bundle
-import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -52,12 +51,12 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.panelBackArrow.setOnClickListener { finish() }
 
-        binding.playTrack.setOnClickListener {viewModel.changePlayState()}
+        binding.playTrack.setOnClickListener { viewModel.changePlayState() }
     }
 
     override fun onPause() {
         super.onPause()
-        viewModel.pausePlayer()
+        viewModel.pausePlayer(сheckPlayback = true)
     }
 
     private fun fillTrackInformation(track: Track) {
@@ -91,11 +90,8 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun renderState(state: TrackPlaybackState) {
 
+        changeProgress(state.progress)
         changeButtonStyle(state)
-
-        binding.playTime.text =
-            SimpleDateFormat("mm:ss", Locale.getDefault())
-                .format(state.currentDuartion)
 
     }
 
@@ -120,6 +116,17 @@ class PlayerActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    private fun changeProgress(progress: Int) {
+
+        val progressText = SimpleDateFormat("mm:ss", Locale.getDefault())
+            .format(progress)
+
+        if (binding.playTime.text != progressText) {
+            binding.playTime.text = progressText
+        }
+
     }
 
 }

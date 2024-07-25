@@ -39,8 +39,12 @@ class PlayerRepositoryImpl : PlayerRepository {
         mediaPlayer.release()
     }
 
-    override fun getCurrentPosition(): Int {
-        return mediaPlayer.getCurrentPosition()
+    override fun getCurrentProgress(): Int {
+        return when (state) {
+            PlaybackStatus.PREPARED, PlaybackStatus.DEFAULT -> 0
+            else -> mediaPlayer.getCurrentPosition()
+        }
+
     }
 
     override fun getCurrentState(): PlaybackStatus {

@@ -30,7 +30,7 @@
     <string name="you_were_looking_for">Вы искали</string>
     <string name="example_text_track_name" translatable="false">Yesterday (Remastered 2009)</string>
     <string name="example_text_artist_name" translatable="false">The Beatles </string>
-    <string name="example_text_play_time" translatable="false">0:30</string>
+    <string name="example_text_play_time" translatable="false">00:00</string>
     <!--  Player  -->
     <string name="track_duration_title">Длительность</string>
     <string name="track_album_title">Альбом</string>
