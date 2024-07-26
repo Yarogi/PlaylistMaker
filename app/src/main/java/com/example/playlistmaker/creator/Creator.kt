@@ -1,21 +1,30 @@
 package com.example.playlistmaker.creator
 
 import android.content.Context
-import com.example.playlistmaker.data.impl.PlayerRepositoryImpl
-import com.example.playlistmaker.data.impl.SearchHistoryReposytoryImpl
-import com.example.playlistmaker.data.impl.TracksRepositoryImpl
-import com.example.playlistmaker.data.network.RetrofitNetworkClient
-import com.example.playlistmaker.data.storage.HistoryStorage
-import com.example.playlistmaker.data.storage.sharedprefs.SharedPrefHistoryStorage
-import com.example.playlistmaker.domain.api.player.PlayerInteractor
-import com.example.playlistmaker.domain.api.player.PlayerRepository
-import com.example.playlistmaker.domain.api.search.SearchHistoryInteractor
-import com.example.playlistmaker.domain.api.search.SearchHistoryRepository
-import com.example.playlistmaker.domain.api.search.TracksInteractor
-import com.example.playlistmaker.domain.api.search.TracksRepository
-import com.example.playlistmaker.domain.impl.player.PlayerInteractorImp
-import com.example.playlistmaker.domain.impl.search.SearchHistoryInteractorImpl
-import com.example.playlistmaker.domain.impl.search.TracksInteractorImpl
+import com.example.playlistmaker.data.player.impl.PlayerRepositoryImpl
+import com.example.playlistmaker.data.search.impl.SearchHistoryRepositoryImpl
+import com.example.playlistmaker.data.search.impl.TracksRepositoryImpl
+import com.example.playlistmaker.data.search.network.RetrofitNetworkClient
+import com.example.playlistmaker.domain.settings.api.SettingsRepository
+import com.example.playlistmaker.data.settings.impl.SettingsRepositoryImpl
+import com.example.playlistmaker.domain.sharing.api.ExternalNavigator
+import com.example.playlistmaker.data.sharing.impl.ExternalNavigatorImpl
+import com.example.playlistmaker.data.search.storage.impl.HistoryStorageImpl
+import com.example.playlistmaker.ui.settings.impl.SharringResoursesStoreImpl
+import com.example.playlistmaker.domain.player.api.PlayerInteractor
+import com.example.playlistmaker.domain.player.api.PlayerRepository
+import com.example.playlistmaker.domain.search.api.SearchHistoryInteractor
+import com.example.playlistmaker.domain.search.api.SearchHistoryRepository
+import com.example.playlistmaker.domain.search.api.TracksInteractor
+import com.example.playlistmaker.domain.search.api.TracksRepository
+import com.example.playlistmaker.domain.player.impl.PlayerInteractorImp
+import com.example.playlistmaker.domain.search.impl.SearchHistoryInteractorImpl
+import com.example.playlistmaker.domain.search.impl.TracksInteractorImpl
+import com.example.playlistmaker.domain.settings.SettingsInteractor
+import com.example.playlistmaker.domain.settings.impl.SettingsInteractorImpl
+import com.example.playlistmaker.domain.sharing.SharingInteractor
+import com.example.playlistmaker.domain.sharing.api.SharringResoursesStore
+import com.example.playlistmaker.domain.sharing.impl.SharingInteractorImpl
 
 object Creator {
 
@@ -31,6 +40,17 @@ object Creator {
         return SearchHistoryInteractorImpl(getSearchHistoryRepository(context))
     }
 
+    fun provideSharingInteractor(context: Context): SharingInteractor {
+        return SharingInteractorImpl(
+            externalNavigator = getExternalNavigator(context),
+            resoursesStore = getSharingResoursesSrore(context)
+        )
+    }
+
+    fun provideSettingsInteractor(context: Context): SettingsInteractor {
+        return SettingsInteractorImpl(getSettingsRepository(context))
+    }
+
     private fun getPlayerRepository(): PlayerRepository {
         return PlayerRepositoryImpl()
     }
@@ -40,7 +60,19 @@ object Creator {
     }
 
     private fun getSearchHistoryRepository(context: Context): SearchHistoryRepository {
-        return SearchHistoryReposytoryImpl(SharedPrefHistoryStorage(context = context))
+        return SearchHistoryRepositoryImpl(HistoryStorageImpl(context = context))
+    }
+
+    private fun getSettingsRepository(context: Context): SettingsRepository {
+        return SettingsRepositoryImpl(context)
+    }
+
+    private fun getExternalNavigator(context: Context): ExternalNavigator {
+        return ExternalNavigatorImpl(context = context)
+    }
+
+    private fun getSharingResoursesSrore(context: Context): SharringResoursesStore {
+        return SharringResoursesStoreImpl(context)
     }
 
 

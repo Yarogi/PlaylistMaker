@@ -23,7 +23,7 @@
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/themeSwitcher"
-        style="@style/MenuItem"
+        style="@style/SwitchMenuItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
@@ -35,18 +35,18 @@
         android:id="@+id/shareApp"
         style="@style/MenuItem"
         android:text="@string/share_app"
-        app:icon="@drawable/share" />
+        android:drawableRight="@drawable/share" />
 
     <Button
         android:id="@+id/writeToSupport"
         style="@style/MenuItem"
         android:text="@string/write_to_support"
-        app:icon="@drawable/support" />
+        android:drawableRight="@drawable/support" />
 
     <Button
         android:id="@+id/termsOfUse"
         style="@style/MenuItem"
         android:text="@string/terms_of_use"
-        app:icon="@drawable/arrow_left" />
+        android:drawableRight="@drawable/arrow_left" />
 
 </LinearLayout>
