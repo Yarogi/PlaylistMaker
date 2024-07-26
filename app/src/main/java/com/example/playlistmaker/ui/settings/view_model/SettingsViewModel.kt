@@ -11,27 +11,26 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.util.App
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.settings.SettingsInteractor
+import com.example.playlistmaker.domain.sharing.SharingInteractor
 import com.example.playlistmaker.ui.settings.model.SettingsState
 
 class SettingsViewModel(
     private val application: Application,
+    private val sharingInteractor: SharingInteractor,
+    private val settingsInterractor: SettingsInteractor,
 ) : AndroidViewModel(application) {
 
     companion object {
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
+                val application = this[APPLICATION_KEY] as Application
                 SettingsViewModel(
-                    application = this[APPLICATION_KEY] as Application
+                    application = application,
+                    sharingInteractor = Creator.provideSharingInteractor(application),
+                    settingsInterractor = Creator.provideSettingsInteractor(application)
                 )
             }
         }
-    }
-
-    private val sharingInteractor by lazy {
-        Creator.provideSharingInteractor(application)
-    }
-    private val settingsInterractor: SettingsInteractor by lazy {
-        Creator.provideSettingsInteractor(application)
     }
 
     private val currentSettings by lazy { settingsInterractor.getThemeSettings() }

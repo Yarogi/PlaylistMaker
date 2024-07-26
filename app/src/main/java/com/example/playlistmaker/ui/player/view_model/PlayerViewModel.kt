@@ -25,7 +25,8 @@ class PlayerViewModel(val track: Track, val playerInteractor: PlayerInteractor) 
                 val track = Gson().fromJson(trackJson, Track::class.java)
                 PlayerViewModel(
                     track = track,
-                    playerInteractor = Creator.providePlayerInteractor())
+                    playerInteractor = Creator.providePlayerInteractor()
+                )
             }
         }
 
@@ -44,10 +45,7 @@ class PlayerViewModel(val track: Track, val playerInteractor: PlayerInteractor) 
     fun trackScreenStateObserver(): LiveData<TrackScreenState> = trackScreenStateLiveData
     fun playerStateObserver(): LiveData<TrackPlaybackState> = playerState
 
-    //private val playerInteractor by lazy { Creator.providePlayerInteractor() }
     private val handler by lazy { Handler(Looper.getMainLooper()) }
-
-//    private var playerPrepared = false
 
     override fun onCleared() {
         super.onCleared()
@@ -56,19 +54,17 @@ class PlayerViewModel(val track: Track, val playerInteractor: PlayerInteractor) 
 
     fun preparePlayer() {
 
-//        if (playerPrepared) return
-
         renderState(TrackPlaybackState.Loading)
 
         val listener = object : PlayerInteractor.PrepareListener {
 
             override fun onPrepareListener() {
-//                playerPrepared = true
                 renderState(TrackPlaybackState.Ready)
             }
 
             override fun onCompletionListener() {
                 handler.removeCallbacksAndMessages(DURATION_TOKEN)
+                renderState(TrackPlaybackState.Ready)
             }
 
         }
@@ -83,7 +79,12 @@ class PlayerViewModel(val track: Track, val playerInteractor: PlayerInteractor) 
         playbacklControl()
     }
 
-    fun pausePlayer() {
+    fun pausePlayer(сheckPlayback: Boolean = false) {
+
+        if (сheckPlayback && playerInteractor.getPlaybackState() != PlaybackStatus.PLAYING) {
+            return
+        }
+
         playerInteractor.paused()
         handler.removeCallbacksAndMessages(DURATION_TOKEN)
         renderState(TrackPlaybackState.Paused(getCurrentDuration()))
@@ -95,6 +96,7 @@ class PlayerViewModel(val track: Track, val playerInteractor: PlayerInteractor) 
 
         val showDurationRunnable = object : Runnable {
             override fun run() {
+
                 renderState(TrackPlaybackState.Played(getCurrentDuration()))
 
                 val postTime = SystemClock.uptimeMillis() + DURATION_DELAY
@@ -115,7 +117,7 @@ class PlayerViewModel(val track: Track, val playerInteractor: PlayerInteractor) 
     }
 
     private fun getCurrentDuration(): Int {
-        return playerInteractor.getCurrentPosition()
+        return playerInteractor.getCurrentProgress()
     }
 
     private fun playbacklControl() {

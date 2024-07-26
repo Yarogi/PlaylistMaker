@@ -14,13 +14,18 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.main.model.Track
+import com.example.playlistmaker.domain.search.api.SearchHistoryInteractor
 import com.example.playlistmaker.domain.search.api.TracksInteractor
 import com.example.playlistmaker.domain.search.model.Resource
 import com.example.playlistmaker.domain.search.model.TrackSearchStructure
 import com.example.playlistmaker.ui.search.model.SearchState
 import java.util.concurrent.atomic.AtomicInteger
 
-class SearchViewModel(application: Application) : AndroidViewModel(application) {
+class SearchViewModel(
+    private val application: Application,
+    private val searchInteractor: TracksInteractor,
+    private val searchHistoryInteractor: SearchHistoryInteractor,
+) : AndroidViewModel(application) {
 
     companion object {
         const val SEARCH_DEF = ""
@@ -31,7 +36,12 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         fun getViewModelFactory(): ViewModelProvider.Factory =
             viewModelFactory {
                 initializer {
-                    SearchViewModel(this[APPLICATION_KEY] as Application)
+                    val app = this[APPLICATION_KEY] as Application
+                    SearchViewModel(
+                        application = app,
+                        searchInteractor = Creator.provideTracksInteractor(),
+                        searchHistoryInteractor = Creator.provideSearchHistoryInteractor(app.applicationContext)
+                    )
                 }
             }
 
@@ -42,7 +52,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     //Search
     private var latestSearchHasFocus: Boolean? = null
     private var latestSearchText: String? = null
-    private val searchInteractor = Creator.provideTracksInteractor()
 
     private var searchResultDebouncer = AtomicInteger(0)
 
@@ -52,11 +61,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     //History
     private val history by lazy { searchHistoryInteractor.read() }
-    private val searchHistoryInteractor by lazy {
-        Creator.provideSearchHistoryInteractor(
-            context = getApplicationContext()
-        )
-    }
     //--History
 
     override fun onCleared() {
@@ -224,10 +228,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun renderState(state: SearchState) {
         stateLiveData.postValue(state)
-    }
-
-    private fun getApplicationContext(): Context {
-        return getApplication<Application>().applicationContext
     }
 
 

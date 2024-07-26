@@ -2,14 +2,15 @@ package com.example.playlistmaker.creator
 
 import android.content.Context
 import com.example.playlistmaker.data.player.impl.PlayerRepositoryImpl
-import com.example.playlistmaker.data.search.impl.SearchHistoryReposytoryImpl
+import com.example.playlistmaker.data.search.impl.SearchHistoryRepositoryImpl
 import com.example.playlistmaker.data.search.impl.TracksRepositoryImpl
 import com.example.playlistmaker.data.search.network.RetrofitNetworkClient
-import com.example.playlistmaker.data.settings.SettingsRepository
+import com.example.playlistmaker.domain.settings.api.SettingsRepository
 import com.example.playlistmaker.data.settings.impl.SettingsRepositoryImpl
-import com.example.playlistmaker.data.sharing.ExternalNavigator
+import com.example.playlistmaker.domain.sharing.api.ExternalNavigator
 import com.example.playlistmaker.data.sharing.impl.ExternalNavigatorImpl
-import com.example.playlistmaker.data.search.storage.sharedprefs.SharedPrefHistoryStorage
+import com.example.playlistmaker.data.search.storage.impl.HistoryStorageImpl
+import com.example.playlistmaker.ui.settings.impl.SharringResoursesStoreImpl
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.api.PlayerRepository
 import com.example.playlistmaker.domain.search.api.SearchHistoryInteractor
@@ -22,6 +23,7 @@ import com.example.playlistmaker.domain.search.impl.TracksInteractorImpl
 import com.example.playlistmaker.domain.settings.SettingsInteractor
 import com.example.playlistmaker.domain.settings.impl.SettingsInteractorImpl
 import com.example.playlistmaker.domain.sharing.SharingInteractor
+import com.example.playlistmaker.domain.sharing.api.SharringResoursesStore
 import com.example.playlistmaker.domain.sharing.impl.SharingInteractorImpl
 
 object Creator {
@@ -39,7 +41,10 @@ object Creator {
     }
 
     fun provideSharingInteractor(context: Context): SharingInteractor {
-        return SharingInteractorImpl(getExternalNavigator(context))
+        return SharingInteractorImpl(
+            externalNavigator = getExternalNavigator(context),
+            resoursesStore = getSharingResoursesSrore(context)
+        )
     }
 
     fun provideSettingsInteractor(context: Context): SettingsInteractor {
@@ -55,7 +60,7 @@ object Creator {
     }
 
     private fun getSearchHistoryRepository(context: Context): SearchHistoryRepository {
-        return SearchHistoryReposytoryImpl(SharedPrefHistoryStorage(context = context))
+        return SearchHistoryRepositoryImpl(HistoryStorageImpl(context = context))
     }
 
     private fun getSettingsRepository(context: Context): SettingsRepository {
@@ -64,6 +69,10 @@ object Creator {
 
     private fun getExternalNavigator(context: Context): ExternalNavigator {
         return ExternalNavigatorImpl(context = context)
+    }
+
+    private fun getSharingResoursesSrore(context: Context): SharringResoursesStore {
+        return SharringResoursesStoreImpl(context)
     }
 
 

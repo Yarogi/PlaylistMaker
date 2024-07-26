@@ -10,7 +10,7 @@ interface PlayerRepository {
     fun paused()
     fun release()
 
-    fun getCurrentPosition(): Int
+    fun getCurrentProgress(): Int
     fun getCurrentState(): PlaybackStatus
 
     interface Listener {

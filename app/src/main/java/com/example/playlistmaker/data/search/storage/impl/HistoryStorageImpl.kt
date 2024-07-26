@@ -1,11 +1,11 @@
-package com.example.playlistmaker.data.search.storage.sharedprefs
+package com.example.playlistmaker.data.search.storage.impl
 
 import android.content.Context
 import com.example.playlistmaker.data.search.storage.HistoryStorage
 import com.example.playlistmaker.domain.main.model.Track
 import com.google.gson.Gson
 
-class SharedPrefHistoryStorage(context: Context) : HistoryStorage {
+class HistoryStorageImpl(context: Context) : HistoryStorage {
 
     companion object{
 

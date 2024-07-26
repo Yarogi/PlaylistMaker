@@ -1,7 +1,6 @@
 package com.example.playlistmaker.ui.player.activity
 
 import android.os.Bundle
-import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -28,9 +27,6 @@ class PlayerActivity : AppCompatActivity() {
         ActivityPlayerBinding.inflate(layoutInflater)
     }
 
-    //Player
-    private lateinit var playTrackBtn: ImageButton
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -55,13 +51,12 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.panelBackArrow.setOnClickListener { finish() }
 
-        playTrackBtn = binding.playTrack
-        playTrackBtn.setOnClickListener {viewModel.changePlayState()}
+        binding.playTrack.setOnClickListener { viewModel.changePlayState() }
     }
 
     override fun onPause() {
         super.onPause()
-        viewModel.pausePlayer()
+        viewModel.pausePlayer(сheckPlayback = true)
     }
 
     private fun fillTrackInformation(track: Track) {
@@ -95,11 +90,8 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun renderState(state: TrackPlaybackState) {
 
+        changeProgress(state.progress)
         changeButtonStyle(state)
-
-        binding.playTime.text =
-            SimpleDateFormat("mm:ss", Locale.getDefault())
-                .format(state.currentDuartion)
 
     }
 
@@ -107,23 +99,34 @@ class PlayerActivity : AppCompatActivity() {
         when (state) {
 
             TrackPlaybackState.Loading -> {
-                playTrackBtn.isEnabled = false
+                binding.playTrack.isEnabled = false
             }
 
             TrackPlaybackState.Ready -> {
-                playTrackBtn.isEnabled = true
-                playTrackBtn.setImageResource(R.drawable.play_button)
+                binding.playTrack.isEnabled = true
+                binding.playTrack.setImageResource(R.drawable.play_button)
             }
 
             is TrackPlaybackState.Paused -> {
-                playTrackBtn.setImageResource(R.drawable.play_button)
+                binding.playTrack.setImageResource(R.drawable.play_button)
             }
 
             is TrackPlaybackState.Played -> {
-                playTrackBtn.setImageResource(R.drawable.pause_button)
+                binding.playTrack.setImageResource(R.drawable.pause_button)
             }
 
         }
+    }
+
+    private fun changeProgress(progress: Int) {
+
+        val progressText = SimpleDateFormat("mm:ss", Locale.getDefault())
+            .format(progress)
+
+        if (binding.playTime.text != progressText) {
+            binding.playTime.text = progressText
+        }
+
     }
 
 }

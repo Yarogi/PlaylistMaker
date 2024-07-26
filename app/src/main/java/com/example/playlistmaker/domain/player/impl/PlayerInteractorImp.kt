@@ -26,8 +26,8 @@ class PlayerInteractorImp(override val player: PlayerRepository) : PlayerInterac
         player.release()
     }
 
-    override fun getCurrentPosition(): Int {
-        return player.getCurrentPosition()
+    override fun getCurrentProgress(): Int {
+        return player.getCurrentProgress()
     }
 
     override fun getPlaybackState(): PlaybackStatus {

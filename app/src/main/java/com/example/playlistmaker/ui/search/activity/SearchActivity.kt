@@ -30,7 +30,12 @@ import com.google.gson.Gson
 class SearchActivity : AppCompatActivity() {
 
     //MVVM
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel: SearchViewModel by lazy {
+        ViewModelProvider(
+            owner = this,
+            factory = SearchViewModel.getViewModelFactory()
+        )[SearchViewModel::class.java]
+    }
     //
 
     private val binding by lazy {
@@ -39,14 +44,11 @@ class SearchActivity : AppCompatActivity() {
 
     private var trackSelectionIsProcessed = false
 
-    //Global-Views
+    //Dinamic-views
     private lateinit var errorHolderEmpty: View
     private lateinit var errorHolderNoConnection: View
-    private lateinit var searchTextEdit: EditText
-    private lateinit var clearSearchText: ImageButton
 
     //TrackList
-    private lateinit var trackListView: RecyclerView
     private val trackListClickListener = object : TrackAdapter.Listener {
         override fun onClickTrackListener(track: Track) {
             viewModel.addTrackToHistory(track)
@@ -72,35 +74,20 @@ class SearchActivity : AppCompatActivity() {
         }
     }
     private val historyAdapter = TrackAdapter(historyClickListener)
-    private lateinit var historyHolder: LinearLayout
-    private lateinit var historyListView: RecyclerView
 
-    //Search sync
-    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(
-            owner = this,
-            factory = SearchViewModel.getViewModelFactory()
-        )[SearchViewModel::class.java]
-
-        //Initializing views
-        val exitButton = binding.exitBtn
-        searchTextEdit = binding.searchTextEdit
-        progressBar = binding.progressBar
-
         //Exit
-        exitButton.setOnClickListener {
+        binding.exitBtn.setOnClickListener {
             this.finish()
         }
 
         //Clear text
-        clearSearchText = binding.clearSearchText
-        clearSearchText.setOnClickListener {
+        binding.clearSearchText.setOnClickListener {
 
             hideKeyboard()
             viewModel.searchTrackDebounce("")
@@ -108,10 +95,10 @@ class SearchActivity : AppCompatActivity() {
         }
 
         //Search text
-        searchTextEdit.setOnEditorActionListener { _, actionId, _ ->
+        binding.searchTextEdit.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 viewModel.searchTrackDebounce(
-                    searchText = searchTextEdit.text?.toString() ?: ""
+                    searchText = binding.searchTextEdit.text?.toString() ?: ""
                 )
                 true
             }
@@ -132,10 +119,10 @@ class SearchActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         }
-        searchTextEdit.addTextChangedListener(searchTextWatcher)
+        binding.searchTextEdit.addTextChangedListener(searchTextWatcher)
 
         //history
-        searchTextEdit.setOnFocusChangeListener { _, hasFocus ->
+        binding.searchTextEdit.setOnFocusChangeListener { _, hasFocus ->
 
             viewModel.readSearchHistoryDebounce(hasFocus)
 
@@ -166,8 +153,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initTrackList() {
-        trackListView = binding.trackListView
-        trackListView.adapter = trackListAdapter
+        binding.trackListView.adapter = trackListAdapter
     }
 
     private fun initErrorHolders() {
@@ -181,8 +167,9 @@ class SearchActivity : AppCompatActivity() {
         val updateBtn = errorHolderNoConnection.findViewById<Button>(R.id.updateButton)
         updateBtn.setOnClickListener {
             viewModel.searchTrackDebounce(
-                searchText = searchTextEdit.text?.toString() ?: "",
-                forceMode = true)
+                searchText = binding.searchTextEdit.text?.toString() ?: "",
+                forceMode = true
+            )
         }
 
         errorGroupView.addView(errorHolderEmpty)
@@ -191,10 +178,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun initHistoryHolder() {
 
-        historyHolder = binding.historyHolder
-        historyListView = binding.historyListView
-
-        historyListView.adapter = historyAdapter
+        binding.historyListView.adapter = historyAdapter
 
         val clearHistoryBtn = findViewById<Button>(R.id.clearHistory)
         clearHistoryBtn.setOnClickListener {
@@ -218,11 +202,11 @@ class SearchActivity : AppCompatActivity() {
 
     private fun render(state: SearchState) {
 
-        if (state.searchText != searchTextEdit.text.toString()) {
-            searchTextEdit.setText(state.searchText)
+        if (state.searchText != binding.searchTextEdit.text.toString()) {
+            binding.searchTextEdit.setText(state.searchText)
         }
 
-        clearSearchText.isVisible = state.searchText.isNotEmpty()
+        binding.clearSearchText.isVisible = state.searchText.isNotEmpty()
 
         when (state) {
             //search
@@ -285,9 +269,9 @@ class SearchActivity : AppCompatActivity() {
 
         errorHolderNoConnection.isVisible = noConnection ?: false
         errorHolderEmpty.isVisible = empty ?: false
-        trackListView.isVisible = !(hideList ?: true)
-        progressBar.isVisible = showProgressBar ?: false
-        historyHolder.isVisible = showHistory ?: false && historyAdapter.tracks.isNotEmpty()
+        binding.trackListView.isVisible = !(hideList ?: true)
+        binding.progressBar.isVisible = showProgressBar ?: false
+        binding.historyHolder.isVisible = showHistory ?: false && historyAdapter.tracks.isNotEmpty()
 
     }
 
