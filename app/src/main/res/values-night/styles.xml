@@ -80,6 +80,7 @@
         <item name="iconTint">@color/white</item>
         <!-- Drawable -->
         <item name="android:drawableTint">@color/white</item>
+        <item name="android:drawablePadding">@dimen/menu_text_icon_padding</item>
 
     </style>
 
