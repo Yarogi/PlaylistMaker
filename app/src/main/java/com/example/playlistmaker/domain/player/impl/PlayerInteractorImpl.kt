@@ -1,11 +1,11 @@
 package com.example.playlistmaker.domain.player.impl
 
+import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.api.PlayerRepository
 import com.example.playlistmaker.domain.player.model.PlaybackStatus
-import com.example.playlistmaker.domain.main.model.Track
 
-class PlayerInteractorImp(override val player: PlayerRepository) : PlayerInteractor {
+class PlayerInteractorImpl(override val player: PlayerRepository) : PlayerInteractor {
 
     override fun prepared(
         track: Track,

@@ -5,9 +5,8 @@ import com.example.playlistmaker.domain.player.api.PlayerRepository
 import com.example.playlistmaker.domain.player.model.PlaybackStatus
 import com.example.playlistmaker.domain.main.model.Track
 
-class PlayerRepositoryImpl : PlayerRepository {
+class PlayerRepositoryImpl(private val mediaPlayer: MediaPlayer) : PlayerRepository {
 
-    private val mediaPlayer = MediaPlayer()
     private var state = PlaybackStatus.DEFAULT
 
     override fun prepared(track: Track, listener: PlayerRepository.Listener) {

@@ -26,17 +26,11 @@ import com.example.playlistmaker.ui.search.TrackAdapter
 import com.example.playlistmaker.ui.search.model.SearchState
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 import com.google.gson.Gson
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
-    //MVVM
-    private val viewModel: SearchViewModel by lazy {
-        ViewModelProvider(
-            owner = this,
-            factory = SearchViewModel.getViewModelFactory()
-        )[SearchViewModel::class.java]
-    }
-    //
+    private val viewModel by viewModel<SearchViewModel>()
 
     private val binding by lazy {
         ActivitySearchBinding.inflate(layoutInflater)
