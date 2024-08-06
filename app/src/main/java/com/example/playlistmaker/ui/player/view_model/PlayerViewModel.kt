@@ -17,19 +17,12 @@ import com.example.playlistmaker.ui.player.model.TrackPlaybackState
 import com.example.playlistmaker.ui.player.model.TrackScreenState
 import com.google.gson.Gson
 
-class PlayerViewModel(val track: Track, val playerInteractor: PlayerInteractor) : ViewModel() {
+class PlayerViewModel(
+    val track: Track,
+    val playerInteractor: PlayerInteractor,
+) : ViewModel() {
 
     companion object {
-        fun getViewModelFactory(trackJson: String?): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val track = Gson().fromJson(trackJson, Track::class.java)
-                PlayerViewModel(
-                    track = track,
-                    playerInteractor = Creator.providePlayerInteractor()
-                )
-            }
-        }
-
         private const val DURATION_DELAY = 300L
         private val DURATION_TOKEN = Any()
     }
