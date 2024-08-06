@@ -13,6 +13,8 @@ import com.example.playlistmaker.ui.player.model.TrackPlaybackState
 import com.example.playlistmaker.ui.player.model.TrackScreenState
 import com.example.playlistmaker.ui.player.view_model.PlayerViewModel
 import com.example.playlistmaker.ui.search.pxToDP
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -22,21 +24,22 @@ class PlayerActivity : AppCompatActivity() {
         const val CURRENT_TRACK_KEY = "track"
     }
 
-    private lateinit var viewModel: PlayerViewModel
     val binding by lazy {
         ActivityPlayerBinding.inflate(layoutInflater)
     }
+
+    //MVVM
+    private var trackJson = ""
+    private val viewModel by viewModel<PlayerViewModel> {
+        parametersOf(trackJson)
+    }
+    //--
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val json = intent.getStringExtra(CURRENT_TRACK_KEY)
-        viewModel = ViewModelProvider(
-            owner = this,
-            factory = PlayerViewModel.getViewModelFactory(json)
-        )[PlayerViewModel::class.java]
-
+        trackJson = intent.getStringExtra(CURRENT_TRACK_KEY) ?: ""
 
         viewModel.trackScreenStateObserver().observe(this) { state ->
             when (state) {
