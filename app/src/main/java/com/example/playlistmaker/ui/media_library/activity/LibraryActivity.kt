@@ -1,11 +1,8 @@
 package com.example.playlistmaker.ui.media_library.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import com.example.playlistmaker.R
+import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.databinding.ActivityLibraryBinding
-import com.example.playlistmaker.databinding.ActivityMainBinding
 
 class LibraryActivity : AppCompatActivity() {
 
