@@ -45,7 +45,6 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.activity:activity:1.9.0")
     //implementation("androidx.activity:activity:1.8.0")
@@ -59,5 +58,14 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     //Koin
     implementation("io.insert-koin:koin-android:3.3.0")
+
+    //fragments
+    val fragment_version = "1.5.5"
+    implementation("androidx.fragment:fragment-ktx:$fragment_version")
+    //ViewPager2
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+    //TabLayout
+    //implementation("com.google.android.material:material:1.8.0")
+    implementation("com.google.android.material:material:1.11.0")
 
 }
