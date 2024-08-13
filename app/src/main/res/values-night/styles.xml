@@ -96,7 +96,7 @@
         <item name="trackTint">@color/night_blue</item>
     </style>
 
-    <style name="SearchNoConnectionHolder" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+    <style name="HolderButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textFontWeight">500</item>
@@ -106,6 +106,18 @@
         <item name="android:textColor">@color/search_text_color</item>
         <item name="cornerRadius">54dp</item>
         <item name="elevation">0dp</item>
+    </style>
+
+    <style name="SearchNoConnectionHolder" parent="HolderButton" />
+
+    <style name="TabsHorisontal">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_height">@dimen/panel_title_hight</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="tabTextColor">@color/white</item>
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="tabIndicatorFullWidth">true</item>
     </style>
 
     <!-- Player -->

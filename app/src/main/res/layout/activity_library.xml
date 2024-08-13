@@ -10,10 +10,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="@dimen/panel_header_height"/>
+        app:layout_constraintGuide_begin="@dimen/panel_header_height" />
 
     <!--  Main control panel  -->
-
     <ImageButton
         android:id="@+id/exitBtn"
         style="@style/PanelImgButton"
@@ -28,13 +27,25 @@
         android:id="@+id/title"
         style="@style/PanelTitle"
         android:text="@string/library"
-        app:layout_constraintStart_toEndOf="@id/exitBtn"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/titleBorder"
-        />
-
+        app:layout_constraintStart_toEndOf="@id/exitBtn"
+        app:layout_constraintTop_toTopOf="parent" />
     <!--  end Main control panel  -->
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        style="@style/TabsHorisontal"
+        android:layout_width="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleBorder"/>
 
-
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

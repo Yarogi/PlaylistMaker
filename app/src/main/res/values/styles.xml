@@ -108,7 +108,7 @@
         <item name="fontFamily">@font/ys_display_medium</item>
     </style>
 
-    <style name="SearchNoConnectionHolder" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+    <style name="HolderButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textFontWeight">400</item>
@@ -118,6 +118,18 @@
         <item name="cornerRadius">54dp</item>
         <item name="elevation">0dp</item>
     </style>
+
+    <style name="TabsHorisontal">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_height">@dimen/panel_title_hight</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="tabTextColor">@color/black</item>
+        <item name="tabIndicatorColor">@color/black</item>
+        <item name="tabIndicatorFullWidth">true</item>
+    </style>
+
+    <style name="SearchNoConnectionHolder" parent="HolderButton" />
 
     <!-- Player -->
     <style name="Player">
