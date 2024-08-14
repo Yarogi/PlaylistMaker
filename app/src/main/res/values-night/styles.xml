@@ -118,6 +118,7 @@
         <item name="tabTextColor">@color/white</item>
         <item name="tabIndicatorColor">@color/white</item>
         <item name="tabIndicatorFullWidth">true</item>
+        <item name="android:background">@color/black</item>
     </style>
 
     <!-- Player -->

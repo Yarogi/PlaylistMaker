@@ -127,6 +127,7 @@
         <item name="tabTextColor">@color/black</item>
         <item name="tabIndicatorColor">@color/black</item>
         <item name="tabIndicatorFullWidth">true</item>
+        <item name="android:background">@color/white</item>
     </style>
 
     <style name="SearchNoConnectionHolder" parent="HolderButton" />

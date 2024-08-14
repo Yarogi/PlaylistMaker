@@ -13,9 +13,7 @@ class LibraryPagerAdapter(
 ) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
-    override fun getItemCount(): Int {
-        return 2
-    }
+    override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {
         return if (position == 0)
