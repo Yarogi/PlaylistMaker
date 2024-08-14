@@ -1,6 +1,8 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.domain.main.model.Track
+import com.example.playlistmaker.ui.media_library.view_model.FeaturedTracksViewModel
+import com.example.playlistmaker.ui.media_library.view_model.PlaylistViewModel
 import com.example.playlistmaker.ui.player.view_model.PlayerViewModel
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 import com.example.playlistmaker.ui.settings.view_model.SettingsViewModel
@@ -30,6 +32,14 @@ val viewModelModule = module {
             sharingInteractor = get(),
             settingsInterractor = get()
         )
+    }
+
+    viewModel<FeaturedTracksViewModel> {
+        FeaturedTracksViewModel()
+    }
+
+    viewModel<PlaylistViewModel> {
+        PlaylistViewModel()
     }
 
 }

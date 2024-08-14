@@ -6,7 +6,7 @@
     android:theme="@style/Theme.PlaylistMaker.ErrorHolder">
 
     <Button
-        android:id="@+id/new_palylist_button"
+        android:id="@+id/new_playlist_button"
         style="@style/HolderButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
