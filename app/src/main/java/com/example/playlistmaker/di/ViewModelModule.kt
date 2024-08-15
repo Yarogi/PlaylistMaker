@@ -1,12 +1,13 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.domain.main.model.Track
+import com.example.playlistmaker.ui.media_library.view_model.FeaturedTracksViewModel
+import com.example.playlistmaker.ui.media_library.view_model.PlaylistViewModel
 import com.example.playlistmaker.ui.player.view_model.PlayerViewModel
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 import com.example.playlistmaker.ui.settings.view_model.SettingsViewModel
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidApplication
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -31,6 +32,14 @@ val viewModelModule = module {
             sharingInteractor = get(),
             settingsInterractor = get()
         )
+    }
+
+    viewModel<FeaturedTracksViewModel> {
+        FeaturedTracksViewModel()
+    }
+
+    viewModel<PlaylistViewModel> {
+        PlaylistViewModel()
     }
 
 }

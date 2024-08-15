@@ -15,6 +15,10 @@
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
 
+    <style name="Theme.PlaylistMaker.NoBackground" parent="Theme.PlaylistMaker">
+        <item name="android:background">@null</item>
+    </style>
+
     <style name="Theme.PlaylistMaker.Main" parent="Theme.PlaylistMaker">
         <item name="android:background">@color/blue</item>
     </style>
@@ -41,14 +45,20 @@
         <item name="tint">@null</item>
     </style>
 
-    <style name="Theme.PlaylistMaker.SearchErrorHolder" parent="Theme.PlaylistMaker">
-        <item name="android:paddingTop">78dp</item>
-        <item name="android:layout_marginHorizontal">24dp</item>
+    <style name="Theme.PlaylistMaker.ErrorHolder" parent="Theme.PlaylistMaker">
+
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">19sp</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:gravity">center_horizontal</item>
+
     </style>
+
+    <style name="Theme.PlaylistMaker.SearchErrorHolder" parent="Theme.PlaylistMaker.ErrorHolder">
+        <item name="android:paddingTop">78dp</item>
+        <item name="android:layout_marginHorizontal">24dp</item>
+    </style>
+
 
     <style name="Theme.PlaylistMaker.SearchErrorHolder.Image">
         <item name="android:paddingTop">0dp</item>

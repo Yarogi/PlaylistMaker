@@ -30,4 +30,10 @@
     <string name="player_add_to_playlist_description">Add to playlist</string>
     <string name="player_add_to_favorites_description">Add to favorites</string>
     <string name="network_error_message">A network error has occurred</string>
+    <string name="message_empty_library">Your media library is empty</string>
+    <string name="message_empty_playlist_list">You haven\'t created\nany playlists yet</string>
+    <string name="new_playlist">New playlist</string>
+    <string name="action_1">Action 1</string>
+    <string name="featured_tracks">Featured tracks</string>
+    <string name="playlists">Playlists</string>
 </resources>
