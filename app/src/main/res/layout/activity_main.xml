@@ -22,19 +22,19 @@
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
         android:text="@string/search"
-        app:icon="@drawable/search" />
+        app:icon="@drawable/ic_search" />
 
     <Button
         android:id="@+id/btnLibrary"
         style="@style/MainButtomStyle"
         android:layout_marginBottom="0dp"
         android:text="@string/library"
-        app:icon="@drawable/media_library" />
+        app:icon="@drawable/ic_library" />
 
     <Button
         android:id="@+id/btnSettings"
         style="@style/MainButtomStyle"
         android:text="@string/settings"
-        app:icon="@drawable/setting" />
+        app:icon="@drawable/ic_settings" />
 
 </LinearLayout>

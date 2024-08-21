@@ -67,6 +67,12 @@
         <item name="elevation">0dp</item>
     </style>
 
+    <style name="RootBottomButtonStyle">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="iconTint">@color/light_gray</item>
+        <item name="itemIconSize">24dp</item>
+    </style>
+
     <style name="MenuItem">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
