@@ -1,10 +1,9 @@
-package com.example.playlistmaker.ui.media_library.activity
+package com.example.playlistmaker.ui.media_library
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityLibraryBinding
-import com.example.playlistmaker.ui.media_library.LibraryPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
 class LibraryActivity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.player.model
+package com.example.playlistmaker.presentation.player
 
 sealed class TrackPlaybackState(val progress:Int) {
 

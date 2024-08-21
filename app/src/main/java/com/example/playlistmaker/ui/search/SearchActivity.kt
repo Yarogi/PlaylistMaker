@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.search.activity
+package com.example.playlistmaker.ui.search
 
 import android.content.Context
 import android.content.Intent
@@ -10,21 +10,14 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.domain.main.model.Track
-import com.example.playlistmaker.ui.player.activity.PlayerActivity
-import com.example.playlistmaker.ui.search.TrackAdapter
-import com.example.playlistmaker.ui.search.model.SearchState
-import com.example.playlistmaker.ui.search.view_model.SearchViewModel
+import com.example.playlistmaker.ui.player.PlayerActivity
+import com.example.playlistmaker.presentation.search.SearchState
+import com.example.playlistmaker.presentation.search.SearchViewModel
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

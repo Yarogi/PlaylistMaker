@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.player.view_model
+package com.example.playlistmaker.presentation.player
 
 import android.os.Handler
 import android.os.Looper
@@ -6,16 +6,9 @@ import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.model.PlaybackStatus
-import com.example.playlistmaker.ui.player.model.TrackPlaybackState
-import com.example.playlistmaker.ui.player.model.TrackScreenState
-import com.google.gson.Gson
 
 class PlayerViewModel(
     val track: Track,

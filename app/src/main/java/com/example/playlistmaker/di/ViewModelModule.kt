@@ -1,11 +1,11 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.domain.main.model.Track
-import com.example.playlistmaker.ui.media_library.view_model.FeaturedTracksViewModel
-import com.example.playlistmaker.ui.media_library.view_model.PlaylistViewModel
-import com.example.playlistmaker.ui.player.view_model.PlayerViewModel
-import com.example.playlistmaker.ui.search.view_model.SearchViewModel
-import com.example.playlistmaker.ui.settings.view_model.SettingsViewModel
+import com.example.playlistmaker.presentation.media_player.view_model.FeaturedTracksViewModel
+import com.example.playlistmaker.presentation.media_player.view_model.PlaylistViewModel
+import com.example.playlistmaker.presentation.player.PlayerViewModel
+import com.example.playlistmaker.presentation.search.SearchViewModel
+import com.example.playlistmaker.presentation.settings.SettingsViewModel
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel

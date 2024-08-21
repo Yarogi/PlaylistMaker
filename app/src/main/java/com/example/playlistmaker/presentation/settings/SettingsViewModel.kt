@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.settings.view_model
+package com.example.playlistmaker.presentation.settings
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.playlistmaker.domain.settings.SettingsInteractor
 import com.example.playlistmaker.domain.sharing.SharingInteractor
-import com.example.playlistmaker.ui.settings.model.SettingsState
 import com.example.playlistmaker.util.App
 
 class SettingsViewModel(

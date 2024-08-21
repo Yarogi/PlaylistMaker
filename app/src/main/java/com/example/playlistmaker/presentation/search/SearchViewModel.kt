@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.search.view_model
+package com.example.playlistmaker.presentation.search
 
 import android.os.Handler
 import android.os.Looper
@@ -11,7 +11,6 @@ import com.example.playlistmaker.domain.search.api.SearchHistoryInteractor
 import com.example.playlistmaker.domain.search.api.TracksInteractor
 import com.example.playlistmaker.domain.search.model.Resource
 import com.example.playlistmaker.domain.search.model.TrackSearchStructure
-import com.example.playlistmaker.ui.search.model.SearchState
 import java.util.concurrent.atomic.AtomicInteger
 
 class SearchViewModel(
