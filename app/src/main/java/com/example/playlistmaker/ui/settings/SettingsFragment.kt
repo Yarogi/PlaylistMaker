@@ -1,29 +1,35 @@
 package com.example.playlistmaker.ui.settings
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker.databinding.ActivitySettingsBinding
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.example.playlistmaker.databinding.FragmentSettingsBinding
 import com.example.playlistmaker.presentation.settings.SettingsState
 import com.example.playlistmaker.presentation.settings.SettingsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsFragment : Fragment() {
 
-    private val binding by lazy { ActivitySettingsBinding.inflate(layoutInflater) }
+    private lateinit var binding: FragmentSettingsBinding
 
     private val viewModel by viewModel<SettingsViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
+        binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        //Exit
-        binding.exitBtn.setOnClickListener {
-            this.finish()
-        }
-
-        viewModel.observerStateLiveData().observe(this) { state -> renderState(state) }
+        viewModel.observerStateLiveData()
+            .observe(viewLifecycleOwner) { state -> renderState(state) }
 
         //Shared
         binding.shareApp.setOnClickListener {
