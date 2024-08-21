@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.media_library.LibraryActivity">
+    tools:context=".ui.media_library.LibraryFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/titleBorder"

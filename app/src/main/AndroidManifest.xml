@@ -22,9 +22,6 @@
             android:name=".ui.search.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.media_library.LibraryActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.RootActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustNothing">
