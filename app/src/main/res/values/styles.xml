@@ -66,9 +66,22 @@
     </style>
 
     <style name="RootBottomButtonStyle">
-        <item name="android:fontFamily">@font/ys_display_regular</item>
-        <item name="iconTint">@color/light_black</item>
         <item name="itemIconSize">24dp</item>
+        <item name="itemActiveIndicatorStyle">@null</item>
+        <item name="itemBackground">@color/transparent</item>
+        <item name="itemIconTint">@color/bottom_nav_color_day</item>
+        <item name="itemTextColor">@color/bottom_nav_color_day</item>
+        <item name="itemTextAppearanceActive">@style/RootBottomButtonStyle.TextActive</item>
+        <item name="itemTextAppearanceInactive">@style/RootBottomButtonStyle.TextActive</item>
+    </style>
+    <style name="RootBottomButtonStyle.Border">
+        <item name="android:backgroundTint">@color/light_gray</item>
+    </style>
+    <style name="RootBottomButtonStyle.TextActive" parent="RootBottomButtonStyle">
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
 
