@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
-import com.example.playlistmaker.ui.main.fragment.BindingFragment
+import com.example.playlistmaker.ui.util.BindingFragment
 import com.example.playlistmaker.presentation.media_player.view_model.PlaylistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

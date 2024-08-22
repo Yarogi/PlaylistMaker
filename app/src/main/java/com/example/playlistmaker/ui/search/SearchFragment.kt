@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +23,8 @@ class SearchFragment : Fragment() {
 
     private val viewModel by viewModel<SearchViewModel>()
 
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     //Search
     private lateinit var textWatcher: TextWatcher
@@ -60,7 +62,7 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -84,6 +86,14 @@ class SearchFragment : Fragment() {
             binding.searchTextEdit.removeTextChangedListener(it)
         }
 
+        _binding = null
+
+        Log.d("SEARCH_FRAGMENT", "Destroy view $this")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("SEARCH_FRAGMENT", "Destroy $this")
     }
 
     private fun initEditSearchTextView() {
@@ -94,7 +104,7 @@ class SearchFragment : Fragment() {
             viewModel.searchTrackDebounce("")
         }
 
-        //Done in keyboard
+        //Keyboard done
         binding.searchTextEdit.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 viewModel.searchTrackDebounce(
@@ -163,7 +173,7 @@ class SearchFragment : Fragment() {
 
     private fun startingTrack(track: Track) {
         Toast.makeText(
-            requireContext(),
+            requireActivity(),
             "Вопроизводим ${track.trackName}",
             Toast.LENGTH_SHORT
         ).show()

@@ -3,6 +3,7 @@ package com.example.playlistmaker.presentation.search
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,6 +25,8 @@ class SearchViewModel(
         private const val SEARCH_HISTORY_SIZE = 10
         private val SEARCH_REQUEST_TOKEN = "SEARCH_TRACK_REQUEST"
 
+        private const val DEBUG_TAG = "SEARCH_DEBUG"
+
     }
 
     private val handler = Handler(Looper.getMainLooper())
@@ -34,7 +37,12 @@ class SearchViewModel(
 
     private var searchResultDebouncer = AtomicInteger(0)
 
-    private val stateLiveData = MutableLiveData<SearchState>(SearchState.NoContent(""))
+    private fun getDefaultState(): SearchState {
+        Log.d(DEBUG_TAG, "Create new ViewModel: $this")
+        return SearchState.NoContent("")
+    }
+
+    private val stateLiveData = MutableLiveData<SearchState>(getDefaultState())
     fun observeSearchState(): LiveData<SearchState> = stateLiveData
     //--Search
 
@@ -145,11 +153,15 @@ class SearchViewModel(
 
         this.latestSearchHasFocus = hasFocus
 
-        if (hasFocus && latestSearchText?.isEmpty() != false) {
-            renderHistory()
-        } else {
-            renderState(SearchState.NoContent(getLatestSearchText()))
+        val currentSearchText = getLatestSearchText()
+        if (currentSearchText.isEmpty()) {
+            if (hasFocus) {
+                renderHistory()
+            } else {
+                renderState(SearchState.NoContent(currentSearchText))
+            }
         }
+
 
     }
 
