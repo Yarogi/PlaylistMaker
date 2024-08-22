@@ -2,6 +2,7 @@ package com.example.playlistmaker.ui.player
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -12,6 +13,7 @@ import com.example.playlistmaker.presentation.player.TrackPlaybackState
 import com.example.playlistmaker.presentation.player.TrackScreenState
 import com.example.playlistmaker.presentation.player.PlayerViewModel
 import com.example.playlistmaker.ui.search.pxToDP
+import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
@@ -21,6 +23,10 @@ class PlayerActivity : AppCompatActivity() {
 
     companion object {
         const val CURRENT_TRACK_KEY = "track"
+        fun createArgs(track: Track): Bundle {
+            val json = Gson().toJson(track)
+            return bundleOf(CURRENT_TRACK_KEY to json)
+        }
     }
 
     val binding by lazy {

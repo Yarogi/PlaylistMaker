@@ -71,6 +71,7 @@
         <item name="itemIconSize">24dp</item>
     </style>
 
+
     <style name="MainButtomStyleCL" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">0dp</item>
         <item name="cornerRadius">@dimen/big_button_radius</item>
