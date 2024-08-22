@@ -72,8 +72,6 @@ class SearchFragment : Fragment() {
         initErrorHoldersView()
         initHistoryHolderView()
 
-        updateResultViewVisible()
-
         //observers
         viewModel.observeSearchState().observe(viewLifecycleOwner) { renderState(it) }
 

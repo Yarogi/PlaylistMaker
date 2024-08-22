@@ -183,7 +183,7 @@
                 android:layout_weight="1"
                 android:visibility="visible"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/track_view" />
+                tools:listitem="@layout/track_item_view" />
 
             <Button
                 android:id="@+id/clearHistory"

@@ -34,7 +34,7 @@ class SearchViewModel(
 
     private var searchResultDebouncer = AtomicInteger(0)
 
-    private val stateLiveData = MutableLiveData<SearchState>()
+    private val stateLiveData = MutableLiveData<SearchState>(SearchState.NoContent(""))
     fun observeSearchState(): LiveData<SearchState> = stateLiveData
     //--Search
 

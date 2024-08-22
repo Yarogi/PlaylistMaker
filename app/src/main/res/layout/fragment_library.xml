@@ -13,22 +13,12 @@
         app:layout_constraintGuide_begin="@dimen/panel_header_height" />
 
     <!--  Main control panel  -->
-    <ImageButton
-        android:id="@+id/exitBtn"
-        style="@style/PanelImgButton"
-        android:layout_marginStart="@dimen/panel_header_padding"
-        android:contentDescription="@string/back_content_description"
-        android:src="@drawable/arrow_back"
-        app:layout_constraintBottom_toTopOf="@id/titleBorder"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/title"
         style="@style/PanelTitle"
         android:text="@string/library"
         app:layout_constraintBottom_toTopOf="@id/titleBorder"
-        app:layout_constraintStart_toEndOf="@id/exitBtn"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <!--  end Main control panel  -->
 

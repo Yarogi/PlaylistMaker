@@ -19,9 +19,6 @@
             android:name=".ui.player.PlayerActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.search.SearchActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.RootActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustNothing">

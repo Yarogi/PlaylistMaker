@@ -11,15 +11,9 @@
         android:id="@+id/panelHeader"
         style="@style/PanelHeader">
 
-        <Button
-            android:id="@+id/exitBtn"
-            style="@style/PanelIcon"
-            android:contentDescription="@string/back_content_description"
-            app:icon="@drawable/arrow_back" />
-
         <TextView
             style="@style/PanelTitle"
-            android:text="@string/settings"/>
+            android:text="@string/settings" />
     </LinearLayout>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -35,19 +29,19 @@
     <Button
         android:id="@+id/shareApp"
         style="@style/MenuItem"
-        android:text="@string/share_app"
-        android:drawableRight="@drawable/share" />
+        android:drawableRight="@drawable/share"
+        android:text="@string/share_app" />
 
     <Button
         android:id="@+id/writeToSupport"
         style="@style/MenuItem"
-        android:text="@string/write_to_support"
-        android:drawableRight="@drawable/support" />
+        android:drawableRight="@drawable/support"
+        android:text="@string/write_to_support" />
 
     <Button
         android:id="@+id/termsOfUse"
         style="@style/MenuItem"
-        android:text="@string/terms_of_use"
-        android:drawableRight="@drawable/arrow_left" />
+        android:drawableRight="@drawable/arrow_left"
+        android:text="@string/terms_of_use" />
 
 </LinearLayout>
