@@ -17,7 +17,7 @@
     <!-- Panel Header Title -->
     <dimen name="panel_title_hight">48dp</dimen>
     <dimen name="panel_title_text_size">22sp</dimen>
-    <dimen name="panel_title_marrgin">12dp</dimen>
+    <dimen name="panel_title_marrgin">16dp</dimen>
     <dimen name="panel_title_marrginTop">10dp</dimen>
     <dimen name="panel_title_icon_padding">12dp</dimen>
     <!--  big button  -->

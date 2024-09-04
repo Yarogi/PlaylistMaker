@@ -14,5 +14,8 @@
     <color name="secondary_gray">#818C99</color>
     <color name="search_text_color">#1A1B22</color>
     <color name="light_black">#1A1B22</color>
+    <color name="transparent">#00000000</color>
+
+
     <!--    -->
 </resources>
