@@ -99,6 +99,7 @@ class SearchFragment : Fragment() {
         Log.d("SEARCH_FRAGMENT", "Destroy $this")
     }
 
+    /** Инициализация элементов поиска и установка слушателей */
     private fun initEditSearchTextView() {
 
         //Clear text
@@ -110,6 +111,7 @@ class SearchFragment : Fragment() {
         //Keyboard done
         binding.searchTextEdit.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                //Заершение ввода не использует задержку
                 viewModel.searchTrackDebounce(
                     searchText = binding.searchTextEdit.text?.toString() ?: ""
                 )

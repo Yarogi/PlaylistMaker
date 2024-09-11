@@ -31,8 +31,7 @@ val interactorModule = module {
 
     single<TracksInteractor> {
         TracksInteractorImpl(
-            repository = get(),
-            executor = get()
+            repository = get()
         )
     }
 
