@@ -154,20 +154,11 @@ class SearchViewModel(
         }
 
         saveSearchHistory()
-
-    }
-
-    fun replaceTrackInHistory(track: Track) {
-        if (history.isNotEmpty() && history[0].trackId != track.trackId) {
-
-            val i = history.indexOf(track)
-
-            history.removeAt(i)
-            history.add(0, track)
-
+        //Если текст поиска пустой, то обновляем отображение истории
+        if (getLatestSearchText().isEmpty()) {
             renderHistory()
-
         }
+
     }
 
     fun clearHistory() {

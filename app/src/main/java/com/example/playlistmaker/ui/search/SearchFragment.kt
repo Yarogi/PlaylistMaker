@@ -10,9 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
@@ -20,6 +20,7 @@ import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.presentation.search.SearchState
 import com.example.playlistmaker.presentation.search.SearchViewModel
 import com.example.playlistmaker.ui.player.PlayerActivity
+import com.example.playlistmaker.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -35,30 +36,29 @@ class SearchFragment : Fragment() {
     //Tracklist
     private val trackListClickListener = object : TrackAdapter.Listener {
         override fun onClickTrackListener(track: Track) {
-            viewModel.addTrackToHistory(track)
-            startingTrack(track)
+            playTrackDebouncer(track)
         }
 
     }
     private val trackListAdapter = TrackAdapter(trackListClickListener)
 
     //History
-    private var trackSelectionIsProcessed = false
     private val historyClickListener = object : TrackAdapter.Listener {
         override fun onClickTrackListener(track: Track) {
-
-            if (trackSelectionIsProcessed) return
-            trackSelectionIsProcessed = true
-
-            //replace track in history
-            viewModel.replaceTrackInHistory(track)
-            startingTrack(track)
-
-            trackSelectionIsProcessed = false
-
+            playTrackDebouncer(track)
         }
     }
     private val historyAdapter = TrackAdapter(historyClickListener)
+
+    private val playTrackDebouncer: (Track) -> Unit by lazy {
+        debounce(0L, lifecycleScope, false) { track ->
+            viewModel.addTrackToHistory(track)
+            findNavController().navigate(
+                R.id.action_searchFragment_to_playerActivity,
+                PlayerActivity.createArgs(track)
+            )
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -174,13 +174,6 @@ class SearchFragment : Fragment() {
                     .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
-    }
-
-    private fun startingTrack(track: Track) {
-        findNavController().navigate(
-            R.id.action_searchFragment_to_playerActivity,
-            PlayerActivity.createArgs(track)
-        )
     }
 
     private fun renderState(state: SearchState) {
