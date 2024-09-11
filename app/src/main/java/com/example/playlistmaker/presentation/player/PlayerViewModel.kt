@@ -1,24 +1,21 @@
 package com.example.playlistmaker.presentation.player
 
-import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.model.PlaybackStatus
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     val track: Track,
     val playerInteractor: PlayerInteractor,
 ) : ViewModel() {
-
-    companion object {
-        private const val DURATION_DELAY = 300L
-        private val DURATION_TOKEN = Any()
-    }
 
     private val trackScreenStateLiveData = MutableLiveData<TrackScreenState>()
     private val playerState = MutableLiveData<TrackPlaybackState>()
@@ -31,7 +28,7 @@ class PlayerViewModel(
     fun trackScreenStateObserver(): LiveData<TrackScreenState> = trackScreenStateLiveData
     fun playerStateObserver(): LiveData<TrackPlaybackState> = playerState
 
-    private val handler by lazy { Handler(Looper.getMainLooper()) }
+    private var timerJob: Job? = null
 
     override fun onCleared() {
         super.onCleared()
@@ -49,7 +46,7 @@ class PlayerViewModel(
             }
 
             override fun onCompletionListener() {
-                handler.removeCallbacksAndMessages(DURATION_TOKEN)
+                timerJob?.cancel()
                 renderState(TrackPlaybackState.Ready)
             }
 
@@ -72,30 +69,29 @@ class PlayerViewModel(
         }
 
         playerInteractor.paused()
-        handler.removeCallbacksAndMessages(DURATION_TOKEN)
+
+        timerJob?.cancel()
         renderState(TrackPlaybackState.Paused(getCurrentDuration()))
     }
 
     private fun startPlayer() {
 
-        renderState(TrackPlaybackState.Played(getCurrentDuration()))
-
-        val showDurationRunnable = object : Runnable {
-            override fun run() {
-
-                renderState(TrackPlaybackState.Played(getCurrentDuration()))
-
-                val postTime = SystemClock.uptimeMillis() + DURATION_DELAY
-                handler.postAtTime(this, DURATION_TOKEN, postTime)
-            }
-
-        }
-
-        val postTime = SystemClock.uptimeMillis() + DURATION_DELAY
-        handler.postAtTime(showDurationRunnable, DURATION_TOKEN, postTime)
-
         playerInteractor.played()
+        renderState(TrackPlaybackState.Played(getCurrentDuration()))
+        startTimer()
 
+    }
+
+    /** Запуск короутины обновляющей прогресс бар.
+     *
+     *  Работает только, если плеер в статусе воспроизведения*/
+    private fun startTimer() {
+        timerJob = viewModelScope.launch {
+            while (playerInteractor.getPlaybackState() == PlaybackStatus.PLAYING) {
+                delay(300L)
+                renderState(TrackPlaybackState.Played(getCurrentDuration()))
+            }
+        }
     }
 
     private fun renderState(state: TrackPlaybackState) {
