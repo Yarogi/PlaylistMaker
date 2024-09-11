@@ -1,5 +1,6 @@
 package com.example.playlistmaker.presentation.player
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,10 +16,6 @@ class PlayerViewModel(
     val track: Track,
     val playerInteractor: PlayerInteractor,
 ) : ViewModel() {
-
-    companion object {
-        private const val DURATION_DELAY = 300L
-    }
 
     private val trackScreenStateLiveData = MutableLiveData<TrackScreenState>()
     private val playerState = MutableLiveData<TrackPlaybackState>()
@@ -71,24 +68,30 @@ class PlayerViewModel(
             return
         }
 
-        timerJob?.cancel()
         playerInteractor.paused()
+
+        timerJob?.cancel()
         renderState(TrackPlaybackState.Paused(getCurrentDuration()))
     }
 
     private fun startPlayer() {
 
+        playerInteractor.played()
         renderState(TrackPlaybackState.Played(getCurrentDuration()))
+        startTimer()
 
+    }
+
+    /** Запуск короутины обновляющей прогресс бар.
+     *
+     *  Работает только, если плеер в статусе воспроизведения*/
+    private fun startTimer() {
         timerJob = viewModelScope.launch {
             while (playerInteractor.getPlaybackState() == PlaybackStatus.PLAYING) {
-                delay(DURATION_DELAY)
+                delay(300L)
                 renderState(TrackPlaybackState.Played(getCurrentDuration()))
             }
         }
-
-        playerInteractor.played()
-
     }
 
     private fun renderState(state: TrackPlaybackState) {
