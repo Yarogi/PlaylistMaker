@@ -1,14 +1,15 @@
 package com.example.playlistmaker.presentation.player
 
-import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.model.PlaybackStatus
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     val track: Track,
@@ -17,7 +18,6 @@ class PlayerViewModel(
 
     companion object {
         private const val DURATION_DELAY = 300L
-        private val DURATION_TOKEN = Any()
     }
 
     private val trackScreenStateLiveData = MutableLiveData<TrackScreenState>()
@@ -31,7 +31,7 @@ class PlayerViewModel(
     fun trackScreenStateObserver(): LiveData<TrackScreenState> = trackScreenStateLiveData
     fun playerStateObserver(): LiveData<TrackPlaybackState> = playerState
 
-    private val handler by lazy { Handler(Looper.getMainLooper()) }
+    private var timerJob: Job? = null
 
     override fun onCleared() {
         super.onCleared()
@@ -49,7 +49,7 @@ class PlayerViewModel(
             }
 
             override fun onCompletionListener() {
-                handler.removeCallbacksAndMessages(DURATION_TOKEN)
+                timerJob?.cancel()
                 renderState(TrackPlaybackState.Ready)
             }
 
@@ -71,8 +71,8 @@ class PlayerViewModel(
             return
         }
 
+        timerJob?.cancel()
         playerInteractor.paused()
-        handler.removeCallbacksAndMessages(DURATION_TOKEN)
         renderState(TrackPlaybackState.Paused(getCurrentDuration()))
     }
 
@@ -80,19 +80,12 @@ class PlayerViewModel(
 
         renderState(TrackPlaybackState.Played(getCurrentDuration()))
 
-        val showDurationRunnable = object : Runnable {
-            override fun run() {
-
+        timerJob = viewModelScope.launch {
+            while (playerInteractor.getPlaybackState() == PlaybackStatus.PLAYING) {
+                delay(DURATION_DELAY)
                 renderState(TrackPlaybackState.Played(getCurrentDuration()))
-
-                val postTime = SystemClock.uptimeMillis() + DURATION_DELAY
-                handler.postAtTime(this, DURATION_TOKEN, postTime)
             }
-
         }
-
-        val postTime = SystemClock.uptimeMillis() + DURATION_DELAY
-        handler.postAtTime(showDurationRunnable, DURATION_TOKEN, postTime)
 
         playerInteractor.played()
 
