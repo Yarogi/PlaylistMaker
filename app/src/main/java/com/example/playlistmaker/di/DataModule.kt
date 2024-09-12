@@ -50,7 +50,7 @@ val dataModule = module {
     }
 
     single<NetworkClient> {
-        RetrofitNetworkClient(get())
+        RetrofitNetworkClient(trackSearchService = get(), context = androidContext())
     }
 
     single<ExternalNavigator> {

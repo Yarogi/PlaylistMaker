@@ -51,6 +51,8 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    //GLIDE
     implementation("com.github.bumptech.glide:glide:4.16.0")
     //REST API
     implementation("com.google.code.gson:gson:2.10")
@@ -58,19 +60,18 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     //Koin
     implementation("io.insert-koin:koin-android:3.3.0")
-
     //fragments
     val fragment_version = "1.5.5"
     implementation("androidx.fragment:fragment-ktx:$fragment_version")
     //ViewPager2
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     //TabLayout
-    //implementation("com.google.android.material:material:1.8.0")
     implementation("com.google.android.material:material:1.11.0")
-
     //Navigation
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
     implementation("androidx.fragment:fragment-ktx:1.5.6")
+    //Coroutine
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
 }
