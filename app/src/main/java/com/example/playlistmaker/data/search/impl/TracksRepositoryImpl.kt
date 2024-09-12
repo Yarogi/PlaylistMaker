@@ -19,7 +19,7 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRep
         flow {
 
             val request = TrackRequestFromTrackSearchStructureMapper.get(searchStructure)
-            val response = networkClient.doRequestSuspend(request)
+            val response = networkClient.doRequest(request)
 
             when (response.resultCode) {
                 200 -> emit(Resource.Success(data = TrackFromTrackDtoMapper.getTrackList((response as TrackResponse).results)))
