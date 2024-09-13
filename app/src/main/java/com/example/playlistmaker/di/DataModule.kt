@@ -2,6 +2,7 @@ package com.example.playlistmaker.di
 
 import android.content.Context
 import android.media.MediaPlayer
+import android.net.ConnectivityManager
 import com.example.playlistmaker.data.search.network.NetworkClient
 import com.example.playlistmaker.data.search.network.RetrofitNetworkClient
 import com.example.playlistmaker.data.search.network.TrackSearchApi
@@ -22,6 +23,8 @@ val dataModule = module {
     factory<MediaPlayer> { MediaPlayer() }
 
     factory { Gson() }
+
+    single<ConnectivityManager> { androidContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager }
 
     single(named(name = DINames.history_pref)) {
         androidContext().getSharedPreferences(
@@ -50,7 +53,7 @@ val dataModule = module {
     }
 
     single<NetworkClient> {
-        RetrofitNetworkClient(get())
+        RetrofitNetworkClient(trackSearchService = get(), connectivityManager = get())
     }
 
     single<ExternalNavigator> {

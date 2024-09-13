@@ -1,18 +1,17 @@
 package com.example.playlistmaker.presentation.search
 
-import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.search.api.SearchHistoryInteractor
 import com.example.playlistmaker.domain.search.api.TracksInteractor
-import com.example.playlistmaker.domain.search.model.Resource
 import com.example.playlistmaker.domain.search.model.TrackSearchStructure
-import java.util.concurrent.atomic.AtomicInteger
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val searchInteractor: TracksInteractor,
@@ -23,19 +22,15 @@ class SearchViewModel(
         const val SEARCH_DEF = ""
         private const val SEARCH_DELAY = 2000L
         private const val SEARCH_HISTORY_SIZE = 10
-        private val SEARCH_REQUEST_TOKEN = "SEARCH_TRACK_REQUEST"
 
         private const val DEBUG_TAG = "SEARCH_DEBUG"
 
     }
 
-    private val handler = Handler(Looper.getMainLooper())
+    private var searchJob: Job? = null
 
     //Search
-    private var latestSearchHasFocus: Boolean? = null
     private var latestSearchText: String? = null
-
-    private var searchResultDebouncer = AtomicInteger(0)
 
     private fun getDefaultState(): SearchState {
         Log.d(DEBUG_TAG, "Create new ViewModel: $this")
@@ -50,10 +45,6 @@ class SearchViewModel(
     private val history by lazy { searchHistoryInteractor.read() }
     //--History
 
-    override fun onCleared() {
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-    }
-
     //Search
     fun searchTrackDebounce(
         searchText: String,
@@ -66,27 +57,26 @@ class SearchViewModel(
         }
 
         this.latestSearchText = searchText
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
 
-        var searchCounter = searchResultDebouncer.get()
-        searchCounter++
-        if (searchCounter >= 100) {
-            searchCounter = 0
-        }
-        searchResultDebouncer.set(searchCounter)
-
+        //Есть вариант, когда необходимо запустить поиск без задержки:
+        //например,если пользователь нажал на кнопку окончания ввода
+        //поэтому универсальный debounce не используется
+        searchJob?.cancel()
         if (searchText.isEmpty()) {
             renderHistory()
         } else {
-
-            renderState(SearchState.Loading(getLatestSearchText()))
-
-            val searchRunnable = Runnable { searchRequest(searchText, searchCounter) }
-            if (useDelay) {
-                val postTime = SystemClock.uptimeMillis() + SEARCH_DELAY
-                handler.postAtTime(searchRunnable, SEARCH_REQUEST_TOKEN, postTime)
-            } else {
-                handler.postAtFrontOfQueue(searchRunnable)
+            renderState(SearchState.NoContent(searchText))
+            searchJob = viewModelScope.launch {
+                if (useDelay) delay(SEARCH_DELAY)
+                renderState(SearchState.Loading(searchText))
+                //Поиск
+                val searchStructure = TrackSearchStructure(term = searchText)
+                launch {
+                    searchInteractor.searchTracks(searchStructure = searchStructure)
+                        .collect { result ->
+                            processSearchResult(result.traks, result.errorMessage)
+                        }
+                }
             }
         }
 
@@ -103,39 +93,17 @@ class SearchViewModel(
         )
     }
 
-    private fun searchRequest(searchText: String, searchCounter: Int) {
+    private fun processSearchResult(foundTracks: List<Track>?, errorMessage: String?) {
 
-        val searchStructure = TrackSearchStructure(term = searchText)
-        searchInteractor.searchTracks(
-            searchStructure = searchStructure,
-            consumer = object : TracksInteractor.TracksConsumer {
-                override fun consume(resource: Resource<List<Track>>) {
-                    processSearchResult(resource, searchCounter)
-                }
-
-            })
-
-    }
-
-    private fun processSearchResult(resource: Resource<List<Track>>, searchCounter: Int) {
-
-        if (searchCounter != searchResultDebouncer.get()) return
-
-        when (resource) {
-            is Resource.Success -> {
-                if (resource.data.isEmpty()) {
-                    renderState(SearchState.Empty(getLatestSearchText()))
-                } else {
-                    renderState(
-                        SearchState.Content(
-                            searchText = getLatestSearchText(),
-                            tracks = resource.data
-                        )
-                    )
-                }
-            }
-
-            is Resource.Error -> renderState(SearchState.Error(getLatestSearchText()))
+        when {
+            errorMessage != null -> renderState(SearchState.Error(getLatestSearchText()))
+            foundTracks.isNullOrEmpty() -> renderState(SearchState.Empty(getLatestSearchText()))
+            else -> renderState(
+                SearchState.Content(
+                    searchText = getLatestSearchText(),
+                    tracks = foundTracks
+                )
+            )
         }
 
     }
@@ -147,11 +115,8 @@ class SearchViewModel(
 
     //History
 
+    /** Отображение истории при смене фокуса */
     fun readSearchHistoryDebounce(hasFocus: Boolean) {
-
-        if (hasFocus == latestSearchHasFocus) return
-
-        this.latestSearchHasFocus = hasFocus
 
         val currentSearchText = getLatestSearchText()
         if (currentSearchText.isEmpty()) {
@@ -185,20 +150,11 @@ class SearchViewModel(
         }
 
         saveSearchHistory()
-
-    }
-
-    fun replaceTrackInHistory(track: Track) {
-        if (history.isNotEmpty() && history[0].trackId != track.trackId) {
-
-            val i = history.indexOf(track)
-
-            history.removeAt(i)
-            history.add(0, track)
-
+        //Если текст поиска пустой, то обновляем отображение истории
+        if (getLatestSearchText().isEmpty()) {
             renderHistory()
-
         }
+
     }
 
     fun clearHistory() {
