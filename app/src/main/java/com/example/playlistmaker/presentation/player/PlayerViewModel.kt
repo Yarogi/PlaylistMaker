@@ -35,7 +35,7 @@ class PlayerViewModel(
         playerInteractor.release()
     }
 
-    fun preparePlayer() {
+    private fun preparePlayer() {
 
         renderState(TrackPlaybackState.Loading)
 

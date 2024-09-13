@@ -73,8 +73,8 @@ class SearchViewModel(
                 val searchStructure = TrackSearchStructure(term = searchText)
                 launch {
                     searchInteractor.searchTracks(searchStructure = searchStructure)
-                        .collect { pair ->
-                            processSearchResult(pair.first, pair.second)
+                        .collect { result ->
+                            processSearchResult(result.traks, result.errorMessage)
                         }
                 }
             }
@@ -95,19 +95,15 @@ class SearchViewModel(
 
     private fun processSearchResult(foundTracks: List<Track>?, errorMessage: String?) {
 
-        if (errorMessage != null) {
-            renderState(SearchState.Error(getLatestSearchText()))
-        } else {
-            if (foundTracks.isNullOrEmpty()) {
-                renderState(SearchState.Empty(getLatestSearchText()))
-            } else {
-                renderState(
-                    SearchState.Content(
-                        searchText = getLatestSearchText(),
-                        tracks = foundTracks
-                    )
+        when {
+            errorMessage != null -> renderState(SearchState.Error(getLatestSearchText()))
+            foundTracks.isNullOrEmpty() -> renderState(SearchState.Empty(getLatestSearchText()))
+            else -> renderState(
+                SearchState.Content(
+                    searchText = getLatestSearchText(),
+                    tracks = foundTracks
                 )
-            }
+            )
         }
 
     }

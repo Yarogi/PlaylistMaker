@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 
 class RetrofitNetworkClient(
     private val trackSearchService: TrackSearchApi,
-    private val context: Context,
+    private val connectivityManager: ConnectivityManager,
 ) : NetworkClient {
 
     override suspend fun doRequest(dto: Any): Response {
@@ -40,8 +40,6 @@ class RetrofitNetworkClient(
     }
 
     private fun isConnected(): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities =
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if (capabilities != null) {
