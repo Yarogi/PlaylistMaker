@@ -23,8 +23,6 @@ class SearchViewModel(
         private const val SEARCH_DELAY = 2000L
         private const val SEARCH_HISTORY_SIZE = 10
 
-        private const val DEBUG_TAG = "SEARCH_DEBUG"
-
     }
 
     private var searchJob: Job? = null
@@ -33,7 +31,6 @@ class SearchViewModel(
     private var latestSearchText: String? = null
 
     private fun getDefaultState(): SearchState {
-        Log.d(DEBUG_TAG, "Create new ViewModel: $this")
         return SearchState.NoContent("")
     }
 
