@@ -1,5 +1,6 @@
 package com.example.playlistmaker.di
 
+import com.example.playlistmaker.data.media_library.mapper.TrackDbMapper
 import com.example.playlistmaker.data.player.impl.PlayerRepositoryImpl
 import com.example.playlistmaker.data.search.impl.SearchHistoryRepositoryImpl
 import com.example.playlistmaker.data.search.impl.TracksRepositoryImpl
@@ -13,6 +14,8 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val repositoryModule = module {
+
+    factory { TrackDbMapper() }
 
     factory<PlayerRepository> { PlayerRepositoryImpl(mediaPlayer = get()) }
 

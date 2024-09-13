@@ -3,6 +3,8 @@ package com.example.playlistmaker.di
 import android.content.Context
 import android.media.MediaPlayer
 import android.net.ConnectivityManager
+import androidx.room.Room
+import com.example.playlistmaker.data.media_library.db.TrackDataBase
 import com.example.playlistmaker.data.search.network.NetworkClient
 import com.example.playlistmaker.data.search.network.RetrofitNetworkClient
 import com.example.playlistmaker.data.search.network.TrackSearchApi
@@ -60,5 +62,12 @@ val dataModule = module {
         ExternalNavigatorImpl(context = androidContext())
     }
 
+    single {
+        Room.databaseBuilder(
+            context = androidContext(),
+            klass = TrackDataBase::class.java,
+            name = "track_database.db"
+        )
+    }
 
 }
