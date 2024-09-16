@@ -31,8 +31,4 @@ class TrackLibraryRepositoryImpl(
 
     }
 
-    override fun getAllTrackId(): Flow<List<Int>> = flow {
-        val result = trackDataBase.trackDao().getAllTracksId()
-        emit(result)
-    }
 }

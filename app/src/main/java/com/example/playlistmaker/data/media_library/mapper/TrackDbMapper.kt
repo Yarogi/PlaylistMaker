@@ -6,6 +6,7 @@ import com.example.playlistmaker.domain.main.model.Track
 
 class TrackDbMapper {
 
+    /** Преобразуем сущность из сети в сущность БД */
     fun map(track: TrackDto): TrackEntity {
         return TrackEntity(
             trackId = track.trackId,
@@ -21,6 +22,7 @@ class TrackDbMapper {
         )
     }
 
+    /** Преобразуем сущность из БД в сущность базовой модели */
     fun map(track: TrackEntity): Track {
         return Track(
             trackId = track.trackId,
@@ -36,6 +38,7 @@ class TrackDbMapper {
         )
     }
 
+    /** Преобразуем сущность базовой модели в сущность БД*/
     fun map(track: Track): TrackEntity {
         return TrackEntity(
             trackId = track.trackId,
