@@ -20,7 +20,7 @@ val interactorModule = module {
     //Player
 
     factory<PlayerInteractor> {
-        PlayerInteractorImpl(player = get())
+        PlayerInteractorImpl(player = get(), libraryRepository = get())
     }
 
     //Search

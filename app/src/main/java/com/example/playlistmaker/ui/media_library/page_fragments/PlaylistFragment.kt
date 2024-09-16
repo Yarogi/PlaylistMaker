@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.example.playlistmaker.ui.util.BindingFragment
-import com.example.playlistmaker.presentation.media_player.view_model.PlaylistViewModel
+import com.example.playlistmaker.presentation.media_library.PlaylistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistFragment : BindingFragment<FragmentPlaylistsBinding>() {

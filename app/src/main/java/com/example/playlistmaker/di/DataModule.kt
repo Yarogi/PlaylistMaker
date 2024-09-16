@@ -22,6 +22,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val dataModule = module {
 
+    single<TrackDataBase> {
+        Room.databaseBuilder(
+            context = androidContext(),
+            klass = TrackDataBase::class.java,
+            name = "track_database.db"
+        ).build()
+    }
+
     factory<MediaPlayer> { MediaPlayer() }
 
     factory { Gson() }
@@ -60,14 +68,6 @@ val dataModule = module {
 
     single<ExternalNavigator> {
         ExternalNavigatorImpl(context = androidContext())
-    }
-
-    single {
-        Room.databaseBuilder(
-            context = androidContext(),
-            klass = TrackDataBase::class.java,
-            name = "track_database.db"
-        )
     }
 
 }

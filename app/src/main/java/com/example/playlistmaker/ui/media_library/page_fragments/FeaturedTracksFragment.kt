@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.playlistmaker.databinding.FragmentFeaturedTracksBinding
 import com.example.playlistmaker.ui.util.BindingFragment
-import com.example.playlistmaker.presentation.media_player.view_model.FeaturedTracksViewModel
+import com.example.playlistmaker.presentation.media_library.FeaturedTracksViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FeaturedTracksFragment : BindingFragment<FragmentFeaturedTracksBinding>() {

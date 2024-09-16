@@ -1,8 +1,8 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.domain.main.model.Track
-import com.example.playlistmaker.presentation.media_player.view_model.FeaturedTracksViewModel
-import com.example.playlistmaker.presentation.media_player.view_model.PlaylistViewModel
+import com.example.playlistmaker.presentation.media_library.FeaturedTracksViewModel
+import com.example.playlistmaker.presentation.media_library.PlaylistViewModel
 import com.example.playlistmaker.presentation.player.PlayerViewModel
 import com.example.playlistmaker.presentation.search.SearchViewModel
 import com.example.playlistmaker.presentation.settings.SettingsViewModel

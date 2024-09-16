@@ -58,8 +58,15 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         binding.panelBackArrow.setOnClickListener { finish() }
-
         binding.playTrack.setOnClickListener { viewModel.changePlayState() }
+
+        viewModel.isFavoriteObserver().observe(this) { isFavorite ->
+            renderIsFavoriteState(isFavorite = isFavorite)
+        }
+        binding.isFavoriteButton.setOnClickListener {
+            viewModel.isFavoriteOnClick()
+        }
+
     }
 
     override fun onPause() {
@@ -124,6 +131,17 @@ class PlayerActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    private fun renderIsFavoriteState(isFavorite: Boolean) {
+
+        binding.isFavoriteButton.setImageResource(
+            when (isFavorite) {
+                true -> (R.drawable.ic_is_favorite)
+                false -> (R.drawable.ic_add_to_favorite)
+            }
+        )
+
     }
 
     private fun changeProgress(progress: Int) {

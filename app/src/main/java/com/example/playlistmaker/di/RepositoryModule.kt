@@ -33,7 +33,7 @@ val repositoryModule = module {
         SettingsRepositoryImpl(sharedPreferences = get(named(name = DINames.settings_pref)))
     }
 
-    single<TrackLibraryRepository> {
+    factory<TrackLibraryRepository> {
         TrackLibraryRepositoryImpl(
             trackDataBase = get(),
             trackDbMapper = get()

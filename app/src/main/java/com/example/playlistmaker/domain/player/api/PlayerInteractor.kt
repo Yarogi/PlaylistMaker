@@ -19,6 +19,10 @@ interface PlayerInteractor {
 
     fun getPlaybackState(): PlaybackStatus
 
-    interface PrepareListener: PlayerRepository.Listener {}
+    fun addToLibrary(track: Track)
+
+    fun removeFromLibrary(track: Track)
+
+    interface PrepareListener : PlayerRepository.Listener {}
 
 }
