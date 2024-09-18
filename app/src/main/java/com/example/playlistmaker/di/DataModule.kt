@@ -51,7 +51,7 @@ val dataModule = module {
     }
 
     single<HistoryStorage> {
-        HistoryStorageImpl(get(named(name = DINames.history_pref)), get())
+        HistoryStorageImpl(get(named(name = DINames.history_pref)), gson = get())
     }
 
     single<TrackSearchApi> {

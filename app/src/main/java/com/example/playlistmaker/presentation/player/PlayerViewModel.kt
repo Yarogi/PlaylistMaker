@@ -1,10 +1,10 @@
 package com.example.playlistmaker.presentation.player
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.di.viewModelModule
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.model.PlaybackStatus
@@ -29,16 +29,22 @@ class PlayerViewModel(
     private var timerJob: Job? = null
 
     //Добавление в избранное
-    private val isFavoriteLiveData = MutableLiveData<Boolean>()
-    fun isFavoriteObserver(): LiveData<Boolean> = isFavoriteLiveData
+    private val isFavoriteLiveData = MutableLiveData<PlayerFeaturedState>()
+    fun isFavoriteObserver(): LiveData<PlayerFeaturedState> = isFavoriteLiveData
     private val isFavoriteChangeDebouce =
         debounce<Boolean>(delayMillis = 0, viewModelScope, false) { isFavorite ->
             setIsFavoriteValue(isFavorite)
         }
 
     init {
+        viewModelScope.launch {
+            renderFeaturedState(PlayerFeaturedState.Loading)
+            playerInteractor.trackInFavorite(track = track)
+                .collect { result ->
+                    renderFeaturedState(PlayerFeaturedState.Content(isFeatured = result))
+                }
+        }
         trackScreenStateLiveData.postValue(TrackScreenState.Content(track))
-        isFavoriteLiveData.postValue(track.isFavorite)
         preparePlayer()
     }
 
@@ -133,19 +139,32 @@ class PlayerViewModel(
         isFavoriteChangeDebouce(!track.isFavorite)
     }
 
-    private fun setIsFavoriteValue(isFavorite: Boolean) {
+    private fun setIsFavoriteValue(isFeatured: Boolean) {
+
+        renderFeaturedState(PlayerFeaturedState.Loading)
 
         viewModelScope.launch {
 
             withContext(Dispatchers.IO) {
-                when (isFavorite) {
+                when (isFeatured) {
                     true -> playerInteractor.addToLibrary(track)
                     false -> playerInteractor.removeFromLibrary(track)
                 }
-                track.isFavorite = isFavorite
-                isFavoriteLiveData.postValue(isFavorite)
+                track.isFavorite = isFeatured
+                renderFeaturedState(PlayerFeaturedState.Content(isFeatured = isFeatured))
             }
         }
+    }
+
+    private fun renderFeaturedState(state: PlayerFeaturedState) {
+        when (state) {
+            is PlayerFeaturedState.Content -> {
+                Log.d("MYDEBUG", "Featured btn - isFeatured = ${state.isFeatured}")
+            }
+
+            PlayerFeaturedState.Loading -> Log.d("MYDEBUG", "Featured btn - Loading...")
+        }
+        isFavoriteLiveData.postValue(state)
     }
 
 }

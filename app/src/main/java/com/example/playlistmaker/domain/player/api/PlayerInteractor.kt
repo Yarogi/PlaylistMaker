@@ -2,6 +2,8 @@ package com.example.playlistmaker.domain.player.api
 
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.player.model.PlaybackStatus
+import kotlinx.coroutines.flow.Flow
+
 
 interface PlayerInteractor {
 
@@ -22,6 +24,8 @@ interface PlayerInteractor {
     fun addToLibrary(track: Track)
 
     fun removeFromLibrary(track: Track)
+
+    suspend fun trackInFavorite(track: Track): Flow<Boolean>
 
     interface PrepareListener : PlayerRepository.Listener {}
 

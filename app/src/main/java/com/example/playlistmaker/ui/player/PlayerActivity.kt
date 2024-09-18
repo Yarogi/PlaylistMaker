@@ -9,6 +9,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.domain.main.model.Track
+import com.example.playlistmaker.presentation.player.PlayerFeaturedState
 import com.example.playlistmaker.presentation.player.TrackPlaybackState
 import com.example.playlistmaker.presentation.player.TrackScreenState
 import com.example.playlistmaker.presentation.player.PlayerViewModel
@@ -48,7 +49,10 @@ class PlayerActivity : AppCompatActivity() {
 
         viewModel.trackScreenStateObserver().observe(this) { state ->
             when (state) {
-                is TrackScreenState.Content -> fillTrackInformation(state.track)
+                is TrackScreenState.Content -> {
+                    fillTrackInformation(state.track)
+                }
+
                 TrackScreenState.Loading -> {}
             }
         }
@@ -60,8 +64,8 @@ class PlayerActivity : AppCompatActivity() {
         binding.panelBackArrow.setOnClickListener { finish() }
         binding.playTrack.setOnClickListener { viewModel.changePlayState() }
 
-        viewModel.isFavoriteObserver().observe(this) { isFavorite ->
-            renderIsFavoriteState(isFavorite = isFavorite)
+        viewModel.isFavoriteObserver().observe(this) { state ->
+            renderFeaturedState(state)
         }
         binding.isFavoriteButton.setOnClickListener {
             viewModel.isFavoriteOnClick()
@@ -133,14 +137,21 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-    private fun renderIsFavoriteState(isFavorite: Boolean) {
+    private fun renderFeaturedState(state: PlayerFeaturedState) {
 
-        binding.isFavoriteButton.setImageResource(
-            when (isFavorite) {
-                true -> (R.drawable.ic_is_favorite)
-                false -> (R.drawable.ic_add_to_favorite)
+        when (state) {
+            is PlayerFeaturedState.Content -> {
+
+                val imgResource = when (state.isFeatured) {
+                    true -> (R.drawable.ic_is_favorite)
+                    false -> (R.drawable.ic_add_to_favorite)
+                }
+                binding.isFavoriteButton.setImageResource(imgResource)
+                binding.isFavoriteButton.isEnabled = true
             }
-        )
+
+            PlayerFeaturedState.Loading -> binding.isFavoriteButton.isEnabled = false
+        }
 
     }
 

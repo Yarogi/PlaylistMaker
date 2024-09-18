@@ -1,13 +1,13 @@
 package com.example.playlistmaker.di
 
-import com.example.playlistmaker.data.media_library.impl.TrackLibraryRepositoryImpl
+import com.example.playlistmaker.data.media_library.impl.FeaturedTracksRepositoryImpl
 import com.example.playlistmaker.data.media_library.mapper.TrackDbMapper
 import com.example.playlistmaker.data.player.impl.PlayerRepositoryImpl
 import com.example.playlistmaker.data.search.impl.SearchHistoryRepositoryImpl
 import com.example.playlistmaker.data.search.impl.TracksRepositoryImpl
 import com.example.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import com.example.playlistmaker.di.util.DINames
-import com.example.playlistmaker.domain.media_library.favorites.TrackLibraryRepository
+import com.example.playlistmaker.domain.media_library.favorites.api.FeaturedTracksRepository
 import com.example.playlistmaker.domain.player.api.PlayerRepository
 import com.example.playlistmaker.domain.search.api.SearchHistoryRepository
 import com.example.playlistmaker.domain.search.api.TracksRepository
@@ -22,7 +22,7 @@ val repositoryModule = module {
     factory<PlayerRepository> { PlayerRepositoryImpl(mediaPlayer = get()) }
 
     single<TracksRepository> {
-        TracksRepositoryImpl(networkClient = get())
+        TracksRepositoryImpl(networkClient = get(), dataBase = get())
     }
 
     single<SearchHistoryRepository> {
@@ -33,8 +33,8 @@ val repositoryModule = module {
         SettingsRepositoryImpl(sharedPreferences = get(named(name = DINames.settings_pref)))
     }
 
-    factory<TrackLibraryRepository> {
-        TrackLibraryRepositoryImpl(
+    factory<FeaturedTracksRepository> {
+        FeaturedTracksRepositoryImpl(
             trackDataBase = get(),
             trackDbMapper = get()
         )

@@ -9,12 +9,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class TracksInteractorImpl(
-    private val repository: TracksRepository,
+    private val repository: TracksRepository
 ) : TracksInteractor {
 
     override fun searchTracks(
         searchStructure: TrackSearchStructure,
     ): Flow<TrackSearchResult> {
+
         return repository.searchTrack(searchStructure).map { result ->
             when (result) {
                 is Resource.Error -> TrackSearchResult(null, result.message)

@@ -22,4 +22,7 @@ interface TrackDao {
     @Query("SELECT trackId FROM track_table")
     fun getAllTracksId(): List<Int>
 
+    @Query("SELECT * FROM track_table WHERE trackId = :trackId")
+    fun findTrackById(trackId:Int):TrackEntity?
+
 }
