@@ -124,9 +124,8 @@
 
     <ImageButton
         android:id="@+id/is_favorite_button"
-        style="@style/Player.SecondaryButton"
+        style="@style/Player.SecondaryButton.Features"
         android:contentDescription="@string/player_add_to_favorites_description"
-        android:src="@drawable/ic_add_to_favorite"
         app:layout_constraintBottom_toBottomOf="@id/playTrack"
         app:layout_constraintEnd_toStartOf="@+id/endBorder"
         app:layout_constraintStart_toEndOf="@id/playTrack"

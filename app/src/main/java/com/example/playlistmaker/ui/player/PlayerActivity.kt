@@ -141,12 +141,7 @@ class PlayerActivity : AppCompatActivity() {
 
         when (state) {
             is PlayerFeaturedState.Content -> {
-
-                val imgResource = when (state.isFeatured) {
-                    true -> (R.drawable.ic_is_favorite)
-                    false -> (R.drawable.ic_add_to_favorite)
-                }
-                binding.isFavoriteButton.setImageResource(imgResource)
+                binding.isFavoriteButton.isSelected = state.isFeatured
                 binding.isFavoriteButton.isEnabled = true
             }
 
