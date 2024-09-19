@@ -9,6 +9,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.domain.main.model.Track
+import com.example.playlistmaker.presentation.player.PlayerFeaturedState
 import com.example.playlistmaker.presentation.player.TrackPlaybackState
 import com.example.playlistmaker.presentation.player.TrackScreenState
 import com.example.playlistmaker.presentation.player.PlayerViewModel
@@ -48,7 +49,10 @@ class PlayerActivity : AppCompatActivity() {
 
         viewModel.trackScreenStateObserver().observe(this) { state ->
             when (state) {
-                is TrackScreenState.Content -> fillTrackInformation(state.track)
+                is TrackScreenState.Content -> {
+                    fillTrackInformation(state.track)
+                }
+
                 TrackScreenState.Loading -> {}
             }
         }
@@ -58,8 +62,15 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         binding.panelBackArrow.setOnClickListener { finish() }
-
         binding.playTrack.setOnClickListener { viewModel.changePlayState() }
+
+        viewModel.isFavoriteObserver().observe(this) { state ->
+            renderFeaturedState(state)
+        }
+        binding.isFavoriteButton.setOnClickListener {
+            viewModel.isFavoriteOnClick()
+        }
+
     }
 
     override fun onPause() {
@@ -124,6 +135,19 @@ class PlayerActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    private fun renderFeaturedState(state: PlayerFeaturedState) {
+
+        when (state) {
+            is PlayerFeaturedState.Content -> {
+                binding.isFavoriteButton.isSelected = state.isFeatured
+                binding.isFavoriteButton.isEnabled = true
+            }
+
+            PlayerFeaturedState.Loading -> binding.isFavoriteButton.isEnabled = false
+        }
+
     }
 
     private fun changeProgress(progress: Int) {

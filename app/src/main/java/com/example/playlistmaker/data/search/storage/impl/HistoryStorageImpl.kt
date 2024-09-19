@@ -5,7 +5,10 @@ import com.example.playlistmaker.data.search.storage.HistoryStorage
 import com.example.playlistmaker.domain.main.model.Track
 import com.google.gson.Gson
 
-class HistoryStorageImpl(private val sharedPreferences: SharedPreferences, private val gson: Gson) :
+class HistoryStorageImpl(
+    private val sharedPreferences: SharedPreferences,
+    private val gson: Gson,
+) :
     HistoryStorage {
 
     companion object {
@@ -33,7 +36,9 @@ class HistoryStorageImpl(private val sharedPreferences: SharedPreferences, priva
         }
 
         if (!json.isNullOrEmpty()) {
-            result.addAll(gson.fromJson(json, Array<Track>::class.java))
+
+            val trackList = gson.fromJson(json, Array<Track>::class.java)
+            result.addAll(trackList)
         }
 
         return result
