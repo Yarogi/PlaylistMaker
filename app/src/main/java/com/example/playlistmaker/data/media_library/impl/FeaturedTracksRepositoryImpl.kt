@@ -39,14 +39,9 @@ class FeaturedTracksRepositoryImpl(
 
     override suspend fun getTrackById(id: Int): Track? {
 
-        var result: Track? = null
-
-        val trackEntity = trackDataBase.trackDao().findTrackById(id)
-        if (trackEntity != null) {
-            result = trackDbMapper.map(trackEntity)
-        }
-
-        return result
+        return trackDataBase.trackDao()
+            .findTrackById(id)
+            ?.let { trackDbMapper.map(it) }
 
     }
 
