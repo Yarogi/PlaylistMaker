@@ -180,6 +180,11 @@
         <item name="android:background">@null</item>
     </style>
 
+    <style name="Player.SecondaryButton.Features" parent="Player.SecondaryButton">
+        <item name="tint">@null</item>
+        <item name="android:src">@drawable/ic_feature_selector_light</item>
+    </style>
+
     <style name="Player.TrackTitle.PlayTime" parent="Player.TrackTitle.Artist">
         <item name="android:textFontWeight">500</item>
     </style>

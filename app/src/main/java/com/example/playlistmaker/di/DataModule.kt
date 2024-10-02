@@ -3,6 +3,8 @@ package com.example.playlistmaker.di
 import android.content.Context
 import android.media.MediaPlayer
 import android.net.ConnectivityManager
+import androidx.room.Room
+import com.example.playlistmaker.data.media_library.db.TrackDataBase
 import com.example.playlistmaker.data.search.network.NetworkClient
 import com.example.playlistmaker.data.search.network.RetrofitNetworkClient
 import com.example.playlistmaker.data.search.network.TrackSearchApi
@@ -19,6 +21,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val dataModule = module {
+
+    single<TrackDataBase> {
+        Room.databaseBuilder(
+            context = androidContext(),
+            klass = TrackDataBase::class.java,
+            name = "track_database.db"
+        ).build()
+    }
 
     factory<MediaPlayer> { MediaPlayer() }
 
@@ -41,7 +51,7 @@ val dataModule = module {
     }
 
     single<HistoryStorage> {
-        HistoryStorageImpl(get(named(name = DINames.history_pref)), get())
+        HistoryStorageImpl(get(named(name = DINames.history_pref)), gson = get())
     }
 
     single<TrackSearchApi> {
@@ -59,6 +69,5 @@ val dataModule = module {
     single<ExternalNavigator> {
         ExternalNavigatorImpl(context = androidContext())
     }
-
 
 }

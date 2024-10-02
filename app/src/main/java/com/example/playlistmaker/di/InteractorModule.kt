@@ -1,5 +1,7 @@
 package com.example.playlistmaker.di
 
+import com.example.playlistmaker.domain.media_library.favorites.api.FeaturedTracksInteractor
+import com.example.playlistmaker.domain.media_library.favorites.impl.FeaturedTracksInteractorImpl
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.impl.PlayerInteractorImpl
 import com.example.playlistmaker.domain.search.api.SearchHistoryInteractor
@@ -10,8 +12,8 @@ import com.example.playlistmaker.domain.settings.SettingsInteractor
 import com.example.playlistmaker.domain.settings.impl.SettingsInteractorImpl
 import com.example.playlistmaker.domain.sharing.SharingInteractor
 import com.example.playlistmaker.domain.sharing.impl.SharingInteractorImpl
-import java.util.concurrent.Executors
 import org.koin.dsl.module
+import java.util.concurrent.Executors
 
 val interactorModule = module {
 
@@ -20,7 +22,7 @@ val interactorModule = module {
     //Player
 
     factory<PlayerInteractor> {
-        PlayerInteractorImpl(player = get())
+        PlayerInteractorImpl(player = get(), libraryRepository = get())
     }
 
     //Search
@@ -31,20 +33,25 @@ val interactorModule = module {
 
     single<TracksInteractor> {
         TracksInteractorImpl(
-            repository = get()
+            repository = get(),
         )
     }
 
     //Settings
 
-    single<SettingsInteractor>{
+    single<SettingsInteractor> {
         SettingsInteractorImpl(repositoty = get())
     }
 
     //Sharring
 
-    single<SharingInteractor>{
+    single<SharingInteractor> {
         SharingInteractorImpl(externalNavigator = get(), resoursesStore = get())
+    }
+
+    //Featured_tracks
+    single<FeaturedTracksInteractor> {
+        FeaturedTracksInteractorImpl(featuredRepository = get())
     }
 
 }
