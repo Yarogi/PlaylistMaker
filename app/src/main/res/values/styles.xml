@@ -223,7 +223,7 @@
         <item name="android:textColorHint">@color/black</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:background">@drawable/inactive_input_box</item>
+        <item name="android:background">@drawable/input_box</item>
     </style>
 
     <style name="PlaylistItemTitle">
@@ -233,6 +233,10 @@
         <item name="android:textColor">@color/blue</item>
         <item name="android:textSize">12sp</item>
         <item name="android:paddingHorizontal">3dp</item>
+
+    </style>
+
+    <style name="PlaylistItemCreateButtom">
 
     </style>
 
