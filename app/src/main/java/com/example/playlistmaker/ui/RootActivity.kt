@@ -2,6 +2,7 @@ package com.example.playlistmaker.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker.R
@@ -23,6 +24,13 @@ class RootActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         binding.bottomNavigationView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.bottomNavigationView.isVisible =
+                destination.id == R.id.searchFragment
+                        || destination.id == R.id.libraryFragment
+                        || destination.id == R.id.settingsFragment
+        }
 
     }
 

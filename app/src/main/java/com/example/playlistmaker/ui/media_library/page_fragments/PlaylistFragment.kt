@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.example.playlistmaker.ui.util.BindingFragment
 import com.example.playlistmaker.presentation.media_library.playlists.PlaylistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.example.playlistmaker.R
 
 class PlaylistFragment : BindingFragment<FragmentPlaylistsBinding>() {
 
@@ -28,7 +30,7 @@ class PlaylistFragment : BindingFragment<FragmentPlaylistsBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.newPlaylistButton.setOnClickListener {
-            viewModel.createNewPlaylist()
+            findNavController().navigate(R.id.action_libraryFragment_to_playlistEditFragment)
         }
 
     }
