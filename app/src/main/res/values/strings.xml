@@ -49,6 +49,10 @@
     <string name="action_1">"Действие 1</string>
     <string name="featured_tracks">Избранные треки</string>
     <string name="playlists">Плейлисты</string>
+    <string name="playlist_cover">Обложка плейлиста</string>
+    <string name="required_name">Название*</string>
+    <string name="description">Описание</string>
+    <string name="create">Создать</string>
 
 
 </resources>

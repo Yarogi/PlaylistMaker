@@ -36,4 +36,8 @@
     <string name="action_1">Action 1</string>
     <string name="featured_tracks">Featured tracks</string>
     <string name="playlists">Playlists</string>
+    <string name="playlist_cover">Playlist cover</string>
+    <string name="required_name">Name*</string>
+    <string name="description">Description</string>
+    <string name="create">Create</string>
 </resources>
