@@ -217,7 +217,7 @@
     <style name="PlaylistItemTitle">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:layout_marginStart">16dp</item>
-        <item name="android:background">@color/white</item>
+        <item name="android:background">@color/black</item>
         <item name="android:textColor">@color/blue</item>
         <item name="android:textSize">12sp</item>
         <item name="android:paddingHorizontal">3dp</item>

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.media_library.PlaylistEditFragment">
+    tools:context=".ui.media_library.PlaylistEditFragment"
+>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/topPanelBottomLine"
@@ -61,8 +62,8 @@
         app:layout_constraintDimensionRatio="H, 1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topPanelBottomLine" />
-
+        app:layout_constraintTop_toBottomOf="@id/topPanelBottomLine"
+        app:layout_constraintBottom_toTopOf="@id/playlist_name" />
 
     <EditText
         android:id="@+id/playlist_name"
@@ -74,7 +75,7 @@
         android:hint="@string/required_name"
         app:layout_constraintEnd_toStartOf="@id/endBorder"
         app:layout_constraintStart_toEndOf="@id/startBorder"
-        app:layout_constraintTop_toBottomOf="@id/playlistCover" />
+        app:layout_constraintTop_toBottomOf="@id/playlistCover"/>
 
     <TextView
         android:id="@+id/playlist_name_title"
@@ -96,7 +97,9 @@
         android:hint="@string/description"
         app:layout_constraintEnd_toStartOf="@id/endBorder"
         app:layout_constraintStart_toEndOf="@id/startBorder"
-        app:layout_constraintTop_toBottomOf="@id/playlist_name" />
+        app:layout_constraintTop_toBottomOf="@id/playlist_name"
+        app:layout_constraintBottom_toTopOf="@id/create_button"
+        app:layout_constraintVertical_chainStyle="spread_inside"/>
 
     <TextView
         android:id="@+id/playlist_description_title"
@@ -116,11 +119,13 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="17dp"
         android:layout_marginBottom="32dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/rectangle_8"
         android:text="@string/create"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/playlist_description"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

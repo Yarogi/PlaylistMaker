@@ -10,10 +10,10 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.presentation.player.PlayerFeaturedState
+import com.example.playlistmaker.presentation.player.PlayerViewModel
 import com.example.playlistmaker.presentation.player.TrackPlaybackState
 import com.example.playlistmaker.presentation.player.TrackScreenState
-import com.example.playlistmaker.presentation.player.PlayerViewModel
-import com.example.playlistmaker.ui.search.pxToDP
+import com.example.playlistmaker.ui.util.pxToDP
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf

@@ -1,20 +1,21 @@
 package com.example.playlistmaker.presentation.media_library.playlists.edit_playlist
 
-import android.content.ClipDescription
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
+import com.example.playlistmaker.domain.media_library.playlists.model.PlaylistCreateData
 
 class PlayListEditViewModel : ViewModel() {
 
-    private val playListState = MutableLiveData<PlaylistEditState>()
+    private val playListState = MutableLiveData<PlaylistEditState>(PlaylistEditState.Empty)
     fun playListStateObserver(): LiveData<PlaylistEditState> = playListState
 
     private var lastName: String = ""
     private var lastDescription: String = ""
+    private var lastCover: Uri? = null
 
-    fun nameChanged(newName: String) {
+    fun onNameChanged(newName: String) {
 
         if (newName == lastName) return
 
@@ -23,7 +24,7 @@ class PlayListEditViewModel : ViewModel() {
 
     }
 
-    fun descriptionChanged(newDescription: String) {
+    fun onDescriptionChanged(newDescription: String) {
 
         if (newDescription == lastDescription) return
         lastDescription = newDescription
@@ -32,13 +33,28 @@ class PlayListEditViewModel : ViewModel() {
 
     }
 
+    fun onCoverChanged(newCover:Uri?){
+        if(newCover == lastCover) return
+
+        saveCoverIsStorage(newCover)
+
+        lastCover = newCover
+        renderLastData()
+
+    }
+
+    private fun saveCoverIsStorage(data:Uri?){
+
+    }
+
     private fun renderLastData() {
 
         renderState(
             PlaylistEditState.Content(
-                Playlist(
+                PlaylistCreateData(
                     name = lastName,
-                    description = lastDescription
+                    description = lastDescription,
+                    cover = lastCover
                 )
             )
         )
@@ -48,5 +64,6 @@ class PlayListEditViewModel : ViewModel() {
     private fun renderState(state: PlaylistEditState) {
         playListState.postValue(state)
     }
+
 
 }
