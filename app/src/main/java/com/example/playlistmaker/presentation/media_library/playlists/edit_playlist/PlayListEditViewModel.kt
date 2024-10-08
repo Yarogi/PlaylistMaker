@@ -1,12 +1,19 @@
 package com.example.playlistmaker.presentation.media_library.playlists.edit_playlist
 
 import android.net.Uri
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.domain.media_library.playlists.api.PlaylistEditInteractor
 import com.example.playlistmaker.domain.media_library.playlists.model.PlaylistCreateData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 
-class PlayListEditViewModel : ViewModel() {
+class PlayListEditViewModel(private val playlistEditInteractor: PlaylistEditInteractor) :
+    ViewModel() {
 
     private val playListState = MutableLiveData<PlaylistEditState>(PlaylistEditState.Empty)
     fun playListStateObserver(): LiveData<PlaylistEditState> = playListState
@@ -33,17 +40,30 @@ class PlayListEditViewModel : ViewModel() {
 
     }
 
-    fun onCoverChanged(newCover:Uri?){
-        if(newCover == lastCover) return
-
-        saveCoverIsStorage(newCover)
+    fun onCoverChanged(newCover: Uri?) {
+        if (newCover == lastCover) return
 
         lastCover = newCover
         renderLastData()
 
     }
 
-    private fun saveCoverIsStorage(data:Uri?){
+    fun savePlaylist() {
+
+        viewModelScope.launch {
+
+            playlistEditInteractor.createPlaylist(
+                PlaylistCreateData(
+                    name = lastName,
+                    description = lastDescription,
+                    cover = lastCover
+                )
+            ).flowOn(Dispatchers.IO)
+                .collect { playlist ->
+                    renderState(PlaylistEditState.Create(playlist))
+                }
+
+        }
 
     }
 

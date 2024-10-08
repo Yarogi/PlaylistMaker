@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.media_library
+package com.example.playlistmaker.ui.media_library.playlists.edit
 
 import android.net.Uri
 import android.os.Bundle
@@ -7,12 +7,14 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.databinding.FragmentPlaylistEditBinding
 import com.example.playlistmaker.presentation.media_library.playlists.edit_playlist.PlayListEditViewModel
@@ -54,6 +56,14 @@ class PlaylistEditFragment : Fragment() {
                 is PlaylistEditState.Content -> showPlaylistContent(state.data)
                 PlaylistEditState.Empty -> showEmpty()
                 PlaylistEditState.Loading -> {}
+                is PlaylistEditState.Create -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "Плейлист ${state.data.name} создан",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    findNavController().popBackStack()
+                }
             }
         }
 
@@ -68,6 +78,10 @@ class PlaylistEditFragment : Fragment() {
                     ActivityResultContracts.PickVisualMedia.ImageOnly
                 )
             )
+        }
+
+        binding.createButton.setOnClickListener {
+            viewModel.savePlaylist()
         }
 
     }
@@ -141,7 +155,7 @@ class PlaylistEditFragment : Fragment() {
             binding.playlistDescription.isSelected = false
         }
 
-        showPlaylistCover(data.cover)
+        showPlaylistCoverByUri(data.cover)
 
     }
 
@@ -149,7 +163,7 @@ class PlaylistEditFragment : Fragment() {
         showPlaylistContent(PlaylistCreateData(name = "", description = "", cover = null))
     }
 
-    private fun showPlaylistCover(uri: Uri?) {
+    private fun showPlaylistCoverByUri(uri: Uri?) {
 
         if (uri != null) {
 
@@ -157,8 +171,7 @@ class PlaylistEditFragment : Fragment() {
             val roudingRadius = pxToDP(imageView.context, 8);
             Glide.with(requireContext())
                 .load(uri)
-                .centerCrop()
-                .transform(RoundedCorners(roudingRadius))
+                .transform(CenterCrop(), RoundedCorners(roudingRadius))
                 .into(imageView)
         }
 

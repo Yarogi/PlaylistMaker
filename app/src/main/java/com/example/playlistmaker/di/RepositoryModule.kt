@@ -1,13 +1,15 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.data.media_library.impl.FeaturedTracksRepositoryImpl
-import com.example.playlistmaker.data.media_library.mapper.TrackDbMapper
+import com.example.playlistmaker.data.media_library.impl.PlaylistRepositoryImpl
 import com.example.playlistmaker.data.player.impl.PlayerRepositoryImpl
 import com.example.playlistmaker.data.search.impl.SearchHistoryRepositoryImpl
 import com.example.playlistmaker.data.search.impl.TracksRepositoryImpl
 import com.example.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import com.example.playlistmaker.di.util.DINames
 import com.example.playlistmaker.domain.media_library.favorites.api.FeaturedTracksRepository
+import com.example.playlistmaker.domain.media_library.playlists.api.PlaylistEditInteractor
+import com.example.playlistmaker.domain.media_library.playlists.api.PlaylistRepository
 import com.example.playlistmaker.domain.player.api.PlayerRepository
 import com.example.playlistmaker.domain.search.api.SearchHistoryRepository
 import com.example.playlistmaker.domain.search.api.TracksRepository
@@ -16,8 +18,6 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val repositoryModule = module {
-
-    factory { TrackDbMapper() }
 
     factory<PlayerRepository> { PlayerRepositoryImpl(mediaPlayer = get()) }
 
@@ -37,6 +37,12 @@ val repositoryModule = module {
         FeaturedTracksRepositoryImpl(
             trackDataBase = get(),
             trackDbMapper = get()
+        )
+    }
+
+    factory<PlaylistRepository> {
+        PlaylistRepositoryImpl(
+            dataBase = get(), mapper = get(), fileStorage = get()
         )
     }
 

@@ -5,6 +5,10 @@ import android.media.MediaPlayer
 import android.net.ConnectivityManager
 import androidx.room.Room
 import com.example.playlistmaker.data.media_library.db.TrackDataBase
+import com.example.playlistmaker.data.media_library.mapper.PLaylistDbMapper
+import com.example.playlistmaker.data.media_library.mapper.TrackDbMapper
+import com.example.playlistmaker.data.media_library.storage.FileStorage
+import com.example.playlistmaker.data.media_library.storage.FileStorageImpl
 import com.example.playlistmaker.data.search.network.NetworkClient
 import com.example.playlistmaker.data.search.network.RetrofitNetworkClient
 import com.example.playlistmaker.data.search.network.TrackSearchApi
@@ -22,12 +26,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val dataModule = module {
 
+    factory { TrackDbMapper() }
+
+    factory { PLaylistDbMapper() }
+
     single<TrackDataBase> {
         Room.databaseBuilder(
             context = androidContext(),
             klass = TrackDataBase::class.java,
             name = "track_database.db"
-        ).build()
+        ).fallbackToDestructiveMigration()
+            .build()
     }
 
     factory<MediaPlayer> { MediaPlayer() }
@@ -69,5 +78,7 @@ val dataModule = module {
     single<ExternalNavigator> {
         ExternalNavigatorImpl(context = androidContext())
     }
+
+    single<FileStorage> { FileStorageImpl(context = androidContext()) }
 
 }
