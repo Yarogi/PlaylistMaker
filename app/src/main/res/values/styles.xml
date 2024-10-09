@@ -257,4 +257,12 @@
         <item name="android:textColor">@color/text_gray</item>
     </style>
 
+    <!-- playlists_bottom_sheet  -->
+    <style name="PlaylistsBottomSheet">
+        <item name="backgroundTint">@color/white</item>
+    </style>
+    <style name="PlaylistsBottomSheet.CreateButton">
+        <item name="backgroundTint">@color/light_black</item>
+    </style>
+
 </resources>
