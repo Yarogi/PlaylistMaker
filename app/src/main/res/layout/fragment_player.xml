@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    style="@style/Player"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    tools:context=".ui.player.PlayerFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/startBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="24dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/endBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="24dp" />
+
+    <ImageButton
+        android:id="@+id/panelBackArrow"
+        style="@style/ControlPanel"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_margin="20dp"
+        android:background="@null"
+        android:contentDescription="@string/back_content_description"
+        android:src="@drawable/arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTag="panelTag"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/panelBarrier"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_tags="panelTag" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topCoverEdge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="82dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomCoverEdge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="438dp" />
+
+    <ImageView
+        android:id="@+id/cover"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@null"
+        android:contentDescription="@string/track_album_cover"
+        android:src="@drawable/track_placeholder"
+        app:layout_constraintBottom_toTopOf="@id/bottomCoverEdge"
+        app:layout_constraintEnd_toEndOf="@id/endBorder"
+        app:layout_constraintStart_toStartOf="@id/startBorder"
+        app:layout_constraintTop_toTopOf="@id/topCoverEdge" />
+
+    <!--  Описание трека  -->
+
+    <TextView
+        android:id="@+id/trackName"
+        style="@style/Player.TrackTitle.Track"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/endBorder"
+        app:layout_constraintStart_toStartOf="@id/startBorder"
+        app:layout_constraintTop_toBottomOf="@id/bottomCoverEdge"
+        tools:text="@string/example_text_track_name" />
+
+    <TextView
+        android:id="@+id/artistName"
+        style="@style/Player.TrackTitle.Artist"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toStartOf="@+id/endBorder"
+        app:layout_constraintStart_toStartOf="@id/startBorder"
+        app:layout_constraintTop_toBottomOf="@id/trackName"
+        tools:text="@string/example_text_artist_name" />
+
+
+    <!--  Кнопки управления  -->
+
+    <ImageButton
+        android:id="@+id/addPlaylist"
+        style="@style/Player.SecondaryButton"
+        android:contentDescription="@string/player_add_to_playlist_description"
+        android:src="@drawable/add_playlist_button"
+        app:layout_constraintBottom_toBottomOf="@id/playTrack"
+        app:layout_constraintEnd_toStartOf="@+id/playTrack"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@id/startBorder"
+        app:layout_constraintTop_toTopOf="@id/playTrack"
+        app:layout_constraintVertical_bias="0.521" />
+
+    <ImageButton
+        android:id="@+id/playTrack"
+        style="@style/Player.PlayButton"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="30dp"
+        android:background="@null"
+        android:contentDescription="@string/player_play_description"
+        android:src="@drawable/play_button"
+        app:layout_constraintDimensionRatio="h, 1:1"
+        app:layout_constraintEnd_toStartOf="@+id/is_favorite_button"
+        app:layout_constraintStart_toEndOf="@id/addPlaylist"
+        app:layout_constraintTop_toBottomOf="@id/artistName" />
+
+    <ImageButton
+        android:id="@+id/is_favorite_button"
+        style="@style/Player.SecondaryButton.Features"
+        android:contentDescription="@string/player_add_to_favorites_description"
+        app:layout_constraintBottom_toBottomOf="@id/playTrack"
+        app:layout_constraintEnd_toStartOf="@+id/endBorder"
+        app:layout_constraintStart_toEndOf="@id/playTrack"
+        app:layout_constraintTop_toTopOf="@id/playTrack" />
+
+    <TextView
+        android:id="@+id/playTime"
+        style="@style/Player.TrackTitle.PlayTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/endBorder"
+        app:layout_constraintStart_toStartOf="@id/startBorder"
+        app:layout_constraintTop_toBottomOf="@id/playTrack"
+        tools:text="@string/example_text_play_time" />
+
+    <!-- Детальное описание трека -->
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/collectionNameGroup"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@null"
+        app:constraint_referenced_ids="albumTitle, album"
+        app:layout_constraintBottom_toBottomOf="@id/albumTitle"
+        app:layout_constraintEnd_toEndOf="@id/album"
+        app:layout_constraintStart_toStartOf="@id/albumTitle"
+        app:layout_constraintTop_toTopOf="@id/albumTitle" />
+
+    <TextView
+        android:id="@+id/durationTitle"
+        style="@style/Player.TrackDescription.Key"
+        android:layout_marginTop="30dp"
+        android:text="@string/track_duration_title"
+        app:layout_constraintBottom_toTopOf="@id/albumTitle"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintTag="description"
+        app:layout_constraintTop_toBottomOf="@id/playTime" />
+
+    <TextView
+        android:id="@+id/albumTitle"
+        style="@style/Player.TrackDescription.Key"
+        android:text="@string/track_album_title"
+        app:layout_constraintBottom_toTopOf="@id/releaseDateTitle"
+        app:layout_constraintTag="description"
+        app:layout_constraintTop_toBottomOf="@id/durationTitle" />
+
+    <TextView
+        android:id="@+id/releaseDateTitle"
+        style="@style/Player.TrackDescription.Key"
+        android:text="@string/track_release_date_title"
+        app:layout_constraintBottom_toTopOf="@id/genreTitle"
+        app:layout_constraintTag="description"
+        app:layout_constraintTop_toBottomOf="@id/albumTitle" />
+
+    <TextView
+        android:id="@+id/genreTitle"
+        style="@style/Player.TrackDescription.Key"
+        android:text="@string/track_genre_title"
+        app:layout_constraintBottom_toTopOf="@id/countryTitle"
+        app:layout_constraintTag="description"
+        app:layout_constraintTop_toBottomOf="@id/releaseDateTitle" />
+
+    <TextView
+        android:id="@+id/countryTitle"
+        style="@style/Player.TrackDescription.Key"
+        android:layout_marginBottom="20dp"
+        android:text="@string/track_country_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTag="description"
+        app:layout_constraintTop_toBottomOf="@id/genreTitle" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/descriptionTitleBarrier"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="end"
+        app:constraint_referenced_tags="description" />
+
+    <TextView
+        android:id="@+id/duration"
+        style="@style/Player.TrackDescription.Value"
+        app:layout_constraintStart_toEndOf="@id/descriptionTitleBarrier"
+        app:layout_constraintTop_toTopOf="@id/durationTitle"
+        tools:text="5:35" />
+
+    <TextView
+        android:id="@+id/album"
+        style="@style/Player.TrackDescription.Value"
+        app:layout_constraintStart_toEndOf="@id/descriptionTitleBarrier"
+        app:layout_constraintTop_toTopOf="@id/albumTitle"
+        tools:text="@string/example_text_track_name" />
+
+    <TextView
+        android:id="@+id/releaseDate"
+        style="@style/Player.TrackDescription.Value"
+        app:layout_constraintTop_toTopOf="@id/releaseDateTitle"
+        tools:text="1965" />
+
+    <TextView
+        android:id="@+id/genre"
+        style="@style/Player.TrackDescription.Value"
+        app:layout_constraintTop_toTopOf="@id/genreTitle"
+        tools:text="Rock" />
+
+    <TextView
+        android:id="@+id/country"
+        style="@style/Player.TrackDescription.Value"
+        app:layout_constraintTop_toTopOf="@id/countryTitle"
+        tools:text="Великобритания" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

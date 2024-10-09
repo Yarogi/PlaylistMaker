@@ -1,13 +1,17 @@
 package com.example.playlistmaker.ui.player
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivityPlayerBinding
+import com.example.playlistmaker.databinding.FragmentPlayerBinding
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.presentation.player.PlayerFeaturedState
 import com.example.playlistmaker.presentation.player.PlayerViewModel
@@ -20,7 +24,7 @@ import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerActivity : AppCompatActivity() {
+class PlayerFragment : Fragment() {
 
     companion object {
         const val CURRENT_TRACK_KEY = "track"
@@ -30,24 +34,29 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-    val binding by lazy {
-        ActivityPlayerBinding.inflate(layoutInflater)
-    }
+    private var _binding: FragmentPlayerBinding? = null
+    private val binding: FragmentPlayerBinding get() = _binding!!
 
-    //MVVM
     private var trackJson = ""
     private val viewModel by viewModel<PlayerViewModel> {
         parametersOf(trackJson)
     }
-    //--
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
+        _binding = FragmentPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        trackJson = intent.getStringExtra(CURRENT_TRACK_KEY) ?: ""
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        viewModel.trackScreenStateObserver().observe(this) { state ->
+        trackJson = savedInstanceState?.getString(CURRENT_TRACK_KEY) ?: ""
+
+        viewModel.trackScreenStateObserver().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is TrackScreenState.Content -> {
                     fillTrackInformation(state.track)
@@ -57,14 +66,14 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.playerStateObserver().observe(this) { state ->
+        viewModel.playerStateObserver().observe(viewLifecycleOwner) { state ->
             renderState(state)
         }
 
-        binding.panelBackArrow.setOnClickListener { finish() }
+        binding.panelBackArrow.setOnClickListener { findNavController().popBackStack() }
         binding.playTrack.setOnClickListener { viewModel.changePlayState() }
 
-        viewModel.isFavoriteObserver().observe(this) { state ->
+        viewModel.isFavoriteObserver().observe(viewLifecycleOwner) { state ->
             renderFeaturedState(state)
         }
         binding.isFavoriteButton.setOnClickListener {
@@ -73,12 +82,18 @@ class PlayerActivity : AppCompatActivity() {
 
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     override fun onPause() {
         super.onPause()
         viewModel.pausePlayer(сheckPlayback = true)
     }
 
-    //Done
+
+    //FILL_AND_STATE
 
     private fun fillTrackInformation(track: Track) {
 
@@ -162,5 +177,6 @@ class PlayerActivity : AppCompatActivity() {
         }
 
     }
+
 
 }
