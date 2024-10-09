@@ -40,4 +40,8 @@
     <string name="required_name">Name*</string>
     <string name="description">Description</string>
     <string name="create">Create</string>
+    <string name="question_finish_creating_playlist_title">Finish creating the playlist?</string>
+    <string name="question_finish_creating_playlist_message">All unsaved data will be lost</string>
+    <string name="cancel">Cancel</string>
+    <string name="finish">Finish</string>
 </resources>

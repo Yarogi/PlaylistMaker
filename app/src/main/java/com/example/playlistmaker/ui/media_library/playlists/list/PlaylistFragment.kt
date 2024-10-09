@@ -41,6 +41,13 @@ class PlaylistFragment : BindingFragment<FragmentPlaylistsBinding>() {
         binding.playlists.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.playlists.adapter = adapter
 
+        viewModel.playlistStateObserver().observe(viewLifecycleOwner) { state -> render(state) }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getPlaylists()
     }
 
     private fun render(state: PlaylistState) {

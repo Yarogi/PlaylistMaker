@@ -21,6 +21,7 @@ class PlayListEditViewModel(private val playlistEditInteractor: PlaylistEditInte
     private var lastDescription: String = ""
     private var lastCover: Uri? = null
 
+
     fun onNameChanged(newName: String) {
 
         if (newName == lastName) return
@@ -43,7 +44,16 @@ class PlayListEditViewModel(private val playlistEditInteractor: PlaylistEditInte
         if (newCover == lastCover) return
 
         lastCover = newCover
+
         renderLastData()
+
+    }
+
+    fun hasUnsavedModify(): Boolean {
+
+        return lastName.isNotEmpty()
+                || lastDescription.isNotEmpty()
+                || lastCover != null
 
     }
 
@@ -68,15 +78,18 @@ class PlayListEditViewModel(private val playlistEditInteractor: PlaylistEditInte
 
     private fun renderLastData() {
 
-        renderState(
-            PlaylistEditState.Content(
-                PlaylistCreateData(
-                    name = lastName,
-                    description = lastDescription,
-                    cover = lastCover
-                )
+        val state = if (lastName.isNotEmpty()
+            || lastDescription.isNotEmpty()
+            || lastCover != null
+        ) PlaylistEditState.Content(
+            PlaylistCreateData(
+                name = lastName,
+                description = lastDescription,
+                cover = lastCover
             )
-        )
+        ) else PlaylistEditState.Empty
+
+        renderState(state)
 
     }
 

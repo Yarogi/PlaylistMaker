@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
@@ -16,11 +17,14 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistEditBinding
+import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
+import com.example.playlistmaker.domain.media_library.playlists.model.PlaylistCreateData
 import com.example.playlistmaker.presentation.media_library.playlists.edit.PlayListEditViewModel
 import com.example.playlistmaker.presentation.media_library.playlists.edit.PlaylistEditState
-import com.example.playlistmaker.domain.media_library.playlists.model.PlaylistCreateData
 import com.example.playlistmaker.ui.util.pxToDP
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistEditFragment : Fragment() {
@@ -32,6 +36,26 @@ class PlaylistEditFragment : Fragment() {
 
     private lateinit var nameTextWatcher: TextWatcher
     private lateinit var descriptionTextWatcher: TextWatcher
+
+    private val onBackCallBack = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            safeExit()
+        }
+
+    }
+
+    private val confirmDialog by lazy {
+        val dialogTitle = getString(R.string.question_finish_creating_playlist_title)
+        val dialogMessage = getString(R.string.question_finish_creating_playlist_message)
+        val cancelTitle = getString(R.string.cancel)
+        val finishTitle = getString(R.string.finish)
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(dialogTitle)
+            .setMessage(dialogMessage)
+            .setNeutralButton(cancelTitle) { dialog, which -> }
+            .setPositiveButton(finishTitle) { dialog, which -> closeFragment() }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,26 +70,12 @@ class PlaylistEditFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
+            safeExit()
         }
 
         initTextWatchers()
 
-        viewModel.playListStateObserver().observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is PlaylistEditState.Content -> showPlaylistContent(state.data)
-                PlaylistEditState.Empty -> showEmpty()
-                PlaylistEditState.Loading -> {}
-                is PlaylistEditState.Create -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "Плейлист ${state.data.name} создан",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    findNavController().popBackStack()
-                }
-            }
-        }
+        viewModel.playListStateObserver().observe(viewLifecycleOwner) { render(it) }
 
         //picker
         val pickMedia =
@@ -83,6 +93,8 @@ class PlaylistEditFragment : Fragment() {
         binding.createButton.setOnClickListener {
             viewModel.savePlaylist()
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackCallBack)
 
     }
 
@@ -129,6 +141,31 @@ class PlaylistEditFragment : Fragment() {
         }
     }
 
+    private fun safeExit() {
+
+        if (viewModel.hasUnsavedModify()) {
+            confirmDialog.show()
+        } else {
+            closeFragment()
+        }
+
+    }
+
+    private fun closeFragment() {
+        findNavController().popBackStack()
+    }
+
+    // STATE
+
+    private fun render(state: PlaylistEditState) {
+        when (state) {
+            is PlaylistEditState.Content -> showPlaylistContent(state.data)
+            PlaylistEditState.Empty -> showEmpty()
+            PlaylistEditState.Loading -> {}
+            is PlaylistEditState.Create -> showCreate(state.data)
+        }
+    }
+
     private fun showPlaylistContent(data: PlaylistCreateData) {
 
         if (binding.playlistName.text.toString() != data.name) {
@@ -159,10 +196,6 @@ class PlaylistEditFragment : Fragment() {
 
     }
 
-    private fun showEmpty() {
-        showPlaylistContent(PlaylistCreateData(name = "", description = "", cover = null))
-    }
-
     private fun showPlaylistCoverByUri(uri: Uri?) {
 
         if (uri != null) {
@@ -176,5 +209,22 @@ class PlaylistEditFragment : Fragment() {
         }
 
     }
+
+    private fun showEmpty() {
+        showPlaylistContent(PlaylistCreateData(name = "", description = "", cover = null))
+    }
+
+    private fun showCreate(newPlaylist: Playlist) {
+
+        Toast.makeText(
+            requireActivity(),
+            "Плейлист ${newPlaylist.name} создан",
+            Toast.LENGTH_SHORT
+        ).show()
+
+        closeFragment()
+
+    }
+
 
 }
