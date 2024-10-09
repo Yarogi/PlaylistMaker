@@ -54,7 +54,7 @@ class PlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        trackJson = savedInstanceState?.getString(CURRENT_TRACK_KEY) ?: ""
+        trackJson = requireArguments().getString(CURRENT_TRACK_KEY) ?: ""
 
         viewModel.trackScreenStateObserver().observe(viewLifecycleOwner) { state ->
             when (state) {

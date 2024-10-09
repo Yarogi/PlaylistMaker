@@ -11,10 +11,10 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentFeaturedTracksBinding
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.presentation.media_library.featured.FeaturedTracksState
-import com.example.playlistmaker.ui.util.BindingFragment
 import com.example.playlistmaker.presentation.media_library.featured.FeaturedTracksViewModel
-import com.example.playlistmaker.ui.player.PlayerActivity
+import com.example.playlistmaker.ui.player.PlayerFragment
 import com.example.playlistmaker.ui.search.TrackAdapter
+import com.example.playlistmaker.ui.util.BindingFragment
 import com.example.playlistmaker.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -29,8 +29,8 @@ class FeaturedTracksFragment : BindingFragment<FragmentFeaturedTracksBinding>() 
     private val playTrackDebouncer: (Track) -> Unit by lazy {
         debounce(0L, lifecycleScope, false) { track ->
             findNavController().navigate(
-                R.id.action_libraryFragment_to_playerActivity,
-                PlayerActivity.createArgs(track)
+                R.id.action_libraryFragment_to_playerFragment,
+                PlayerFragment.createArgs(track)
             )
         }
     }
