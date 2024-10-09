@@ -11,9 +11,6 @@
         android:label="fragment_library"
         tools:layout="@layout/fragment_library">
         <action
-            android:id="@+id/action_libraryFragment_to_playerActivity"
-            app:destination="@id/playerActivity" />
-        <action
             android:id="@+id/action_libraryFragment_to_playlistEditFragment"
             app:destination="@id/playlistEditFragment" />
         <action
@@ -36,9 +33,6 @@
         android:label="fragment_search"
         tools:layout="@layout/fragment_search">
         <action
-            android:id="@+id/action_searchFragment_to_playerActivity"
-            app:destination="@id/playerActivity" />
-        <action
             android:id="@+id/action_searchFragment_to_playerFragment"
             app:destination="@id/playerFragment"
             app:enterAnim="@anim/slide_in_up"
@@ -46,11 +40,6 @@
             app:popEnterAnim="@anim/hold"
             app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
-    <activity
-        android:id="@+id/playerActivity"
-        android:name="com.example.playlistmaker.ui.player.PlayerActivity"
-        android:label="activity_player"
-        tools:layout="@layout/activity_player" />
     <fragment
         android:id="@+id/playlistEditFragment"
         android:name="com.example.playlistmaker.ui.media_library.playlists.edit.PlaylistEditFragment"
