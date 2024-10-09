@@ -18,7 +18,7 @@ class PLaylistDbMapper {
 
     }
 
-    fun map(data: PlaylistEntity, coverPathUri: Uri): Playlist {
+    fun map(data: PlaylistEntity, coverPathUri: Uri?): Playlist {
 
         return Playlist(
             id = data.id,

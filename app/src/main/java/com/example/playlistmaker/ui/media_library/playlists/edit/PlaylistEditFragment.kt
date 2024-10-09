@@ -17,8 +17,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.databinding.FragmentPlaylistEditBinding
-import com.example.playlistmaker.presentation.media_library.playlists.edit_playlist.PlayListEditViewModel
-import com.example.playlistmaker.presentation.media_library.playlists.edit_playlist.PlaylistEditState
+import com.example.playlistmaker.presentation.media_library.playlists.edit.PlayListEditViewModel
+import com.example.playlistmaker.presentation.media_library.playlists.edit.PlaylistEditState
 import com.example.playlistmaker.domain.media_library.playlists.model.PlaylistCreateData
 import com.example.playlistmaker.ui.util.pxToDP
 import org.koin.androidx.viewmodel.ext.android.viewModel

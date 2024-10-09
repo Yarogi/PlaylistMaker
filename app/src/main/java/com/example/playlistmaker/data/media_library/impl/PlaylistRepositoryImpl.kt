@@ -1,5 +1,6 @@
 package com.example.playlistmaker.data.media_library.impl
 
+import android.net.Uri
 import com.example.playlistmaker.data.media_library.db.TrackDataBase
 import com.example.playlistmaker.data.media_library.db.entity.PlaylistEntity
 import com.example.playlistmaker.data.media_library.mapper.PLaylistDbMapper
@@ -25,7 +26,17 @@ class PlaylistRepositoryImpl(
 
         dataBase.playlistDao().insertPlaylist(entity)
 
-        emit(mapper.map(entity))
+        emit(mapper.map(entity, fileStorage.getImageUri(path)))
+
+    }
+
+    override suspend fun getAllPlaylist(): Flow<List<Playlist>> = flow {
+
+        val playlistList = dataBase.playlistDao().getAllPlaylists().map { entity ->
+            mapper.map(entity, fileStorage.getImageUri(name = entity.coverLocalPath))
+        }
+
+        emit(playlistList)
 
     }
 

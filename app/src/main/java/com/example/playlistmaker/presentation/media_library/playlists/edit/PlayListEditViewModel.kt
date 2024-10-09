@@ -1,7 +1,6 @@
-package com.example.playlistmaker.presentation.media_library.playlists.edit_playlist
+package com.example.playlistmaker.presentation.media_library.playlists.edit
 
 import android.net.Uri
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

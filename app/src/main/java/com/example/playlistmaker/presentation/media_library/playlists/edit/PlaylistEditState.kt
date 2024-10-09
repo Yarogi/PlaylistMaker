@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.media_library.playlists.edit_playlist
+package com.example.playlistmaker.presentation.media_library.playlists.edit
 
 import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
 import com.example.playlistmaker.domain.media_library.playlists.model.PlaylistCreateData
