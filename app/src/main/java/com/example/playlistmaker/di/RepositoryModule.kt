@@ -8,7 +8,6 @@ import com.example.playlistmaker.data.search.impl.TracksRepositoryImpl
 import com.example.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import com.example.playlistmaker.di.util.DINames
 import com.example.playlistmaker.domain.media_library.favorites.api.FeaturedTracksRepository
-import com.example.playlistmaker.domain.media_library.playlists.api.PlaylistEditInteractor
 import com.example.playlistmaker.domain.media_library.playlists.api.PlaylistRepository
 import com.example.playlistmaker.domain.player.api.PlayerRepository
 import com.example.playlistmaker.domain.search.api.SearchHistoryRepository
@@ -42,7 +41,7 @@ val repositoryModule = module {
 
     factory<PlaylistRepository> {
         PlaylistRepositoryImpl(
-            dataBase = get(), mapper = get(), fileStorage = get()
+            dataBase = get(), playlistMapper = get(), fileStorage = get(), trackDbMapper = get()
         )
     }
 

@@ -139,6 +139,9 @@ interface TrackDao {
 
     }
 
+    @Query("SELECT * FROM playlist_tracks WHERE trackId = :trackId & playlistId = :playlistId")
+    fun findTrackInPlaylist(trackId: Int, playlistId: Int): PlaylistTracksEntity?
+
     /** Служебная */
     @Insert(entity = PlaylistTracksEntity::class, onConflict = OnConflictStrategy.REPLACE)
     fun insertToPlaylist(entity: PlaylistTracksEntity)
