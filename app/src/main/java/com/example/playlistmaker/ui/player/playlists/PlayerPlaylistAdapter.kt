@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
 
-class PlayerPlaylistAdapter() : RecyclerView.Adapter<PlayerPlaylistHolder>() {
+class PlayerPlaylistAdapter(val listener: Listener) : RecyclerView.Adapter<PlayerPlaylistHolder>() {
 
     var playlists = arrayListOf<Playlist>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerPlaylistHolder {
@@ -19,7 +19,17 @@ class PlayerPlaylistAdapter() : RecyclerView.Adapter<PlayerPlaylistHolder>() {
     override fun getItemCount(): Int = playlists.size
 
     override fun onBindViewHolder(holder: PlayerPlaylistHolder, position: Int) {
-        holder.bind(playlists[position])
+
+        val curentPlaylist = playlists[position]
+
+        holder.bind(curentPlaylist)
+        holder.itemView.setOnClickListener {
+            listener.onClickListener(curentPlaylist)
+        }
+    }
+
+    interface Listener {
+        fun onClickListener(playlist: Playlist)
     }
 
 }

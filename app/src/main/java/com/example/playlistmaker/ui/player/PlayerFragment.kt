@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -13,11 +14,16 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlayerBinding
 import com.example.playlistmaker.domain.main.model.Track
+import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
+import com.example.playlistmaker.presentation.media_library.playlists.list.PlaylistState
 import com.example.playlistmaker.presentation.player.PlayerFeaturedState
+import com.example.playlistmaker.presentation.player.PlayerPlaylistState
 import com.example.playlistmaker.presentation.player.PlayerViewModel
 import com.example.playlistmaker.presentation.player.TrackPlaybackState
 import com.example.playlistmaker.presentation.player.TrackScreenState
+import com.example.playlistmaker.ui.player.playlists.PlayerPlaylistAdapter
 import com.example.playlistmaker.ui.util.pxToDP
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -38,8 +44,18 @@ class PlayerFragment : Fragment() {
     private val binding: FragmentPlayerBinding get() = _binding!!
 
     private var trackJson = ""
-    private val viewModel by viewModel<PlayerViewModel> {
-        parametersOf(trackJson)
+    private val viewModel by viewModel<PlayerViewModel> { parametersOf(trackJson) }
+
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+    private val adapter: PlayerPlaylistAdapter by lazy {
+        PlayerPlaylistAdapter(
+            object : PlayerPlaylistAdapter.Listener {
+                override fun onClickListener(playlist: Playlist) {
+                    viewModel.addTrackToPlaylist(playlist)
+                }
+
+            }
+        )
     }
 
     override fun onCreateView(
@@ -80,6 +96,42 @@ class PlayerFragment : Fragment() {
             viewModel.isFavoriteOnClick()
         }
 
+        //bottom_sheet
+        binding.overlay.isVisible = false
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistsBottomSheet).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+                updateOverlayVisible(newState)
+                when (newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED,
+                    BottomSheetBehavior.STATE_EXPANDED,
+                    -> viewModel.getAllPlaylists(newState)
+
+                    BottomSheetBehavior.STATE_HIDDEN -> viewModel.clearPlaylists(newState)
+                    else -> {}
+                }
+
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+
+        })
+
+        binding.addPlaylist.setOnClickListener {
+            viewModel.getAllPlaylists(BottomSheetBehavior.STATE_COLLAPSED)
+        }
+        binding.playlistsRecyclerView.adapter = adapter
+        viewModel.playlistStateObserver().observe(viewLifecycleOwner) { state ->
+            renderPlaylistState(state)
+        }
+        binding.createNewPlaylistButton.setOnClickListener {
+            findNavController().navigate(R.id.action_playerFragment_to_playlistEditFragment)
+        }
+
     }
 
     override fun onDestroyView() {
@@ -91,9 +143,6 @@ class PlayerFragment : Fragment() {
         super.onPause()
         viewModel.pausePlayer(сheckPlayback = true)
     }
-
-
-    //FILL_AND_STATE
 
     private fun fillTrackInformation(track: Track) {
 
@@ -176,6 +225,30 @@ class PlayerFragment : Fragment() {
             binding.playTime.text = progressText
         }
 
+    }
+
+
+    private fun renderPlaylistState(state: PlayerPlaylistState) {
+        if (bottomSheetBehavior.state != state.listState) {
+            bottomSheetBehavior.state = state.listState
+            updateOverlayVisible(state.listState)
+        }
+
+        when (state) {
+            is PlayerPlaylistState.Content -> updatePlaylistsData(state.data)
+            is PlayerPlaylistState.Loading -> {}
+        }
+
+    }
+
+    private fun updatePlaylistsData(playlists: List<Playlist>) {
+        adapter.playlists.clear()
+        adapter.playlists.addAll(playlists)
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun updateOverlayVisible(listState: Int) {
+        binding.overlay.isVisible = listState != BottomSheetBehavior.STATE_HIDDEN
     }
 
 

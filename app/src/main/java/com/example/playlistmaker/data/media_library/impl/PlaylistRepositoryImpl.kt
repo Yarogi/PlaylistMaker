@@ -1,10 +1,9 @@
 package com.example.playlistmaker.data.media_library.impl
 
-import android.net.Uri
 import com.example.playlistmaker.data.media_library.db.TrackDataBase
-import com.example.playlistmaker.data.media_library.db.entity.PlaylistEntity
 import com.example.playlistmaker.data.media_library.mapper.PLaylistDbMapper
 import com.example.playlistmaker.data.media_library.storage.FileStorage
+import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.media_library.playlists.api.PlaylistRepository
 import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
 import com.example.playlistmaker.domain.media_library.playlists.model.PlaylistCreateData
@@ -37,6 +36,10 @@ class PlaylistRepositoryImpl(
         }
 
         emit(playlistList)
+
+    }
+
+    override suspend fun addTrack(track: Track, playlist: Playlist) {
 
     }
 

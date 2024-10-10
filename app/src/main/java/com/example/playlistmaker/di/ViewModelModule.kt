@@ -17,7 +17,9 @@ val viewModelModule = module {
     viewModel<PlayerViewModel> { (trackJson: String?) ->
         val gson: Gson = get()
         val track = gson.fromJson(trackJson, Track::class.java)
-        PlayerViewModel(track = track, playerInteractor = get())
+        PlayerViewModel(track = track,
+            playerInteractor = get(),
+            playlistInteractor = get())
     }
 
     viewModel<SearchViewModel> {
