@@ -1,6 +1,7 @@
 package com.example.playlistmaker.data.media_library.impl
 
 import com.example.playlistmaker.data.media_library.db.TrackDataBase
+import com.example.playlistmaker.data.media_library.db.entity.FeatureTracksEntity
 import com.example.playlistmaker.data.media_library.mapper.TrackDbMapper
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.media_library.favorites.api.FeaturedTracksRepository
@@ -15,21 +16,18 @@ class FeaturedTracksRepositoryImpl(
     override fun addTrack(track: Track) {
 
         val trackEntity = trackDbMapper.map(track)
-        trackEntity.timestamp = System.currentTimeMillis()
-        trackDataBase.trackDao().insertTrack(
-            trackEntity = trackEntity
-        )
+        trackDataBase.trackDao().addToFeatured(trackEntity)
+
     }
 
     override fun removeTrack(track: Track) {
-        trackDataBase.trackDao().deleteTrack(
-            trackEntity = trackDbMapper.map(track)
-        )
+        val tracksEntity = trackDbMapper.map(track)
+        trackDataBase.trackDao().removeFromFeatured(tracksEntity)
     }
 
     override fun getTracks(): Flow<List<Track>> = flow {
 
-        val result = trackDataBase.trackDao().getAllTracks()
+        val result = trackDataBase.trackDao().getAllFeaturedTracks()
             .sortedByDescending { it.timestamp }
             .map { trackDbMapper.map(it) }
 
