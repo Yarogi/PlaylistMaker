@@ -2,6 +2,7 @@ package com.example.playlistmaker.domain.player.api
 
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
+import com.example.playlistmaker.domain.media_library.playlists.model.TrackAddToPlaylistResult
 import com.example.playlistmaker.domain.player.model.PlaybackStatus
 import kotlinx.coroutines.flow.Flow
 
@@ -29,7 +30,7 @@ interface PlayerInteractor {
     suspend fun trackInFavorite(track: Track): Flow<Boolean>
 
     suspend fun getAllPlaylists(): Flow<List<Playlist>>
-    suspend fun addTrackInPlaylist(track: Track, playlist: Playlist)
+    suspend fun addTrackInPlaylist(track: Track, playlist: Playlist): Flow<TrackAddToPlaylistResult>
 
     interface PrepareListener : PlayerRepository.Listener {}
 

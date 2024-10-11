@@ -25,7 +25,7 @@ class PLaylistDbMapper {
             name = data.name,
             description = data.description,
             coverPath = data.coverLocalPath,
-            tracksQuantity = 0,
+            tracksQuantity = data.tracksQuantity,
             coverPathUri = coverPathUri
         )
     }

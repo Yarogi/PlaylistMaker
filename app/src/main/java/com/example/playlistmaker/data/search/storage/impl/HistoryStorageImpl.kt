@@ -1,12 +1,10 @@
 package com.example.playlistmaker.data.search.storage.impl
 
-import android.content.SharedPreferences
 import com.example.playlistmaker.data.db.TrackDataBase
 import com.example.playlistmaker.data.db.entity.TrackEntity
 import com.example.playlistmaker.data.db.mapper.TrackDbMapper
 import com.example.playlistmaker.data.search.storage.HistoryStorage
 import com.example.playlistmaker.domain.main.model.Track
-import com.google.gson.Gson
 
 class HistoryStorageImpl(
     private val dataBase: TrackDataBase,
@@ -64,7 +62,7 @@ class HistoryStorageImpl(
 
         val activeHistory = dataBase.trackDao().getAllHistory()
         if (activeHistory.size > TRACK_LIMIT) {
-            for (i in TRACK_LIMIT..activeHistory.size + 1) {
+            for (i in TRACK_LIMIT..activeHistory.size - 1) {
 
                 val track: Track = trackDbMapper.map(activeHistory[i])
                 val trackEntity: TrackEntity = trackDbMapper.map(track)

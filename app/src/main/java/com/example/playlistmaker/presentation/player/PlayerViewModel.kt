@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.media_library.playlists.api.PlaylistInteractor
 import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
+import com.example.playlistmaker.domain.media_library.playlists.model.TrackAddToPlaylistResult
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.model.PlaybackStatus
 import com.example.playlistmaker.presentation.media_library.playlists.list.PlaylistState
@@ -32,6 +33,9 @@ class PlayerViewModel(
 
     private val playlistState = MutableLiveData<PlayerPlaylistState>()
     fun playlistStateObserver(): LiveData<PlayerPlaylistState> = playlistState
+
+    private val playlistTrackAddedState = MutableLiveData<PlaylistTrackAddState>()
+    fun playlistTrackAddedStateObserver(): LiveData<PlaylistTrackAddState> = playlistTrackAddedState
 
     private var timerJob: Job? = null
 
@@ -199,11 +203,37 @@ class PlayerViewModel(
     }
 
     fun addTrackToPlaylist(playlist: Playlist) {
-        playlistInteractor
+        viewModelScope.launch {
+            playerInteractor.addTrackInPlaylist(track, playlist)
+                .collect { result ->
+                    val state: PlaylistTrackAddState = when (result) {
+                        TrackAddToPlaylistResult.ADDED -> PlaylistTrackAddState.TrackAdded(
+                            track,
+                            playlist
+                        )
+
+                        TrackAddToPlaylistResult.ADDED_EARLIER -> PlaylistTrackAddState.TrackAddedEarly(
+                            track,
+                            playlist
+                        )
+
+                        TrackAddToPlaylistResult.ERROR -> PlaylistTrackAddState.Error
+                    }
+                    renderPlaylistTrackAddedState(state)
+                }
+        }
     }
 
     private fun renderPlaylistsState(state: PlayerPlaylistState) {
         playlistState.postValue(state)
+    }
+
+    fun clearPlaylistTrackAddedMessage() {
+        renderPlaylistTrackAddedState(PlaylistTrackAddState.Empty)
+    }
+
+    private fun renderPlaylistTrackAddedState(state: PlaylistTrackAddState) {
+        playlistTrackAddedState.postValue(state)
     }
 
 }

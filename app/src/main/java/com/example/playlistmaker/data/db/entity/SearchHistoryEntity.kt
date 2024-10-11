@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "search_history")
 data class SearchHistoryEntity(
     @PrimaryKey
-    var trackID: Int,
+    var trackId: Int,
     var timestamp: Long = 0L,
 )

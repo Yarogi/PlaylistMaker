@@ -9,14 +9,18 @@ import com.example.playlistmaker.domain.media_library.playlists.api.PlaylistRepo
 import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
 import com.example.playlistmaker.domain.media_library.playlists.model.PlaylistCreateData
 import com.example.playlistmaker.domain.media_library.playlists.model.TrackAddToPlaylistResult
+import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 class PlaylistRepositoryImpl(
     private val dataBase: TrackDataBase,
     private val fileStorage: FileStorage,
     private val playlistMapper: PLaylistDbMapper,
     private val trackDbMapper: TrackDbMapper,
+    private val serializer: Gson,
 ) : PlaylistRepository {
 
     override suspend fun createPlaylist(data: PlaylistCreateData): Flow<Playlist> = flow {
@@ -30,7 +34,7 @@ class PlaylistRepositoryImpl(
 
         emit(playlistMapper.map(entity, fileStorage.getImageUri(path)))
 
-    }
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun getAllPlaylist(): Flow<List<Playlist>> = flow {
 
@@ -40,7 +44,7 @@ class PlaylistRepositoryImpl(
 
         emit(playlistList)
 
-    }
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun addTrack(
         track: Track,
@@ -52,16 +56,39 @@ class PlaylistRepositoryImpl(
             playlistId = playlist.id
         )
 
-        if (playlistTrack == null) {
-            dataBase.trackDao().addToPlaylist(
-                trackEntity = trackDbMapper.map(track),
-                playlistId = playlist.id
-            )
-        } else {
-            emit(TrackAddToPlaylistResult.ADDED)
+        when {
+            playlistTrack == null -> {
+                dataBase.trackDao().addToPlaylist(
+                    trackEntity = trackDbMapper.map(track),
+                    playlistId = playlist.id
+                )
+                updatePlaylistInfoById(playlistId = playlist.id)
+                emit(TrackAddToPlaylistResult.ADDED)
+            }
+
+            else -> emit(TrackAddToPlaylistResult.ADDED_EARLIER)
         }
 
-    }
 
+    }.flowOn(Dispatchers.IO)
+
+    private suspend fun updatePlaylistInfoById(playlistId: Int) {
+
+        dataBase.playlistDao().findPlaylistById(playlistId)?.let { entity ->
+            val tracksId = dataBase.playlistDao().getPLaylistTrakcsId(entity.id)
+
+            if (entity.tracksQuantity != tracksId.size) {
+
+                entity.tracksQuantity = tracksId.size
+                entity.tracksId = serializer.toJson(tracksId)
+
+                dataBase.playlistDao().insertPlaylist(entity)
+
+            }
+
+        }
+
+
+    }
 
 }

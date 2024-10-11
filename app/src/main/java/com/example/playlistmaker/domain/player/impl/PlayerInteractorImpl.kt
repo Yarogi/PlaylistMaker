@@ -4,6 +4,7 @@ import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.media_library.favorites.api.FeaturedTracksRepository
 import com.example.playlistmaker.domain.media_library.playlists.api.PlaylistRepository
 import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
+import com.example.playlistmaker.domain.media_library.playlists.model.TrackAddToPlaylistResult
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.api.PlayerRepository
 import com.example.playlistmaker.domain.player.model.PlaybackStatus
@@ -64,8 +65,8 @@ class PlayerInteractorImpl(
        return playlistRepository.getAllPlaylist()
     }
 
-    override suspend fun addTrackInPlaylist(track: Track, playlist: Playlist) {
-        TODO("Not yet implemented")
+    override suspend fun addTrackInPlaylist(track: Track, playlist: Playlist) :Flow<TrackAddToPlaylistResult>{
+        return playlistRepository.addTrack(track, playlist)
     }
 
 

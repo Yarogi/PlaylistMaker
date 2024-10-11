@@ -10,6 +10,6 @@ data class PlaylistEntity(
     val name: String,
     val description: String,
     val coverLocalPath: String,
-    val tracksId: String,
-    val tracksQuantity: Int,
+    var tracksId: String,
+    var tracksQuantity: Int,
 )

@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "feature_tracks")
 data class FeatureTracksEntity(
     @PrimaryKey
-    var trackID: Int,
+    var trackId: Int,
     var timestamp: Long = 0L,
 )

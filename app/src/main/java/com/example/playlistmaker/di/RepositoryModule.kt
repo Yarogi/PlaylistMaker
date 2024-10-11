@@ -41,7 +41,11 @@ val repositoryModule = module {
 
     factory<PlaylistRepository> {
         PlaylistRepositoryImpl(
-            dataBase = get(), playlistMapper = get(), fileStorage = get(), trackDbMapper = get()
+            dataBase = get(),
+            playlistMapper = get(),
+            fileStorage = get(),
+            trackDbMapper = get(),
+            serializer = get()
         )
     }
 

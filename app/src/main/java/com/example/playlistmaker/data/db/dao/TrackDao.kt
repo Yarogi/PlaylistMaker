@@ -76,7 +76,7 @@ interface TrackDao {
     //FEATURED TRACKS
 
     /** Получить список всех избранных треков со временем добавления */
-    @Query("SELECT * FROM feature_tracks LEFT JOIN track_table ON feature_tracks.trackID = track_table.trackId")
+    @Query("SELECT * FROM feature_tracks LEFT JOIN track_table ON feature_tracks.trackId = track_table.trackId")
     fun getAllFeaturedTracks(): List<TimestampTrack>
 
     /** Добавить трек в избранное */
@@ -94,8 +94,14 @@ interface TrackDao {
     }
 
     /** Трек является избранным (возращается его id, если истина) */
-    @Query("SELECT trackId FROM feature_tracks WHERE trackId = :trackId")
-    fun findInFeaturedTrackId(trackId: Int): Int?
+    @Query(
+        "SELECT * " +
+                "FROM feature_tracks " +
+                "   LEFT JOIN track_table " +
+                "       ON feature_tracks.trackId = track_table.trackId " +
+                "WHERE feature_tracks.trackId = :trackId"
+    )
+    fun findInFeaturedTrackById(trackId: Int): TimestampTrack?
 
     /** Служебная */
     @Insert(entity = FeatureTracksEntity::class, onConflict = OnConflictStrategy.REPLACE)
@@ -137,11 +143,11 @@ interface TrackDao {
     fun deleteHistory()
 
     /** Служебная */
-    @Query("SELECT trackID FROM search_history")
+    @Query("SELECT trackId FROM search_history")
     fun getlAllHistoryId(): List<Int>
 
     /** Получить историю */
-    @Query("SELECT * FROM search_history LEFT JOIN track_table ON search_history.trackID = track_table.trackId ORDER BY search_history.timestamp DESC")
+    @Query("SELECT * FROM search_history LEFT JOIN track_table ON search_history.trackId= track_table.trackId ORDER BY search_history.timestamp DESC")
     fun getAllHistory(): List<TimestampTrack>
 
     /** Служебная */
@@ -178,7 +184,7 @@ interface TrackDao {
         deleteTrackSafety(trackEntity)
     }
 
-    @Query("SELECT * FROM playlist_tracks WHERE trackId = :trackId & playlistId = :playlistId")
+    @Query("SELECT * FROM playlist_tracks WHERE trackId = :trackId AND playlistId = :playlistId")
     fun findTrackInPlaylist(trackId: Int, playlistId: Int): PlaylistTracksEntity?
 
     /** Служебная */
