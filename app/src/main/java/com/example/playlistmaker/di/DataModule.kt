@@ -4,9 +4,9 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.net.ConnectivityManager
 import androidx.room.Room
-import com.example.playlistmaker.data.media_library.db.TrackDataBase
-import com.example.playlistmaker.data.media_library.mapper.PLaylistDbMapper
-import com.example.playlistmaker.data.media_library.mapper.TrackDbMapper
+import com.example.playlistmaker.data.db.TrackDataBase
+import com.example.playlistmaker.data.db.mapper.PLaylistDbMapper
+import com.example.playlistmaker.data.db.mapper.TrackDbMapper
 import com.example.playlistmaker.data.media_library.storage.FileStorage
 import com.example.playlistmaker.data.media_library.storage.FileStorageImpl
 import com.example.playlistmaker.data.search.network.NetworkClient
@@ -60,7 +60,10 @@ val dataModule = module {
     }
 
     single<HistoryStorage> {
-        HistoryStorageImpl(get(named(name = DINames.history_pref)), gson = get())
+        HistoryStorageImpl(
+            dataBase = get(),
+            trackDbMapper = get()
+        )
     }
 
     single<TrackSearchApi> {

@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.media_library.db.dao
+package com.example.playlistmaker.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,11 +6,11 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.example.playlistmaker.data.media_library.db.entity.FeatureTracksEntity
-import com.example.playlistmaker.data.media_library.db.entity.PlaylistTracksEntity
-import com.example.playlistmaker.data.media_library.db.entity.SearchHistoryEntity
-import com.example.playlistmaker.data.media_library.db.entity.TimestampTrack
-import com.example.playlistmaker.data.media_library.db.entity.TrackEntity
+import com.example.playlistmaker.data.db.entity.FeatureTracksEntity
+import com.example.playlistmaker.data.db.entity.PlaylistTracksEntity
+import com.example.playlistmaker.data.db.entity.SearchHistoryEntity
+import com.example.playlistmaker.data.db.entity.TimestampTrack
+import com.example.playlistmaker.data.db.entity.TrackEntity
 
 @Dao
 interface TrackDao {
@@ -22,6 +22,34 @@ interface TrackDao {
     /** Служебная */
     @Delete(entity = TrackEntity::class)
     fun deleteTrack(trackEntity: TrackEntity)
+
+    @Transaction
+    fun deleteTrackSafety(entity: TrackEntity) {
+
+        if (trackRefernceList(entity.trackId).isEmpty()) {
+            deleteTrack(entity)
+        }
+    }
+
+    @Transaction
+    fun deleteTrackByIdSafety(trackId: Int) {
+
+        if (trackRefernceList(trackId).isEmpty()) {
+
+            val entity = findTrackById(trackId)
+            if (entity != null) {
+                deleteTrack(entity)
+            }
+        }
+    }
+
+    @Transaction
+    fun deleteTrackById(trackId: Int) {
+        val entity = findTrackById(trackId)
+        if (entity != null) {
+            deleteTrack(entity)
+        }
+    }
 
     /** Служебная */
     @Query("SELECT * FROM track_table")
@@ -62,9 +90,7 @@ interface TrackDao {
     @Transaction
     fun removeFromFeatured(trackEntity: TrackEntity) {
         deleteFromFeature(FeatureTracksEntity(trackEntity.trackId))
-        if (trackRefernceList(trackEntity.trackId).isEmpty()) {
-            deleteTrack(trackEntity)
-        }
+        deleteTrackSafety(trackEntity)
     }
 
     /** Трек является избранным (возращается его id, если истина) */
@@ -92,10 +118,27 @@ interface TrackDao {
     @Transaction
     fun removeFromHistory(trackEntity: TrackEntity) {
         deleteFromHistory(SearchHistoryEntity(trackEntity.trackId))
-        if (trackRefernceList(trackEntity.trackId).isEmpty()) {
-            deleteTrack(trackEntity)
+        deleteTrackSafety(trackEntity)
+    }
+
+    @Transaction
+    fun clearHistorySafety() {
+        val tracksId = getlAllHistoryId()
+        if (tracksId.isNotEmpty()) {
+
+            deleteHistory()
+            tracksId.forEach { tracksId -> deleteTrackByIdSafety(tracksId) }
+
         }
     }
+
+    /** Служебная */
+    @Query("DELETE FROM search_history")
+    fun deleteHistory()
+
+    /** Служебная */
+    @Query("SELECT trackID FROM search_history")
+    fun getlAllHistoryId(): List<Int>
 
     /** Получить историю */
     @Query("SELECT * FROM search_history LEFT JOIN track_table ON search_history.trackID = track_table.trackId ORDER BY search_history.timestamp DESC")
@@ -132,11 +175,7 @@ interface TrackDao {
                 trackId = trackEntity.trackId
             )
         )
-
-        if (trackRefernceList(trackEntity.trackId).isEmpty()) {
-            deleteTrack(trackEntity)
-        }
-
+        deleteTrackSafety(trackEntity)
     }
 
     @Query("SELECT * FROM playlist_tracks WHERE trackId = :trackId & playlistId = :playlistId")
