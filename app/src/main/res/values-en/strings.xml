@@ -44,4 +44,5 @@
     <string name="question_finish_creating_playlist_message">All unsaved data will be lost</string>
     <string name="cancel">Cancel</string>
     <string name="finish">Finish</string>
+    <string name="something_went_wrong">Something went wrong</string>
 </resources>

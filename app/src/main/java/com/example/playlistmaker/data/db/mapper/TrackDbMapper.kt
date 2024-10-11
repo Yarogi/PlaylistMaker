@@ -1,6 +1,7 @@
-package com.example.playlistmaker.data.media_library.mapper
+package com.example.playlistmaker.data.db.mapper
 
-import com.example.playlistmaker.data.media_library.db.entity.TrackEntity
+import com.example.playlistmaker.data.db.entity.TimestampTrack
+import com.example.playlistmaker.data.db.entity.TrackEntity
 import com.example.playlistmaker.data.search.dto.TrackDto
 import com.example.playlistmaker.domain.main.model.Track
 
@@ -56,5 +57,21 @@ class TrackDbMapper {
         )
     }
 
+    fun map(track: TimestampTrack): Track {
+        return Track(
+            trackId = track.trackId,
+            trackName = track.trackName,
+            artistName = track.artistName,
+            trackTimeMillis = track.trackTimeMillis,
+            artworkUrl100 = track.artworkUrl100,
+            collectionName = track.collectionName,
+            releaseDate = track.releaseDate,
+            primaryGenreName = track.primaryGenreName,
+            country = track.country,
+            previewUrl = track.previewUrl,
+            isFavorite = true
+
+        )
+    }
 
 }

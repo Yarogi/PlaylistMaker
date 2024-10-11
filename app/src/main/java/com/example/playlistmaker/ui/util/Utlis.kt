@@ -9,3 +9,13 @@ fun pxToDP(context: Context, value: Int): Int {
         value.toFloat(), context.resources.displayMetrics
     ).toInt()
 }
+
+fun tracksQuantityToString(tracksQuantity: Int): String {
+    var trackPost =
+        when (tracksQuantity % 10) {
+            1 -> "трек"
+            in 2..4 -> "трека"
+            else -> "треков"
+        }
+    return "${tracksQuantity} $trackPost"
+}
