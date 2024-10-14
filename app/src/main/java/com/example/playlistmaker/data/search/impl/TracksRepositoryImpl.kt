@@ -9,7 +9,7 @@ import com.example.playlistmaker.domain.search.model.Resource
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.search.model.TrackSearchStructure
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.media_library.db.TrackDataBase
+import com.example.playlistmaker.data.db.TrackDataBase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
