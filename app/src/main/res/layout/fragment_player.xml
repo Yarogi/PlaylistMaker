@@ -260,6 +260,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/bottom_sheet_bg"
         android:orientation="vertical"
+        android:theme="@style/Theme.PlaylistMaker.NoBackground"
         app:behavior_hideable="true"
         app:behavior_peekHeight="505dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -283,7 +284,8 @@
 
         <Button
             android:id="@+id/create_new_playlist_button"
-            style="@style/PlaylistsBottomSheet.CreateButton"
+            android:theme="@style/Theme.PlaylistMaker.NoBackground"
+            style="@style/PlaylistsBottomSheetCreateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -297,8 +299,8 @@
             android:id="@+id/playlists_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/player_playlist_item" />
 
     </LinearLayout>

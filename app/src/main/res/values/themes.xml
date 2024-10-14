@@ -18,9 +18,14 @@
     <style name="Theme.PlaylistMaker.NoBackground" parent="Theme.PlaylistMaker">
         <item name="android:background">@null</item>
     </style>
+    <style name="Tabs" parent="Theme.PlaylistMaker.NoBackground"/>
+    <style name="PlaylistMakerTint" parent="Theme.PlaylistMaker.NoBackground">
+        <item name="android:background">@color/white</item>
+    </style>
 
     <style name="PlaylistMakerNoColors">
         <item name="colorPrimary">@color/blue</item>
+        <item name="colorSecondary">@color/light_gray</item>
     </style>
 
     <style name="Theme.PlaylistMaker.Main" parent="Theme.PlaylistMaker">
@@ -32,6 +37,8 @@
         <item name="android:backgroundTint">@color/light_gray</item>
         <item name="tint">@color/secondary_gray</item>
     </style>
+
+    <style name="NoTheme"/>
 
     <style name="Theme.PlaylistMaker.TrackListItem" parent="Theme.PlaylistMaker">
         <item name="tint">@color/text_gray</item>

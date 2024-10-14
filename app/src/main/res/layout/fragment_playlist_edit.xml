@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.media_library.playlists.edit.PlaylistEditFragment"
->
+    tools:context=".ui.media_library.playlists.edit.PlaylistEditFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/topPanelBottomLine"
@@ -59,11 +58,11 @@
         android:clickable="true"
         android:contentDescription="@string/playlist_cover"
         android:src="@drawable/add_photo_area"
+        app:layout_constraintBottom_toTopOf="@id/playlist_name"
         app:layout_constraintDimensionRatio="H, 1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topPanelBottomLine"
-        app:layout_constraintBottom_toTopOf="@id/playlist_name" />
+        app:layout_constraintTop_toBottomOf="@id/topPanelBottomLine" />
 
     <EditText
         android:id="@+id/playlist_name"
@@ -75,7 +74,7 @@
         android:hint="@string/required_name"
         app:layout_constraintEnd_toStartOf="@id/endBorder"
         app:layout_constraintStart_toEndOf="@id/startBorder"
-        app:layout_constraintTop_toBottomOf="@id/playlistCover"/>
+        app:layout_constraintTop_toBottomOf="@id/playlistCover" />
 
     <TextView
         android:id="@+id/playlist_name_title"
@@ -95,11 +94,11 @@
         android:layout_height="wrap_content"
         android:autofillHints=""
         android:hint="@string/description"
+        app:layout_constraintBottom_toTopOf="@id/create_button"
         app:layout_constraintEnd_toStartOf="@id/endBorder"
         app:layout_constraintStart_toEndOf="@id/startBorder"
         app:layout_constraintTop_toBottomOf="@id/playlist_name"
-        app:layout_constraintBottom_toTopOf="@id/create_button"
-        app:layout_constraintVertical_chainStyle="spread_inside"/>
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <TextView
         android:id="@+id/playlist_description_title"
@@ -115,18 +114,21 @@
 
     <Button
         android:id="@+id/create_button"
-        android:theme="@style/PlaylistMakerNoColors"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="44dp"
         android:layout_marginHorizontal="17dp"
-        android:layout_marginBottom="32dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/rectangle_8"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="@color/button_color"
+        android:enabled="false"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:text="@string/create"
         android:textColor="@color/white"
+        app:cornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/playlist_description"/>
+        app:layout_constraintTop_toBottomOf="@id/playlist_description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
