@@ -261,7 +261,7 @@
     <style name="PlaylistsBottomSheet">
         <item name="backgroundTint">@color/white</item>
     </style>
-    <style name="PlaylistsBottomSheet.CreateButton">
+    <style name="PlaylistsBottomSheetCreateButton">
         <item name="backgroundTint">@color/light_black</item>
     </style>
 
