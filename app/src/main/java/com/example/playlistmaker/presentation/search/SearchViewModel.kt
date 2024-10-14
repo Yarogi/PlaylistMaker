@@ -1,6 +1,5 @@
 package com.example.playlistmaker.presentation.search
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,11 +20,10 @@ class SearchViewModel(
     companion object {
         const val SEARCH_DEF = ""
         private const val SEARCH_DELAY = 2000L
-        private const val SEARCH_HISTORY_SIZE = 10
-
     }
 
     private var searchJob: Job? = null
+    private var historyJob: Job? = null
 
     //Search
     private var latestSearchText: String? = null
@@ -37,10 +35,6 @@ class SearchViewModel(
     private val stateLiveData = MutableLiveData<SearchState>(getDefaultState())
     fun observeSearchState(): LiveData<SearchState> = stateLiveData
     //--Search
-
-    //History
-    private val history by lazy { searchHistoryInteractor.read() }
-    //--History
 
     //Search
     fun searchTrackDebounce(
@@ -80,14 +74,23 @@ class SearchViewModel(
     }
 
     private fun renderHistory() {
-        renderState(
-            if (history.isEmpty())
-                SearchState.NoContent(getLatestSearchText())
-            else SearchState.History(
-                searchText = getLatestSearchText(),
-                tracks = history
-            )
-        )
+
+        historyJob?.cancel()
+        historyJob = viewModelScope.launch {
+            searchHistoryInteractor.read().collect { history ->
+
+                renderState(
+                    if (history.isEmpty())
+                        SearchState.NoContent(getLatestSearchText())
+                    else SearchState.History(
+                        searchText = getLatestSearchText(),
+                        tracks = history
+                    )
+                )
+
+            }
+        }
+
     }
 
     private fun processSearchResult(foundTracks: List<Track>?, errorMessage: String?) {
@@ -129,43 +132,32 @@ class SearchViewModel(
 
     fun addTrackToHistory(track: Track) {
 
-        if (history.isNotEmpty()) {
-            val index = history.indexOfFirst { el -> el.trackId == track.trackId }
-            if (index >= 0) {
-                if (index == 0) {
-                    return
+        viewModelScope.launch {
+
+            searchHistoryInteractor.addToHistory(track).collect {
+
+                if (getLatestSearchText().isEmpty()) {
+                    renderHistory()
                 }
-                history.removeAt(index)
-            }
-        }
 
-        history.add(0, track)
-        if (history.size > SEARCH_HISTORY_SIZE) {
-            while (history.size != SEARCH_HISTORY_SIZE) {
-                history.removeLast()
             }
-        }
 
-        saveSearchHistory()
-        //Если текст поиска пустой, то обновляем отображение истории
-        if (getLatestSearchText().isEmpty()) {
-            renderHistory()
+
         }
 
     }
 
     fun clearHistory() {
 
-        history.clear()
-        saveSearchHistory()
+        viewModelScope.launch {
+            searchHistoryInteractor.clearHistory().collect {
+                renderHistory()
+            }
+        }
 
-        renderHistory()
 
     }
 
-    private fun saveSearchHistory() {
-        searchHistoryInteractor.save(history)
-    }
     //--History
 
     //-----------------------------------------------------------------------------------

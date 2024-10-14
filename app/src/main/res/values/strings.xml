@@ -31,6 +31,7 @@
     <string name="example_text_track_name" translatable="false">Yesterday (Remastered 2009)</string>
     <string name="example_text_artist_name" translatable="false">The Beatles </string>
     <string name="example_text_play_time" translatable="false">00:00</string>
+    <string name="something_went_wrong">Что-то пошло не так</string>
     <!--  Player  -->
     <string name="track_duration_title">Длительность</string>
     <string name="track_album_title">Альбом</string>
@@ -49,6 +50,16 @@
     <string name="action_1">"Действие 1</string>
     <string name="featured_tracks">Избранные треки</string>
     <string name="playlists">Плейлисты</string>
+    <string name="playlist_cover">Обложка плейлиста</string>
+    <string name="required_name">Название*</string>
+    <string name="description">Описание</string>
+    <string name="create">Создать</string>
+
+    <!--  Dialogs  -->
+    <string name="question_finish_creating_playlist_title">Завершить создание плейлиста?</string>
+    <string name="question_finish_creating_playlist_message">Все несохраненные данные будут потеряны</string>
+    <string name="cancel">Отмена</string>
+    <string name="finish">Завершить</string>
 
 
 </resources>

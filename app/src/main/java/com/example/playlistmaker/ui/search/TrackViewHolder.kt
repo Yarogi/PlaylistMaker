@@ -1,7 +1,5 @@
 package com.example.playlistmaker.ui.search
 
-import android.content.Context
-import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.main.model.Track
+import com.example.playlistmaker.ui.util.pxToDP
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -46,9 +45,3 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 }
 
-fun pxToDP(context: Context, value: Int): Int {
-    return TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        value.toFloat(), context.resources.displayMetrics
-    ).toInt()
-}

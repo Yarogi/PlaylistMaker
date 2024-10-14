@@ -17,5 +17,6 @@
     <color name="transparent">#00000000</color>
     <color name="salmon">#F56B6C</color>
 
-    <!--    -->
+    <!--  special  -->
+    <color name="edit_text_corner">#AEAFB4</color>
 </resources>

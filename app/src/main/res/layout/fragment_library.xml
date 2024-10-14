@@ -26,7 +26,7 @@
         android:id="@+id/tabLayout"
         style="@style/TabsHorisontal"
         android:layout_width="match_parent"
-        android:theme="@style/Theme.PlaylistMaker.NoBackground"
+        android:theme="@style/Tabs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleBorder" />

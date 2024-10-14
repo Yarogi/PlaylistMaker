@@ -2,7 +2,8 @@ package com.example.playlistmaker.di
 
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.presentation.media_library.featured.FeaturedTracksViewModel
-import com.example.playlistmaker.presentation.media_library.playlists.PlaylistViewModel
+import com.example.playlistmaker.presentation.media_library.playlists.edit.PlayListEditViewModel
+import com.example.playlistmaker.presentation.media_library.playlists.list.PlaylistViewModel
 import com.example.playlistmaker.presentation.player.PlayerViewModel
 import com.example.playlistmaker.presentation.search.SearchViewModel
 import com.example.playlistmaker.presentation.settings.SettingsViewModel
@@ -16,7 +17,9 @@ val viewModelModule = module {
     viewModel<PlayerViewModel> { (trackJson: String?) ->
         val gson: Gson = get()
         val track = gson.fromJson(trackJson, Track::class.java)
-        PlayerViewModel(track = track, playerInteractor = get())
+        PlayerViewModel(track = track,
+            playerInteractor = get(),
+            playlistInteractor = get())
     }
 
     viewModel<SearchViewModel> {
@@ -39,7 +42,11 @@ val viewModelModule = module {
     }
 
     viewModel<PlaylistViewModel> {
-        PlaylistViewModel()
+        PlaylistViewModel(playlistInteractor = get())
+    }
+
+    viewModel<PlayListEditViewModel> {
+        PlayListEditViewModel(playlistEditInteractor = get())
     }
 
 }
