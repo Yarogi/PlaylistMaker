@@ -229,7 +229,7 @@
     </style>
 
     <style name="PlaylistListItemCard">
-        <item name="android:backgroundTint">@color/black</item>
+        <item name="android:backgroundTint">@color/light_black</item>
     </style>
 
     <style name="PlaylistListItemText">
@@ -253,7 +253,7 @@
 
     <!-- playlists_bottom_sheet  -->
     <style name="PlaylistsBottomSheet">
-        <item name="backgroundTint">@color/black</item>
+        <item name="backgroundTint">@color/light_black</item>
     </style>
 
     <style name="PlaylistsBottomSheet.CreateButton">

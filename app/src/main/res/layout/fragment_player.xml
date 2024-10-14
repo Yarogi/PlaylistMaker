@@ -256,6 +256,7 @@
     <LinearLayout
         android:id="@+id/playlists_bottom_sheet"
         style="@style/PlaylistsBottomSheet"
+        android:theme="@style/Theme.PlaylistMaker.NoBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bottom_sheet_bg"
