@@ -53,7 +53,7 @@ val viewModelModule = module {
     }
 
     viewModel<PlaylistItemViewModel> {
-        PlaylistItemViewModel()
+        PlaylistItemViewModel(playlistItemInteractor = get())
     }
 
 }

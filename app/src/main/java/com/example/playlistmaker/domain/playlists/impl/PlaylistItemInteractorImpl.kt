@@ -6,12 +6,13 @@ import com.example.playlistmaker.domain.playlists.api.PlaylistRepository
 import com.example.playlistmaker.domain.playlists.model.Playlist
 import kotlinx.coroutines.flow.Flow
 
-class PlaylistItemInteractorImpl(repository: PlaylistRepository) : PlaylistItemInteractor {
-    override suspend fun getPlaylistBiId(id: Int): Flow<Playlist> {
-        TODO("Not yet implemented")
+class PlaylistItemInteractorImpl(private val repository: PlaylistRepository) :
+    PlaylistItemInteractor {
+    override suspend fun getPlaylistById(id: Int): Flow<Playlist?> {
+        return repository.getPlaylistById(playlistId = id)
     }
 
     override suspend fun getPlaylistTracks(playlistId: Int): Flow<List<Track>> {
-        TODO("Not yet implemented")
+        return repository.getTracks(playlistId = playlistId)
     }
 }

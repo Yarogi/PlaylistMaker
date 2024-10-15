@@ -1,6 +1,7 @@
 package com.example.playlistmaker.data.media_library.impl
 
 import com.example.playlistmaker.data.db.TrackDataBase
+import com.example.playlistmaker.data.db.entity.PlaylistEntity
 import com.example.playlistmaker.data.db.mapper.PLaylistDbMapper
 import com.example.playlistmaker.data.db.mapper.TrackDbMapper
 import com.example.playlistmaker.data.media_library.storage.FileStorage
@@ -14,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 class PlaylistRepositoryImpl(
     private val dataBase: TrackDataBase,
@@ -39,12 +41,13 @@ class PlaylistRepositoryImpl(
     override suspend fun getAllPlaylist(): Flow<List<Playlist>> = flow {
 
         val playlistList = dataBase.playlistDao().getAllPlaylists().map { entity ->
-            playlistMapper.map(entity, fileStorage.getImageUri(name = entity.coverLocalPath))
+            getPlaylistByPlaylistEntity(entity)
         }
 
         emit(playlistList)
 
     }.flowOn(Dispatchers.IO)
+
 
     override suspend fun addTrack(
         track: Track,
@@ -72,6 +75,24 @@ class PlaylistRepositoryImpl(
 
     }.flowOn(Dispatchers.IO)
 
+    override suspend fun getPlaylistById(playlistId: Int): Flow<Playlist?> = dataBase.playlistDao()
+        .getPlaylistById(playlistId)
+        .map { it?.let { getPlaylistByPlaylistEntity(it) } }
+        .flowOn(Dispatchers.IO)
+
+
+    override suspend fun removeTrack(track: Track, playlist: Playlist): Flow<Boolean> = flow {
+        dataBase.trackDao()
+            .removeFromPlaylist(trackEntity = trackDbMapper.map(track), playlistId = playlist.id)
+        emit(true)
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun getTracks(playlistId: Int): Flow<List<Track>> =
+        dataBase.playlistDao()
+            .getTracks(playlistId)
+            .map { list -> list.map { entity -> trackDbMapper.map(entity) } }
+
+
     private suspend fun updatePlaylistInfoById(playlistId: Int) {
 
         dataBase.playlistDao().findPlaylistById(playlistId)?.let { entity ->
@@ -83,12 +104,15 @@ class PlaylistRepositoryImpl(
                 entity.tracksId = serializer.toJson(tracksId)
 
                 dataBase.playlistDao().insertPlaylist(entity)
-
             }
+
 
         }
 
+    }
 
+    private suspend fun getPlaylistByPlaylistEntity(playlistEntity: PlaylistEntity): Playlist {
+        return playlistMapper.map(playlistEntity, fileStorage.getImageUri(playlistEntity.name))
     }
 
 }
