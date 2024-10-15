@@ -2,8 +2,8 @@ package com.example.playlistmaker.data.db.mapper
 
 import android.net.Uri
 import com.example.playlistmaker.data.db.entity.PlaylistEntity
-import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
-import com.example.playlistmaker.domain.media_library.playlists.model.PlaylistCreateData
+import com.example.playlistmaker.domain.playlists.model.Playlist
+import com.example.playlistmaker.domain.playlists.model.PlaylistCreateData
 
 class PLaylistDbMapper {
     fun map(data: PlaylistCreateData, coverLocalPath: String): PlaylistEntity {

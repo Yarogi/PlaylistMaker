@@ -5,10 +5,10 @@ import com.example.playlistmaker.data.db.mapper.PLaylistDbMapper
 import com.example.playlistmaker.data.db.mapper.TrackDbMapper
 import com.example.playlistmaker.data.media_library.storage.FileStorage
 import com.example.playlistmaker.domain.main.model.Track
-import com.example.playlistmaker.domain.media_library.playlists.api.PlaylistRepository
-import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
-import com.example.playlistmaker.domain.media_library.playlists.model.PlaylistCreateData
-import com.example.playlistmaker.domain.media_library.playlists.model.TrackAddToPlaylistResult
+import com.example.playlistmaker.domain.playlists.api.PlaylistRepository
+import com.example.playlistmaker.domain.playlists.model.Playlist
+import com.example.playlistmaker.domain.playlists.model.PlaylistCreateData
+import com.example.playlistmaker.domain.playlists.model.TrackAddToPlaylistResult
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

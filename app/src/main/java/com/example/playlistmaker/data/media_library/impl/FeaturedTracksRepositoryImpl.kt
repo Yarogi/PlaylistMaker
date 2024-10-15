@@ -5,7 +5,7 @@ import com.example.playlistmaker.data.db.entity.FeatureTracksEntity
 import com.example.playlistmaker.data.db.entity.TrackEntity
 import com.example.playlistmaker.data.db.mapper.TrackDbMapper
 import com.example.playlistmaker.domain.main.model.Track
-import com.example.playlistmaker.domain.media_library.favorites.api.FeaturedTracksRepository
+import com.example.playlistmaker.domain.favorites.api.FeaturedTracksRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

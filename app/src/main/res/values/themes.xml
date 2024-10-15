@@ -95,8 +95,7 @@
     </style>
     
     <!--  Playlist item  -->
-    <style name="PlaylistItem"/>
-    
+
     <style name="PlaylistItemDescriptionAreaTheme" parent="Theme.PlaylistMaker">
         <item name="android:backgroundTint">@color/light_gray</item>
     </style>

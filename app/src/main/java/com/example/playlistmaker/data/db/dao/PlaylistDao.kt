@@ -6,8 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.playlistmaker.data.db.entity.PlaylistEntity
-import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PlaylistDao {
