@@ -75,10 +75,18 @@ class PlaylistRepositoryImpl(
 
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getPlaylistById(playlistId: Int): Flow<Playlist?> = dataBase.playlistDao()
-        .getPlaylistById(playlistId)
-        .map { it?.let { getPlaylistByPlaylistEntity(it) } }
-        .flowOn(Dispatchers.IO)
+    override suspend fun getPlaylistById(playlistId: Int): Flow<Playlist?> = flow {
+
+        var playlist: Playlist? = null
+
+        val entity = dataBase.playlistDao().getPlaylistById(playlistId)
+        entity?.let {
+            playlist = getPlaylistByPlaylistEntity(it)
+        }
+
+        emit(playlist)
+
+    }
 
 
     override suspend fun removeTrack(track: Track, playlist: Playlist): Flow<Boolean> = flow {
@@ -87,11 +95,11 @@ class PlaylistRepositoryImpl(
         emit(true)
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getTracks(playlistId: Int): Flow<List<Track>> =
-        dataBase.playlistDao()
-            .getTracks(playlistId)
-            .map { list -> list.map { entity -> trackDbMapper.map(entity) } }
-
+    override suspend fun getTracks(playlistId: Int): Flow<List<Track>> = flow {
+        emit(
+            dataBase.playlistDao().getTracks(playlistId)
+                .map { entity -> trackDbMapper.map(entity) })
+    }
 
     private suspend fun updatePlaylistInfoById(playlistId: Int) {
 

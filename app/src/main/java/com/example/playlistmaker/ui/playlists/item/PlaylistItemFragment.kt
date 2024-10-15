@@ -53,8 +53,9 @@ class PlaylistItemFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.stateLiveDataObserver().observe(viewLifecycleOwner) { render(it) }
-
         binding.trackListView.adapter = adapter
+
+        viewModel.updatePlaylistInfoById(requireArguments().getInt(PLAYLIST_ID_KEY))
 
     }
 
