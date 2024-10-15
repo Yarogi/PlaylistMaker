@@ -19,6 +19,13 @@
             android:orientation="vertical"
             app:layout_constraintGuide_begin="16dp" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/cover_bottom_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="440dp" />
+
         <ImageView
             android:id="@+id/cover_holder"
             android:layout_width="match_parent"
@@ -28,6 +35,7 @@
             android:paddingStart="61dp"
             android:paddingEnd="63dp"
             android:src="@drawable/track_placeholder"
+            app:layout_constraintBottom_toTopOf="@id/cover_bottom_line"
             app:layout_constraintDimensionRatio="H, 1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,9 +58,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:contentDescription="@string/playlist_cover"
-            android:scaleType="centerCrop"
             android:visibility="gone"
-            app:layout_constraintDimensionRatio="H, 1:1"
+            app:layout_constraintBottom_toTopOf="@id/cover_bottom_line"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -68,7 +75,7 @@
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/description_start"
-            app:layout_constraintTop_toBottomOf="@id/cover_holder"
+            app:layout_constraintTop_toBottomOf="@id/cover_bottom_line"
             tools:text="@string/playlist_name_example" />
 
         <TextView
@@ -147,9 +154,8 @@
         android:layout_height="266dp"
         android:background="@drawable/bottom_sheet_bg"
         android:orientation="vertical"
-        android:theme="@style/Theme.PlaylistMaker.NoBackground"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="505dp"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="534dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <View
@@ -165,6 +171,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="12dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/track_item_view" />
 
     </LinearLayout>

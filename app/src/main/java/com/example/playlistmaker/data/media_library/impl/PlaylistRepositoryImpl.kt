@@ -120,7 +120,7 @@ class PlaylistRepositoryImpl(
     }
 
     private suspend fun getPlaylistByPlaylistEntity(playlistEntity: PlaylistEntity): Playlist {
-        return playlistMapper.map(playlistEntity, fileStorage.getImageUri(playlistEntity.name))
+        return playlistMapper.map(playlistEntity, fileStorage.getImageUri(playlistEntity.coverLocalPath))
     }
 
 }
