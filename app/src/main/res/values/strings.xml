@@ -61,5 +61,11 @@
     <string name="cancel">Отмена</string>
     <string name="finish">Завершить</string>
 
+    <!-- Example -->
+    <string name="playlist_name_example" translatable="false">Best songs 2021</string>
+    <string name="playlist_description_example" translatable="false">2022</string>
+    <string name="playlist_duration_example">10000300 минут</string>
+    <string name="playlist_tracks_quantity_example">98 треков</string>
+
 
 </resources>

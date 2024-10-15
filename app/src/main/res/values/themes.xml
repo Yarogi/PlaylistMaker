@@ -22,7 +22,7 @@
     <style name="PlaylistMakerTint" parent="Theme.PlaylistMaker.NoBackground">
         <item name="android:background">@color/white</item>
     </style>
-
+    
     <style name="PlaylistMakerNoColors">
         <item name="colorPrimary">@color/blue</item>
         <item name="colorSecondary">@color/light_gray</item>
@@ -92,6 +92,13 @@
         <item name="android:paddingHorizontal">14dp</item>
         <item name="android:paddingVertical">10dp</item>
         <item name="backgroundTint">@color/search_text_color</item>
+    </style>
+    
+    <!--  Playlist item  -->
+    <style name="PlaylistItem"/>
+    
+    <style name="PlaylistItemDescriptionAreaTheme" parent="Theme.PlaylistMaker">
+        <item name="android:backgroundTint">@color/light_gray</item>
     </style>
 
 </resources>
