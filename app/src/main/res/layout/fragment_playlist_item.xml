@@ -20,7 +20,28 @@
             app:layout_constraintGuide_begin="16dp" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/cover_bottom_line"
+            android:id="@+id/cover_holder_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="62dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/cover_holder_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="63dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/cover_holder_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="63dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/cover_holder_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -28,18 +49,14 @@
 
         <ImageView
             android:id="@+id/cover_holder"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:contentDescription="@string/playlist_cover"
-            android:paddingVertical="63dp"
-            android:paddingStart="61dp"
-            android:paddingEnd="63dp"
             android:src="@drawable/track_placeholder"
-            app:layout_constraintBottom_toTopOf="@id/cover_bottom_line"
-            app:layout_constraintDimensionRatio="H, 1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toTopOf="@id/cover_holder_bottom"
+            app:layout_constraintEnd_toStartOf="@id/cover_holder_end"
+            app:layout_constraintStart_toEndOf="@id/cover_holder_start"
+            app:layout_constraintTop_toBottomOf="@id/cover_holder_top" />
 
         <ImageButton
             android:id="@+id/backButton"
@@ -59,7 +76,8 @@
             android:layout_height="0dp"
             android:contentDescription="@string/playlist_cover"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/cover_bottom_line"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@id/cover_holder_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -75,7 +93,7 @@
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/description_start"
-            app:layout_constraintTop_toBottomOf="@id/cover_bottom_line"
+            app:layout_constraintTop_toBottomOf="@id/cover_holder_bottom"
             tools:text="@string/playlist_name_example" />
 
         <TextView

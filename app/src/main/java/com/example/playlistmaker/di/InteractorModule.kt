@@ -1,7 +1,7 @@
 package com.example.playlistmaker.di
 
-import com.example.playlistmaker.domain.favorites.api.FeaturedTracksInteractor
-import com.example.playlistmaker.domain.favorites.impl.FeaturedTracksInteractorImpl
+import com.example.playlistmaker.domain.featured.api.FeaturedTracksInteractor
+import com.example.playlistmaker.domain.featured.impl.FeaturedTracksInteractorImpl
 import com.example.playlistmaker.domain.playlists.api.PlaylistEditInteractor
 import com.example.playlistmaker.domain.playlists.api.PlaylistInteractor
 import com.example.playlistmaker.domain.playlists.impl.PlaylistEditInteractorImpl

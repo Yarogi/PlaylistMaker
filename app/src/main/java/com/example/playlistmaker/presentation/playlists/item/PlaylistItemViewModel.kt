@@ -18,14 +18,17 @@ class PlaylistItemViewModel(private val playlistItemInteractor: PlaylistItemInte
 
     fun updatePlaylistInfoById(playlistId: Int) {
 
+        //Отладка для проверки работы (Удалить)
+        val id = playlistId
+
         viewModelScope.launch {
 
-            playlistItemInteractor.getPlaylistById(id = playlistId)
+            playlistItemInteractor.getPlaylistById(id = id)
                 .collect {
 
                     it?.let { playlist ->
 
-                        playlistItemInteractor.getPlaylistTracks(playlistId = playlistId)
+                        playlistItemInteractor.getPlaylistTracks(playlistId = id)
                             .collect {
 
                                 val detailedInfo =
@@ -34,7 +37,7 @@ class PlaylistItemViewModel(private val playlistItemInteractor: PlaylistItemInte
 
                             }
 
-                    } ?: Throwable(message = "Playlist not founded by ID: $playlistId")
+                    } ?: Throwable(message = "Playlist not founded by ID: $id")
 
                 }
         }

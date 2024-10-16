@@ -1,5 +1,6 @@
 package com.example.playlistmaker.ui.playlists.item
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -55,6 +57,8 @@ class PlaylistItemFragment : Fragment() {
         viewModel.stateLiveDataObserver().observe(viewLifecycleOwner) { render(it) }
         binding.trackListView.adapter = adapter
 
+        binding.backButton.setOnClickListener { findNavController().popBackStack() }
+
         viewModel.updatePlaylistInfoById(requireArguments().getInt(PLAYLIST_ID_KEY))
 
     }
@@ -76,16 +80,7 @@ class PlaylistItemFragment : Fragment() {
 
     private fun showPlaylistDetales(data: PlaylistDetailedInfo) {
 
-        //Cover
-        binding.cover.isVisible = false
-        data.coverPathUri?.let {
-            Glide.with(requireContext())
-                .load(data.coverPathUri)
-                .transform(CenterCrop())
-                .into(binding.cover).let {
-                    binding.cover.isVisible = true
-                }
-        }
+        showPlaylistCover(data.coverPathUri)
 
         binding.playlistName.text = data.name
         binding.playlistDescription.text = data.description
@@ -93,6 +88,25 @@ class PlaylistItemFragment : Fragment() {
         binding.playlistTracksQuantityView.text = tracksQuantityToString(data.tracksQuantity)
 
         updateTracklist(data.tracks)
+
+    }
+
+    private fun showPlaylistCover(coverUri: Uri?) {
+
+        binding.coverHolder.isVisible = true
+        binding.cover.isVisible = false
+
+        //Cover
+        binding.cover.isVisible = false
+        coverUri?.let {
+            Glide.with(requireContext())
+                .load(coverUri)
+                .transform(CenterCrop())
+                .into(binding.cover)
+                .let {
+                    binding.cover.isVisible = true
+                }
+        }
 
     }
 

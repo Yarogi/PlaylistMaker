@@ -1,8 +1,8 @@
-package com.example.playlistmaker.domain.favorites.impl
+package com.example.playlistmaker.domain.featured.impl
 
 import com.example.playlistmaker.domain.main.model.Track
-import com.example.playlistmaker.domain.favorites.api.FeaturedTracksInteractor
-import com.example.playlistmaker.domain.favorites.api.FeaturedTracksRepository
+import com.example.playlistmaker.domain.featured.api.FeaturedTracksInteractor
+import com.example.playlistmaker.domain.featured.api.FeaturedTracksRepository
 import kotlinx.coroutines.flow.Flow
 
 class FeaturedTracksInteractorImpl(private val featuredRepository: FeaturedTracksRepository) :

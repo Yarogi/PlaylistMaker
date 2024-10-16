@@ -1,7 +1,7 @@
 package com.example.playlistmaker.domain.player.impl
 
 import com.example.playlistmaker.domain.main.model.Track
-import com.example.playlistmaker.domain.favorites.api.FeaturedTracksRepository
+import com.example.playlistmaker.domain.featured.api.FeaturedTracksRepository
 import com.example.playlistmaker.domain.playlists.api.PlaylistRepository
 import com.example.playlistmaker.domain.playlists.model.Playlist
 import com.example.playlistmaker.domain.playlists.model.TrackAddToPlaylistResult

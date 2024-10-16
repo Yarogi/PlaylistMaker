@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.media_library.storage
+package com.example.playlistmaker.data.playlists.storage
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -28,10 +28,12 @@ class FileStorageImpl(private val context: Context) : FileStorage {
 
     }
 
-    override suspend fun getImageUri(name: String): Uri? {
+    override suspend fun getImageUri(name: String?): Uri? {
 
-        val file = File(getDirectory(), name)
-        return file.toUri()
+        return when {
+            name.isNullOrEmpty() -> null
+            else -> File(getDirectory(), name).toUri()
+        }
 
     }
 
