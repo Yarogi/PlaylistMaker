@@ -166,7 +166,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:id="@+id/bottom_sheet"
+        android:id="@+id/bottom_sheet_behavior"
         style="@style/PlaylistsBottomSheet"
         android:layout_width="match_parent"
         android:layout_height="266dp"

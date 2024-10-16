@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -25,6 +26,7 @@ import com.example.playlistmaker.ui.player.PlayerFragment
 import com.example.playlistmaker.ui.search.TrackAdapter
 import com.example.playlistmaker.ui.util.trackDurationToString
 import com.example.playlistmaker.ui.util.tracksQuantityToString
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -55,6 +57,8 @@ class PlaylistItemFragment : Fragment() {
         }
     })
 
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -67,10 +71,12 @@ class PlaylistItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.stateLiveDataObserver().observe(viewLifecycleOwner) { render(it) }
         binding.trackListView.adapter = adapter
-
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
+
+        initBottomSheetBehavor()
+
+        viewModel.stateLiveDataObserver().observe(viewLifecycleOwner) { render(it) }
 
         viewModel.updatePlaylistInfoById(requireArguments().getInt(PLAYLIST_ID_KEY))
 
@@ -81,6 +87,18 @@ class PlaylistItemFragment : Fragment() {
         _binding = null
     }
 
+    private fun initBottomSheetBehavor() {
+
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetBehavior)
+            .apply { state = BottomSheetBehavior.STATE_COLLAPSED }
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {}
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
+
+    }
 
     private fun render(state: PlaylistItemState) {
 
