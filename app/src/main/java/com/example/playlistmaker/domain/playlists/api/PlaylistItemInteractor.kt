@@ -6,8 +6,10 @@ import kotlinx.coroutines.flow.Flow
 
 interface PlaylistItemInteractor {
 
+    fun share(playlistInfo: String)
+
     suspend fun getPlaylistById(id: Int): Flow<Playlist?>
     suspend fun getPlaylistTracks(playlistId: Int): Flow<List<Track>>
-    suspend fun removeTrack(track:Track, playlistId: Int): Flow<Boolean>
+    suspend fun removeTrack(track: Track, playlistId: Int): Flow<Boolean>
 
 }

@@ -38,3 +38,9 @@ fun trackDurationToString(duration: Float): String {
     return "$minutes $post"
 
 }
+
+fun trackDurationToTimeString(duration: Float): String {
+
+    return SimpleDateFormat("mm:ss", Locale.getDefault()).format(duration)
+
+}

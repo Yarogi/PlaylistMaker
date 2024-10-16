@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.settings
+package com.example.playlistmaker.presentation.sharing
 
 import android.content.Context
 import com.example.playlistmaker.R

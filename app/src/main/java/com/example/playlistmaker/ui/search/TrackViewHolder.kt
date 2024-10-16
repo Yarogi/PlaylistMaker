@@ -9,6 +9,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.ui.util.pxToDP
+import com.example.playlistmaker.ui.util.trackDurationToTimeString
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -30,8 +31,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         artistNameView.text = model.artistName
         trackNameView.text = model.trackName
-        trackTimeView.text =
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
+        trackTimeView.text = trackDurationToTimeString(model.trackTimeMillis)
 
         val artWorkRadius = pxToDP(itemView.context, 2)
 

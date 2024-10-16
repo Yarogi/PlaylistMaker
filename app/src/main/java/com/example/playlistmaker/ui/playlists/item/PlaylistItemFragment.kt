@@ -19,6 +19,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistItemBinding
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.playlists.model.Playlist
+import com.example.playlistmaker.presentation.playlists.item.PlaylistItemShareState
 import com.example.playlistmaker.presentation.playlists.item.PlaylistItemState
 import com.example.playlistmaker.presentation.playlists.item.PlaylistItemViewModel
 import com.example.playlistmaker.presentation.playlists.item.model.PlaylistDetailedInfo
@@ -73,10 +74,12 @@ class PlaylistItemFragment : Fragment() {
 
         binding.trackListView.adapter = adapter
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
+        binding.shareButton.setOnClickListener { viewModel.sharePlaylist() }
 
         initBottomSheetBehavor()
 
         viewModel.stateLiveDataObserver().observe(viewLifecycleOwner) { render(it) }
+        viewModel.shareStateLiveDataObserver().observe(viewLifecycleOwner) { renderShareState(it) }
 
         viewModel.updatePlaylistInfoById(requireArguments().getInt(PLAYLIST_ID_KEY))
 
@@ -105,6 +108,23 @@ class PlaylistItemFragment : Fragment() {
         when (state) {
             is PlaylistItemState.Content -> showPlaylistDetales(state.data)
             PlaylistItemState.Loading -> {}
+        }
+
+    }
+
+    private fun renderShareState(state: PlaylistItemShareState) {
+        when (state) {
+            PlaylistItemShareState.Empty -> {
+                Toast.makeText(
+                    requireActivity(),
+                    getString(R.string.no_tracklist_in_playlist_shared),
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+
+            }
+
+            PlaylistItemShareState.None -> {}
         }
 
     }
