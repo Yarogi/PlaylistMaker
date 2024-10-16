@@ -15,4 +15,10 @@ class PlaylistItemInteractorImpl(private val repository: PlaylistRepository) :
     override suspend fun getPlaylistTracks(playlistId: Int): Flow<List<Track>> {
         return repository.getTracks(playlistId = playlistId)
     }
+
+    override suspend fun removeTrack(track: Track, playlistId: Int): Flow<Boolean> {
+        return repository.removeTrack(track = track, playlistId = playlistId)
+    }
+
+
 }

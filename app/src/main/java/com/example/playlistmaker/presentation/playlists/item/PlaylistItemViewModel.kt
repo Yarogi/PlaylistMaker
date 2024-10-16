@@ -13,22 +13,24 @@ import kotlinx.coroutines.launch
 class PlaylistItemViewModel(private val playlistItemInteractor: PlaylistItemInteractor) :
     ViewModel() {
 
+    private var lastPlaylistId: Int? = null
+
     private val stateLiveData = MutableLiveData<PlaylistItemState>()
     fun stateLiveDataObserver(): LiveData<PlaylistItemState> = stateLiveData
 
     fun updatePlaylistInfoById(playlistId: Int) {
 
         //Отладка для проверки работы (Удалить)
-        val id = playlistId
+        lastPlaylistId = playlistId
 
         viewModelScope.launch {
 
-            playlistItemInteractor.getPlaylistById(id = id)
+            playlistItemInteractor.getPlaylistById(id = playlistId)
                 .collect {
 
                     it?.let { playlist ->
 
-                        playlistItemInteractor.getPlaylistTracks(playlistId = id)
+                        playlistItemInteractor.getPlaylistTracks(playlistId = playlistId)
                             .collect {
 
                                 val detailedInfo =
@@ -37,9 +39,25 @@ class PlaylistItemViewModel(private val playlistItemInteractor: PlaylistItemInte
 
                             }
 
-                    } ?: Throwable(message = "Playlist not founded by ID: $id")
+                    } ?: Throwable(message = "Playlist not founded by ID: $playlistId")
 
                 }
+        }
+
+    }
+
+    fun removeFromPlaylist(track: Track) {
+
+        lastPlaylistId?.let { id ->
+
+            viewModelScope.launch {
+                playlistItemInteractor
+                    .removeTrack(track = track, playlistId = id)
+                    .collect {
+                        updatePlaylistInfoById(id)
+                    }
+            }
+
         }
 
     }

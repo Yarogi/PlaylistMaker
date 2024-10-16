@@ -47,4 +47,7 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="playlist_duration_example">300 minutes</string>
     <string name="playlist_tracks_quantity_example">98 tracks</string>
+    <string name="delete_track">Delete track</string>
+    <string name="question_sure_remove_track_from_playlist">Are you sure you want to remove the track from the playlist?</string>
+    <string name="delete">Delete</string>
 </resources>

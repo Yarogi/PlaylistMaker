@@ -66,6 +66,9 @@
     <string name="playlist_description_example" translatable="false">2022</string>
     <string name="playlist_duration_example">10000300 минут</string>
     <string name="playlist_tracks_quantity_example">98 треков</string>
+    <string name="delete_track">Удалить трек</string>
+    <string name="question_sure_remove_track_from_playlist">Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="delete">Удалить</string>
 
 
 </resources>

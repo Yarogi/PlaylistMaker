@@ -82,9 +82,10 @@ class PlaylistRepositoryImpl(
         .flowOn(Dispatchers.IO)
 
 
-    override suspend fun removeTrack(track: Track, playlist: Playlist): Flow<Boolean> = flow {
+    override suspend fun removeTrack(track: Track, playlistId: Int): Flow<Boolean> = flow {
         dataBase.trackDao()
-            .removeFromPlaylist(trackEntity = trackDbMapper.map(track), playlistId = playlist.id)
+            .removeFromPlaylist(trackEntity = trackDbMapper.map(track), playlistId = playlistId)
+        updatePlaylistInfoById(playlistId)
         emit(true)
     }.flowOn(Dispatchers.IO)
 
