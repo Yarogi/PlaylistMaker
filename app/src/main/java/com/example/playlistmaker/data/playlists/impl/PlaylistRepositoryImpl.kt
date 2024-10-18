@@ -2,6 +2,7 @@ package com.example.playlistmaker.data.playlists.impl
 
 import com.example.playlistmaker.data.db.TrackDataBase
 import com.example.playlistmaker.data.db.entity.PlaylistEntity
+import com.example.playlistmaker.data.db.entity.TrackEntity
 import com.example.playlistmaker.data.db.mapper.PLaylistDbMapper
 import com.example.playlistmaker.data.db.mapper.TrackDbMapper
 import com.example.playlistmaker.data.playlists.storage.FileStorage
@@ -35,6 +36,23 @@ class PlaylistRepositoryImpl(
         dataBase.playlistDao().insertPlaylist(entity)
 
         emit(playlistMapper.map(entity, fileStorage.getImageUri(path)))
+
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun deletePlaylist(playlistId: Int): Flow<Boolean> = flow {
+        val playlistEntity = dataBase.playlistDao().findPlaylistById(playlistId)
+        playlistEntity?.let { entity ->
+
+            val tracks = dataBase.playlistDao().getPLaylistTrakcsId(playlistId = playlistId)
+
+            dataBase.playlistDao().deletePlaylistSafety(entity)
+            tracks.forEach { id -> dataBase.trackDao().deleteTrackByIdSafety(id) }
+
+            fileStorage.deleteImage(entity.coverLocalPath)
+
+            emit(true)
+
+        }
 
     }.flowOn(Dispatchers.IO)
 
@@ -89,10 +107,13 @@ class PlaylistRepositoryImpl(
         emit(true)
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getTracks(playlistId: Int): Flow<List<Track>> = dataBase.playlistDao()
-        .getTracks(playlistId = playlistId)
-        .map { it.map { entity -> trackDbMapper.map(entity) } }
-        .flowOn(Dispatchers.IO)
+    override suspend fun getTracks(playlistId: Int): Flow<List<Track>> = flow {
+
+        val result = dataBase.playlistDao().getTracks(playlistId = playlistId)
+            .map { entity -> trackDbMapper.map(entity) }
+
+        emit(result)
+    }.flowOn(Dispatchers.IO)
 
 
     private suspend fun updatePlaylistInfoById(playlistId: Int) {

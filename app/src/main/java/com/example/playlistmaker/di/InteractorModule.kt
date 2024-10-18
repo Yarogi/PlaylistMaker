@@ -68,7 +68,7 @@ val interactorModule = module {
     single<PlaylistInteractor> { PlaylistInteractorImpl(repository = get()) }
 
     factory<PlaylistItemInteractor> {
-        PlaylistItemInteractorImpl(repository = get())
+        PlaylistItemInteractorImpl(repository = get(), externalNavigator = get())
     }
 
 }

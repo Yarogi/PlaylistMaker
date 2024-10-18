@@ -7,5 +7,6 @@ import kotlinx.coroutines.flow.Flow
 interface PlaylistEditInteractor {
 
     suspend fun createPlaylist(data: PlaylistCreateData): Flow<Playlist>
+    suspend fun getPlaylistById(id: Int): Flow<Playlist?>
 
 }

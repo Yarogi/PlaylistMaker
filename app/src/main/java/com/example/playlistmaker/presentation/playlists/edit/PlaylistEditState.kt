@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.playlists.create
+package com.example.playlistmaker.presentation.playlists.edit
 
 import com.example.playlistmaker.domain.playlists.model.Playlist
 import com.example.playlistmaker.domain.playlists.model.PlaylistCreateData

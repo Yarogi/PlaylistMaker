@@ -4,24 +4,29 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.di.viewModelModule
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.playlists.api.PlaylistItemInteractor
 import com.example.playlistmaker.domain.playlists.model.Playlist
 import com.example.playlistmaker.presentation.playlists.item.model.PlaylistDetailedInfo
 import kotlinx.coroutines.launch
 
-class PlaylistItemViewModel(private val playlistItemInteractor: PlaylistItemInteractor) :
+class PlaylistItemViewModel(
+    private val playlistItemInteractor: PlaylistItemInteractor,
+) :
     ViewModel() {
 
-    private var lastPlaylistId: Int? = null
+    private var lastPlaylistInfo: PlaylistDetailedInfo? = null
 
     private val stateLiveData = MutableLiveData<PlaylistItemState>()
     fun stateLiveDataObserver(): LiveData<PlaylistItemState> = stateLiveData
 
-    fun updatePlaylistInfoById(playlistId: Int) {
+    private val shareStateLiveData = MutableLiveData<PlaylistItemShareState>()
+    fun shareStateLiveDataObserver(): LiveData<PlaylistItemShareState> = shareStateLiveData
 
-        //Отладка для проверки работы (Удалить)
-        lastPlaylistId = playlistId
+    fun updatePlaylistInfoById(playlistId: Int, forceMode: Boolean = false) {
+
+        if (lastPlaylistInfo != null && !forceMode) return
 
         viewModelScope.launch {
 
@@ -35,6 +40,8 @@ class PlaylistItemViewModel(private val playlistItemInteractor: PlaylistItemInte
 
                                 val detailedInfo =
                                     getPlaylistDetaledInfo(playlist = playlist, tracks = it)
+                                lastPlaylistInfo = detailedInfo
+
                                 renderState(PlaylistItemState.Content(data = detailedInfo))
 
                             }
@@ -46,20 +53,62 @@ class PlaylistItemViewModel(private val playlistItemInteractor: PlaylistItemInte
 
     }
 
+    fun updatePlaylistInfoByLast() {
+        lastPlaylistInfo?.let { updatePlaylistInfoById(it.id, forceMode = true) }
+    }
+
     fun removeFromPlaylist(track: Track) {
 
-        lastPlaylistId?.let { id ->
+        lastPlaylistInfo?.let { info ->
 
             viewModelScope.launch {
                 playlistItemInteractor
-                    .removeTrack(track = track, playlistId = id)
+                    .removeTrack(track = track, playlistId = info.id)
                     .collect {
-                        updatePlaylistInfoById(id)
+                        updatePlaylistInfoById(playlistId = info.id)
                     }
             }
 
         }
 
+    }
+
+    fun sharePlaylist() {
+        lastPlaylistInfo?.let { info ->
+            if (info.tracks.isEmpty()) {
+                renderShareState(PlaylistItemShareState.Empty)
+            } else {
+                playlistItemInteractor.share(info.toString())
+                finishShare()
+            }
+        }
+    }
+
+    fun getCommandsList() {
+        lastPlaylistInfo?.let { info ->
+            renderState(PlaylistItemState.Commands(data = info))
+        }
+    }
+
+    fun deletePlaylist() {
+
+        lastPlaylistInfo?.let { info ->
+
+            viewModelScope.launch {
+                playlistItemInteractor.deletePLaylist(info.id)
+                    .collect { success ->
+                        if (success) {
+                            renderState(PlaylistItemState.Deleted)
+                        }
+                    }
+            }
+
+        }
+
+    }
+
+    fun finishShare() {
+        renderShareState(PlaylistItemShareState.None)
     }
 
     private fun getPlaylistDetaledInfo(
@@ -78,6 +127,10 @@ class PlaylistItemViewModel(private val playlistItemInteractor: PlaylistItemInte
 
     private fun renderState(state: PlaylistItemState) {
         stateLiveData.postValue(state)
+    }
+
+    private fun renderShareState(state: PlaylistItemShareState) {
+        shareStateLiveData.postValue(state)
     }
 
 }

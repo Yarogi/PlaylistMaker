@@ -69,6 +69,13 @@
     <string name="delete_track">Удалить трек</string>
     <string name="question_sure_remove_track_from_playlist">Вы уверены, что хотите удалить трек из плейлиста?</string>
     <string name="delete">Удалить</string>
+    <string name="no_tracklist_in_playlist_shared">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="share">Поделиться</string>
+    <string name="edit_information">Редактировать информацию</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="question_sure_delete_playlist">Хотите удалить плейлист %1?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
 
 
 </resources>

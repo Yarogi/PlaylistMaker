@@ -13,4 +13,8 @@ class PlaylistEditInteractorImpl(private val repository: PlaylistRepository) :
         return repository.createPlaylist(data)
 
     }
+
+    override suspend fun getPlaylistById(id: Int): Flow<Playlist?> {
+        return repository.getPlaylistById(playlistId = id)
+    }
 }

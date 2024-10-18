@@ -32,9 +32,35 @@ class FileStorageImpl(private val context: Context) : FileStorage {
 
         return when {
             name.isNullOrEmpty() -> null
-            else -> File(getDirectory(), name).toUri()
+            else -> getFileByName(name).toUri()
         }
 
+    }
+
+    override suspend fun deleteImage(name: String?): Boolean {
+
+        return when {
+            name.isNullOrEmpty() -> false
+            else -> deleteFileByName(name)
+        }
+
+    }
+
+    private fun deleteFileByName(name: String): Boolean {
+
+        val file = getFileByName(name)
+        val result = if (file.exists()) {
+            file.delete()
+        } else {
+            false
+        }
+
+        return result
+    }
+
+    private fun getFileByName(name: String): File {
+        val dir = getDirectory()
+        return File(dir, name)
     }
 
     private fun writeDataInFile(file: File, uri: Uri) {
