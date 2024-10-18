@@ -77,6 +77,10 @@ class PlaylistItemViewModel(
         }
     }
 
+    fun removePlaylist(){
+
+    }
+
     fun finishShare() {
         renderShareState(PlaylistItemShareState.None)
     }
