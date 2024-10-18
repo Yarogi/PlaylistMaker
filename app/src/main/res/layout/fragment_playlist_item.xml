@@ -58,18 +58,6 @@
             app:layout_constraintStart_toEndOf="@id/cover_holder_start"
             app:layout_constraintTop_toBottomOf="@id/cover_holder_top" />
 
-        <ImageButton
-            android:id="@+id/backButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_margin="4dp"
-            android:background="@null"
-            android:backgroundTint="@color/light_gray"
-            android:contentDescription="@string/back_content_description"
-            android:src="@drawable/arrow_back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:id="@+id/cover"
             android:layout_width="match_parent"
@@ -82,6 +70,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/backgrounds/scenic" />
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:background="@null"
+            android:backgroundTint="@color/light_gray"
+            android:contentDescription="@string/back_content_description"
+            android:src="@drawable/arrow_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/playlist_name"
@@ -195,6 +195,52 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/menu_sheet_behavior"
+        style="@style/PlaylistsBottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="417dp"
+        android:background="@drawable/bottom_sheet_bg"
+        android:orientation="vertical"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="417dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <View
+            style="@style/PlaylistItemBSAreaStyle.TopView"
+            android:layout_width="50dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/rectangle_r44" />
+
+        <include layout="@layout/player_playlist_item" />
+
+        <TextView
+            android:id="@+id/menu_share_button"
+            style="@style/PlaylistMenuItem"
+            android:text="@string/share"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/menu_edit_button"
+            style="@style/PlaylistMenuItem"
+            android:text="@string/edit_information" />
+
+        <TextView
+            android:id="@+id/menu_delete_button"
+            style="@style/PlaylistMenuItem"
+            android:text="@string/delete_playlist" />
+
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
