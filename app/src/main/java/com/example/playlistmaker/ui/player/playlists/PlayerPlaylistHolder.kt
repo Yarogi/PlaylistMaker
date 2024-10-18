@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
+import com.example.playlistmaker.domain.playlists.model.Playlist
 import com.example.playlistmaker.ui.util.pxToDP
 import com.example.playlistmaker.ui.util.tracksQuantityToString
 

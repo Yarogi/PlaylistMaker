@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
+import com.example.playlistmaker.domain.playlists.model.Playlist
 
 class PlayerPlaylistAdapter(val listener: Listener) : RecyclerView.Adapter<PlayerPlaylistHolder>() {
 

@@ -174,7 +174,7 @@ interface TrackDao {
 
     //** Убрать трек из плейлиста */
     @Transaction
-    fun removeFromPlaylist(trackEntity: TrackEntity, playlistId: Int) {
+    suspend fun removeFromPlaylist(trackEntity: TrackEntity, playlistId: Int) {
         deleteFromPlaylist(
             PlaylistTracksEntity(
                 playlistId = playlistId,

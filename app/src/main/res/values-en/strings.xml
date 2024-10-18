@@ -45,4 +45,16 @@
     <string name="cancel">Cancel</string>
     <string name="finish">Finish</string>
     <string name="something_went_wrong">Something went wrong</string>
+    <string name="playlist_duration_example">300 minutes</string>
+    <string name="playlist_tracks_quantity_example">98 tracks</string>
+    <string name="delete_track">Delete track</string>
+    <string name="question_sure_remove_track_from_playlist">Are you sure you want to remove the track from the playlist?</string>
+    <string name="delete">Delete</string>
+    <string name="no_tracklist_in_playlist_shared">There is no track list in this playlist that can be shared.</string>
+    <string name="share">Share</string>
+    <string name="edit_information">Edit information</string>
+    <string name="delete_playlist">Delete playlist</string>
+    <string name="question_sure_delete_playlist">Do you want to delete playlist %1?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
