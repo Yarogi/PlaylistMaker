@@ -48,6 +48,8 @@ class PlaylistRepositoryImpl(
             dataBase.playlistDao().deletePlaylistSafety(entity)
             tracks.forEach { id -> dataBase.trackDao().deleteTrackByIdSafety(id) }
 
+            fileStorage.deleteImage(entity.coverLocalPath)
+
             emit(true)
 
         }

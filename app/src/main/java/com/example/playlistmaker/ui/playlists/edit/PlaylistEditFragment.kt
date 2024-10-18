@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.playlists.item
+package com.example.playlistmaker.ui.playlists.edit
 
 import android.net.Uri
 import android.os.Bundle
@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -21,13 +22,18 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistEditBinding
 import com.example.playlistmaker.domain.playlists.model.Playlist
 import com.example.playlistmaker.domain.playlists.model.PlaylistCreateData
-import com.example.playlistmaker.presentation.playlists.create.PlayListEditViewModel
-import com.example.playlistmaker.presentation.playlists.create.PlaylistEditState
+import com.example.playlistmaker.presentation.playlists.edit.PlayListEditViewModel
+import com.example.playlistmaker.presentation.playlists.edit.PlaylistEditState
 import com.example.playlistmaker.ui.util.pxToDP
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistEditFragment : Fragment() {
+
+    companion object {
+        private const val PLAYLIST_KEY = "playlistIdKey"
+        fun createArgs(playlistId: Int) = bundleOf(PLAYLIST_KEY to playlistId)
+    }
 
     private val viewModel by viewModel<PlayListEditViewModel>()
 
@@ -95,6 +101,7 @@ class PlaylistEditFragment : Fragment() {
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackCallBack)
+
 
     }
 

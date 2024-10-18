@@ -55,4 +55,6 @@
     <string name="edit_information">Edit information</string>
     <string name="delete_playlist">Delete playlist</string>
     <string name="question_sure_delete_playlist">Do you want to delete playlist %1?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

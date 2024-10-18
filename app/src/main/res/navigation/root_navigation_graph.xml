@@ -30,7 +30,7 @@
             app:enterAnim="@anim/slide_in_up"
             app:exitAnim="@anim/hold"
             app:popEnterAnim="@anim/hold"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -53,7 +53,7 @@
     </fragment>
     <fragment
         android:id="@+id/playlistEditFragment"
-        android:name="com.example.playlistmaker.ui.playlists.item.PlaylistEditFragment"
+        android:name="com.example.playlistmaker.ui.playlists.edit.PlaylistEditFragment"
         android:label="fragment_playlist_edit"
         tools:layout="@layout/fragment_playlist_edit" />
     <fragment
@@ -73,14 +73,21 @@
         android:id="@+id/playlistItemFragment"
         android:name="com.example.playlistmaker.ui.playlists.item.PlaylistItemFragment"
         android:label="fragment_playlist_item"
-        tools:layout="@layout/fragment_playlist_item" >
+        tools:layout="@layout/fragment_playlist_item">
         <action
             android:id="@+id/action_playlistItemFragment_to_playerFragment"
             app:destination="@id/playerFragment"
             app:enterAnim="@anim/slide_in_up"
             app:exitAnim="@anim/hold"
             app:popEnterAnim="@anim/hold"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_playlistItemFragment_to_playlistEditFragment"
+            app:destination="@id/playlistEditFragment"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/hold"
+            app:popEnterAnim="@anim/hold"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
 </navigation>

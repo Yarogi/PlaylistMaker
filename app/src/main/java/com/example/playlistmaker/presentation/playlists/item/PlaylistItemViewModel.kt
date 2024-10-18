@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.di.viewModelModule
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.playlists.api.PlaylistItemInteractor
 import com.example.playlistmaker.domain.playlists.model.Playlist
@@ -23,7 +24,9 @@ class PlaylistItemViewModel(
     private val shareStateLiveData = MutableLiveData<PlaylistItemShareState>()
     fun shareStateLiveDataObserver(): LiveData<PlaylistItemShareState> = shareStateLiveData
 
-    fun updatePlaylistInfoById(playlistId: Int) {
+    fun updatePlaylistInfoById(playlistId: Int, forceMode: Boolean = false) {
+
+        if (lastPlaylistInfo != null && !forceMode) return
 
         viewModelScope.launch {
 
@@ -48,6 +51,10 @@ class PlaylistItemViewModel(
                 }
         }
 
+    }
+
+    fun updatePlaylistInfoByLast() {
+        lastPlaylistInfo?.let { updatePlaylistInfoById(it.id, forceMode = true) }
     }
 
     fun removeFromPlaylist(track: Track) {
@@ -77,7 +84,26 @@ class PlaylistItemViewModel(
         }
     }
 
-    fun removePlaylist(){
+    fun getCommandsList() {
+        lastPlaylistInfo?.let { info ->
+            renderState(PlaylistItemState.Commands(data = info))
+        }
+    }
+
+    fun deletePlaylist() {
+
+        lastPlaylistInfo?.let { info ->
+
+            viewModelScope.launch {
+                playlistItemInteractor.deletePLaylist(info.id)
+                    .collect { success ->
+                        if (success) {
+                            renderState(PlaylistItemState.Deleted)
+                        }
+                    }
+            }
+
+        }
 
     }
 

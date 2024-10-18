@@ -59,7 +59,7 @@
             app:layout_constraintTop_toBottomOf="@id/cover_holder_top" />
 
         <ImageView
-            android:id="@+id/cover"
+            android:id="@+id/cover_primary"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:contentDescription="@string/playlist_cover"
@@ -209,7 +209,7 @@
         android:layout_height="417dp"
         android:background="@drawable/bottom_sheet_bg"
         android:orientation="vertical"
-        app:behavior_hideable="false"
+        app:behavior_hideable="true"
         app:behavior_peekHeight="417dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -222,13 +222,15 @@
             android:layout_marginBottom="12dp"
             android:background="@drawable/rectangle_r44" />
 
-        <include layout="@layout/player_playlist_item" />
+        <include
+            android:id="@+id/item_secondary"
+            layout="@layout/player_playlist_item" />
 
         <TextView
             android:id="@+id/menu_share_button"
             style="@style/PlaylistMenuItem"
-            android:text="@string/share"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            android:text="@string/share" />
 
         <TextView
             android:id="@+id/menu_edit_button"

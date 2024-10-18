@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.playlists.create
+package com.example.playlistmaker.presentation.playlists.edit
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.playlists.api.PlaylistEditInteractor
+import com.example.playlistmaker.domain.playlists.model.Playlist
 import com.example.playlistmaker.domain.playlists.model.PlaylistCreateData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
@@ -21,6 +22,21 @@ class PlayListEditViewModel(private val playlistEditInteractor: PlaylistEditInte
     private var lastDescription: String = ""
     private var lastCover: Uri? = null
 
+    private var currentPlaylist: Playlist? = null
+
+    fun fillPlaylistInfoByid(id: Int) {
+        viewModelScope.launch {
+            playlistEditInteractor.getPlaylistById(id)
+                .collect {
+
+                    currentPlaylist = it
+                    lastName = currentPlaylist?.name ?: ""
+                    lastDescription = currentPlaylist?.description ?: ""
+                    lastCover = currentPlaylist?.coverPathUri
+
+                }
+        }
+    }
 
     fun onNameChanged(newName: String) {
 

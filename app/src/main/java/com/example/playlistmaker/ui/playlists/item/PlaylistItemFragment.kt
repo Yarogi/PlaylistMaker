@@ -2,7 +2,6 @@ package com.example.playlistmaker.ui.playlists.item
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +23,8 @@ import com.example.playlistmaker.presentation.playlists.item.PlaylistItemState
 import com.example.playlistmaker.presentation.playlists.item.PlaylistItemViewModel
 import com.example.playlistmaker.presentation.playlists.item.model.PlaylistDetailedInfo
 import com.example.playlistmaker.ui.player.PlayerFragment
-import com.example.playlistmaker.ui.search.TrackAdapter
+import com.example.playlistmaker.ui.playlists.edit.PlaylistEditFragment
+import com.example.playlistmaker.ui.util.pxToDP
 import com.example.playlistmaker.ui.util.trackDurationToString
 import com.example.playlistmaker.ui.util.tracksQuantityToString
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -59,6 +59,7 @@ class PlaylistItemFragment : Fragment() {
     })
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+    private lateinit var menuSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,12 +77,15 @@ class PlaylistItemFragment : Fragment() {
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
         binding.shareButton.setOnClickListener { viewModel.sharePlaylist() }
 
+        binding.menuButton.setOnClickListener { viewModel.getCommandsList() }
+
         initBottomSheetBehavor()
+        initMenuViews()
+
+        viewModel.updatePlaylistInfoById(requireArguments().getInt(PLAYLIST_ID_KEY))
 
         viewModel.stateLiveDataObserver().observe(viewLifecycleOwner) { render(it) }
         viewModel.shareStateLiveDataObserver().observe(viewLifecycleOwner) { renderShareState(it) }
-
-        viewModel.updatePlaylistInfoById(requireArguments().getInt(PLAYLIST_ID_KEY))
 
     }
 
@@ -103,11 +107,44 @@ class PlaylistItemFragment : Fragment() {
 
     }
 
+    private fun initMenuViews() {
+
+        menuSheetBehavior = BottomSheetBehavior.from(binding.menuSheetBehavior)
+            .apply { state = BottomSheetBehavior.STATE_HIDDEN }
+        menuSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    viewModel.updatePlaylistInfoByLast()
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
+
+        //buttons
+        binding.menuShareButton.setOnClickListener { viewModel.sharePlaylist() }
+        binding.menuEditButton.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_playlistItemFragment_to_playlistEditFragment,
+                PlaylistEditFragment.createArgs(requireArguments().getInt(PLAYLIST_ID_KEY))
+            )
+        }
+        binding.menuDeleteButton.setOnClickListener {
+            confirmDeleteDialog().show()
+        }
+
+    }
+
     private fun render(state: PlaylistItemState) {
 
         when (state) {
-            is PlaylistItemState.Content -> showPlaylistDetales(state.data)
             PlaylistItemState.Loading -> {}
+            is PlaylistItemState.Content -> showPlaylistDetales(state.data)
+            is PlaylistItemState.Commands -> showComandsPanel(state.data)
+            PlaylistItemState.Deleted -> {
+                findNavController().popBackStack()
+            }
         }
 
     }
@@ -133,29 +170,58 @@ class PlaylistItemFragment : Fragment() {
 
         showPlaylistCover(data.coverPathUri)
 
-        binding.playlistName.text = data.name
-        binding.playlistDescription.text = data.description
-        binding.playlistDurationView.text = trackDurationToString(data.totalDuration)
-        binding.playlistTracksQuantityView.text = tracksQuantityToString(data.tracksQuantity)
+        updateDescriptioView(data)
+
+        setCommandMenuVisible(isVisible = false)
 
         updateTracklist(data.tracks)
 
     }
 
+    private fun updateDescriptioView(data: PlaylistDetailedInfo) {
+        binding.playlistName.text = data.name
+        binding.playlistDescription.text = data.description
+        binding.playlistDurationView.text = trackDurationToString(data.totalDuration)
+        binding.playlistTracksQuantityView.text = tracksQuantityToString(data.tracksQuantity)
+    }
+
+    private fun showComandsPanel(data: PlaylistDetailedInfo) {
+
+        setCommandMenuVisible(isVisible = true)
+        showPlaylistCover(data.coverPathUri)
+        updateDescriptioView(data)
+
+        binding.itemSecondary.name.text = data.name
+        binding.itemSecondary.tracksQuantity.text = tracksQuantityToString(data.tracksQuantity)
+
+        Glide.with(requireContext())
+            .load(data.coverPathUri)
+            .placeholder(R.drawable.track_placeholder)
+            .transform(CenterCrop(), RoundedCorners(pxToDP(requireContext(), 2)))
+            .into(binding.itemSecondary.cover)
+    }
+
+    private fun setCommandMenuVisible(isVisible: Boolean) {
+        binding.overlay.isVisible = isVisible
+        menuSheetBehavior.state =
+            if (isVisible) BottomSheetBehavior.STATE_COLLAPSED
+            else BottomSheetBehavior.STATE_HIDDEN
+    }
+
     private fun showPlaylistCover(coverUri: Uri?) {
 
         binding.coverHolder.isVisible = true
-        binding.cover.isVisible = false
+        binding.coverPrimary.isVisible = false
 
         //Cover
-        binding.cover.isVisible = false
+        binding.coverPrimary.isVisible = false
         coverUri?.let {
             Glide.with(requireContext())
                 .load(coverUri)
                 .transform(CenterCrop())
-                .into(binding.cover)
+                .into(binding.coverPrimary)
                 .let {
-                    binding.cover.isVisible = true
+                    binding.coverPrimary.isVisible = true
                 }
         }
 
@@ -181,6 +247,22 @@ class PlaylistItemFragment : Fragment() {
             .setMessage(dialogMessage)
             .setNeutralButton(cancelTitle) { dialog, which -> }
             .setPositiveButton(finishTitle) { dialog, which -> viewModel.removeFromPlaylist(track) }
+    }
+
+    private fun confirmDeleteDialog(): MaterialAlertDialogBuilder {
+
+        return MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.delete_playlist))
+            .setMessage(
+                getString(R.string.question_sure_delete_playlist).replace(
+                    "%1", binding.playlistName.text.toString()
+                )
+            )
+            .setNegativeButton(getString(R.string.no)) { dialog, which -> }
+            .setPositiveButton(getString(R.string.yes)) { dialog, which ->
+                viewModel.deletePlaylist()
+            }
+
     }
 
 }
