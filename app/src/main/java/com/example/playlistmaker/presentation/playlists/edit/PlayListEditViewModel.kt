@@ -22,22 +22,6 @@ class PlayListEditViewModel(private val playlistEditInteractor: PlaylistEditInte
     private var lastDescription: String = ""
     private var lastCover: Uri? = null
 
-    private var currentPlaylist: Playlist? = null
-
-    fun fillPlaylistInfoByid(id: Int) {
-        viewModelScope.launch {
-            playlistEditInteractor.getPlaylistById(id)
-                .collect {
-
-                    currentPlaylist = it
-                    lastName = currentPlaylist?.name ?: ""
-                    lastDescription = currentPlaylist?.description ?: ""
-                    lastCover = currentPlaylist?.coverPathUri
-
-                }
-        }
-    }
-
     fun onNameChanged(newName: String) {
 
         if (newName == lastName) return

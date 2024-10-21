@@ -30,11 +30,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistEditFragment : Fragment() {
 
-    companion object {
-        private const val PLAYLIST_KEY = "playlistIdKey"
-        fun createArgs(playlistId: Int) = bundleOf(PLAYLIST_KEY to playlistId)
-    }
-
     private val viewModel by viewModel<PlayListEditViewModel>()
 
     private var _binding: FragmentPlaylistEditBinding? = null
