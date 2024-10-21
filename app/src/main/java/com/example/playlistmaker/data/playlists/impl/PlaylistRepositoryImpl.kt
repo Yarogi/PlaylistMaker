@@ -2,7 +2,6 @@ package com.example.playlistmaker.data.playlists.impl
 
 import com.example.playlistmaker.data.db.TrackDataBase
 import com.example.playlistmaker.data.db.entity.PlaylistEntity
-import com.example.playlistmaker.data.db.entity.TrackEntity
 import com.example.playlistmaker.data.db.mapper.PLaylistDbMapper
 import com.example.playlistmaker.data.db.mapper.TrackDbMapper
 import com.example.playlistmaker.data.playlists.storage.FileStorage
@@ -10,6 +9,7 @@ import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.playlists.api.PlaylistRepository
 import com.example.playlistmaker.domain.playlists.model.Playlist
 import com.example.playlistmaker.domain.playlists.model.PlaylistCreateData
+import com.example.playlistmaker.domain.playlists.model.PlaylistEditData
 import com.example.playlistmaker.domain.playlists.model.TrackAddToPlaylistResult
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
@@ -28,14 +28,36 @@ class PlaylistRepositoryImpl(
 
     override suspend fun createPlaylist(data: PlaylistCreateData): Flow<Playlist> = flow {
 
-        val fileName = data.name.filterNot { it.isWhitespace() }
-
-        val path = fileStorage.saveImage(name = fileName, uri = data.cover)
-        val entity = playlistMapper.map(data, path)
+        val path = saveImage(data)
+        val entity = playlistMapper.map(
+            data = data,
+            coverLocalPath = path
+        )
 
         dataBase.playlistDao().insertPlaylist(entity)
-
         emit(playlistMapper.map(entity, fileStorage.getImageUri(path)))
+
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun savePlaylistData(data: PlaylistEditData): Flow<Playlist> = flow<Playlist> {
+
+        val playlistEntity = dataBase.playlistDao().findPlaylistById(data.id)
+        if (playlistEntity == null) {
+            Throwable("PlaylistEntity not find by id = ${data.id}")
+        }
+        playlistEntity?.let { entity ->
+
+            with(entity) {
+                deleteImage(coverLocalPath)
+                coverLocalPath = saveImage(data)
+                name = data.name
+                description = data.description
+            }
+
+            dataBase.playlistDao().insertPlaylist(entity)
+            emit(playlistMapper.map(entity, fileStorage.getImageUri(entity.coverLocalPath)))
+
+        }
 
     }.flowOn(Dispatchers.IO)
 
@@ -48,7 +70,7 @@ class PlaylistRepositoryImpl(
             dataBase.playlistDao().deletePlaylistSafety(entity)
             tracks.forEach { id -> dataBase.trackDao().deleteTrackByIdSafety(id) }
 
-            fileStorage.deleteImage(entity.coverLocalPath)
+            deleteImage(entity.coverLocalPath)
 
             emit(true)
 
@@ -141,5 +163,24 @@ class PlaylistRepositoryImpl(
             fileStorage.getImageUri(playlistEntity.coverLocalPath)
         )
     }
+
+    private suspend fun saveImage(data: PlaylistCreateData): String {
+
+        if (data.cover == null) return ""
+
+        val fileName = data.name.filterNot { it.isWhitespace() }.plus(System.currentTimeMillis())
+        val path = fileStorage.saveImage(name = fileName, uri = data.cover)
+        return path
+
+    }
+
+    private suspend fun deleteImage(path: String) {
+
+        if (path.isNotEmpty()) {
+            fileStorage.deleteImage(path)
+        }
+
+    }
+
 
 }

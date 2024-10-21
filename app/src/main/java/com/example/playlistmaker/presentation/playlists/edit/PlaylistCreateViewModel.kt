@@ -11,15 +11,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
-open class PlaylistCreateViewModel(private val playlistEditInteractor: PlaylistEditInteractor) :
+open class PlaylistCreateViewModel(protected val playlistEditInteractor: PlaylistEditInteractor) :
     ViewModel() {
 
     private val playListState = MutableLiveData<PlaylistEditState>(PlaylistEditState.Empty)
     fun playListStateObserver(): LiveData<PlaylistEditState> = playListState
 
-    private var lastName: String = ""
-    private var lastDescription: String = ""
-    private var lastCover: Uri? = null
+    protected var lastName: String = ""
+    protected var lastDescription: String = ""
+    protected var lastCover: Uri? = null
 
     fun onNameChanged(newName: String) {
 
@@ -56,7 +56,7 @@ open class PlaylistCreateViewModel(private val playlistEditInteractor: PlaylistE
 
     }
 
-    fun savePlaylist() {
+    open fun savePlaylist() {
 
         viewModelScope.launch {
 
@@ -75,7 +75,7 @@ open class PlaylistCreateViewModel(private val playlistEditInteractor: PlaylistE
 
     }
 
-    private fun renderLastData() {
+    protected fun renderLastData() {
 
         val state = if (lastName.isNotEmpty()
             || lastDescription.isNotEmpty()
@@ -92,7 +92,7 @@ open class PlaylistCreateViewModel(private val playlistEditInteractor: PlaylistE
 
     }
 
-    private fun renderState(state: PlaylistEditState) {
+    protected fun renderState(state: PlaylistEditState) {
         playListState.postValue(state)
     }
 

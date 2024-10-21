@@ -201,7 +201,7 @@ class PlayerFragment : Fragment() {
             // экран «Создание плейлиста».
             viewModel.clearPlaylists(BottomSheetBehavior.STATE_HIDDEN)
             //Открываем окно создания нового плейлиста
-            findNavController().navigate(R.id.action_playerFragment_to_playlistEditFragment)
+            findNavController().navigate(R.id.action_playerFragment_to_playlistCreateFragment)
         }
     }
 

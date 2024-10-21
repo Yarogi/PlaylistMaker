@@ -35,7 +35,7 @@ class RootActivity : AppCompatActivity() {
                         || destination.id == R.id.settingsFragment
 
 
-            if (destination.id == R.id.playlistEditFragment) {
+            if (destination.id == R.id.playlistCreateFragment) {
                 if (useStandartSoftInputMode) {
                     useStandartSoftInputMode = false
                     window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)

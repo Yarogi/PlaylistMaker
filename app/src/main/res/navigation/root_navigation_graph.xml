@@ -11,8 +11,8 @@
         android:label="fragment_library"
         tools:layout="@layout/fragment_library">
         <action
-            android:id="@+id/action_libraryFragment_to_playlistEditFragment"
-            app:destination="@id/playlistEditFragment"
+            android:id="@+id/action_libraryFragment_to_playlistCreateFragment"
+            app:destination="@id/playlistCreateFragment"
             app:enterAnim="@anim/slide_in_up"
             app:exitAnim="@anim/hold"
             app:popEnterAnim="@anim/hold"
@@ -52,7 +52,7 @@
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
-        android:id="@+id/playlistEditFragment"
+        android:id="@+id/playlistCreateFragment"
         android:name="com.example.playlistmaker.ui.playlists.edit.PlaylistCreateFragment"
         android:label="fragment_playlist_edit"
         tools:layout="@layout/fragment_playlist_edit" />
@@ -62,8 +62,8 @@
         android:label="fragment_player"
         tools:layout="@layout/fragment_player">
         <action
-            android:id="@+id/action_playerFragment_to_playlistEditFragment"
-            app:destination="@id/playlistEditFragment"
+            android:id="@+id/action_playerFragment_to_playlistCreateFragment"
+            app:destination="@id/playlistCreateFragment"
             app:enterAnim="@anim/slide_in_up"
             app:exitAnim="@anim/hold"
             app:popEnterAnim="@anim/hold"
@@ -83,11 +83,15 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_playlistItemFragment_to_playlistEditFragment"
-            app:destination="@id/playlistEditFragment"
-            app:enterAnim="@anim/slide_in_up"
-            app:exitAnim="@anim/hold"
-            app:popEnterAnim="@anim/hold"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/playlistEditFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/playlistEditFragment"
+        android:name="com.example.playlistmaker.ui.playlists.edit.PlaylistEditFragment"
+        android:label="PlaylistEditFragment"
+        app:enterAnim="@anim/slide_in_up"
+        app:exitAnim="@anim/hold"
+        app:popEnterAnim="@anim/hold"
+        app:popExitAnim="@anim/slide_out_right" />
 
 </navigation>

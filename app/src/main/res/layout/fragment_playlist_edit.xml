@@ -40,6 +40,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/fragment_title"
         style="@style/PanelTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

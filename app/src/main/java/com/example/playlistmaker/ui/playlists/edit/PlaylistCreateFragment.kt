@@ -29,15 +29,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class PlaylistCreateFragment : Fragment() {
 
-    private val viewModel by viewModel<PlaylistCreateViewModel>()
+    protected open val viewModel by viewModel<PlaylistCreateViewModel>()
 
     private var _binding: FragmentPlaylistEditBinding? = null
-    private val binding: FragmentPlaylistEditBinding get() = _binding!!
+    protected val binding: FragmentPlaylistEditBinding get() = _binding!!
 
     private lateinit var nameTextWatcher: TextWatcher
     private lateinit var descriptionTextWatcher: TextWatcher
 
-    private val onBackCallBack = object : OnBackPressedCallback(true) {
+    protected val onBackCallBack = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             safeExit()
         }
