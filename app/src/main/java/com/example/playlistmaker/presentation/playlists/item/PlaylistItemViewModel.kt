@@ -1,5 +1,6 @@
 package com.example.playlistmaker.presentation.playlists.item
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,7 @@ import com.example.playlistmaker.presentation.playlists.item.model.PlaylistDetai
 import kotlinx.coroutines.launch
 
 class PlaylistItemViewModel(
+    private val application: Application,
     private val playlistItemInteractor: PlaylistItemInteractor,
 ) :
     ViewModel() {
@@ -78,7 +80,7 @@ class PlaylistItemViewModel(
             if (info.tracks.isEmpty()) {
                 renderShareState(PlaylistItemShareState.Empty)
             } else {
-                playlistItemInteractor.share(info.toString())
+                playlistItemInteractor.share(info.mapToString(application))
                 finishShare()
             }
         }

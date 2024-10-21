@@ -58,6 +58,7 @@ val viewModelModule = module {
 
     viewModel<PlaylistItemViewModel> {
         PlaylistItemViewModel(
+            application = androidApplication(),
             playlistItemInteractor = get(),
         )
     }

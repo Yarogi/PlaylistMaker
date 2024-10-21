@@ -1,5 +1,6 @@
 package com.example.playlistmaker.presentation.playlists.item.model
 
+import android.content.Context
 import android.net.Uri
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.ui.util.trackDurationToTimeString
@@ -23,7 +24,7 @@ class PlaylistDetailedInfo(
         }
     }
 
-    override fun toString(): String {
+    fun mapToString(context: Context): String {
 
         val builder = StringBuilder()
         builder.append(name)
@@ -32,7 +33,7 @@ class PlaylistDetailedInfo(
             builder.append(description)
         }
         builder.append("\n")
-        builder.append(tracksQuantityToString(tracksQuantity))
+        builder.append(tracksQuantityToString(context, tracksQuantity))
 
 
         tracks.forEachIndexed { index, track ->

@@ -83,7 +83,11 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_playlistItemFragment_to_playlistEditFragment"
-            app:destination="@id/playlistEditFragment" />
+            app:destination="@id/playlistEditFragment"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/hold"
+            app:popEnterAnim="@anim/hold"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/playlistEditFragment"

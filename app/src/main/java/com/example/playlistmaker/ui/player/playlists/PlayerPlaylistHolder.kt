@@ -21,7 +21,7 @@ class PlayerPlaylistHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun bind(playlist: Playlist) {
 
         nameView.text = playlist.name
-        tracksQuantityView.text = tracksQuantityToString(playlist.tracksQuantity)
+        tracksQuantityView.text = tracksQuantityToString(itemView.context, playlist.tracksQuantity)
 
         Glide.with(itemView)
             .load(playlist.coverPathUri)

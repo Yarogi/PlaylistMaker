@@ -184,8 +184,10 @@ class PlaylistItemFragment : Fragment() {
     private fun updateDescriptioView(data: PlaylistDetailedInfo) {
         binding.playlistName.text = data.name
         binding.playlistDescription.text = data.description
-        binding.playlistDurationView.text = trackDurationToString(data.totalDuration)
-        binding.playlistTracksQuantityView.text = tracksQuantityToString(data.tracksQuantity)
+        binding.playlistDurationView.text =
+            trackDurationToString(requireContext(), data.totalDuration)
+        binding.playlistTracksQuantityView.text =
+            tracksQuantityToString(requireContext(), data.tracksQuantity)
     }
 
     private fun showComandsPanel(data: PlaylistDetailedInfo) {
@@ -195,7 +197,8 @@ class PlaylistItemFragment : Fragment() {
         updateDescriptioView(data)
 
         binding.itemSecondary.name.text = data.name
-        binding.itemSecondary.tracksQuantity.text = tracksQuantityToString(data.tracksQuantity)
+        binding.itemSecondary.tracksQuantity.text = tracksQuantityToString(
+            requireContext(), data.tracksQuantity)
 
         Glide.with(requireContext())
             .load(data.coverPathUri)

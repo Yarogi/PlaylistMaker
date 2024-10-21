@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,11 +38,13 @@ open class PlaylistCreateFragment : Fragment() {
     private lateinit var nameTextWatcher: TextWatcher
     private lateinit var descriptionTextWatcher: TextWatcher
 
-    protected val onBackCallBack = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            safeExit()
-        }
+    protected val onBackCallBack by lazy {
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                safeExit(isEnabled)
+            }
 
+        }
     }
 
     private val confirmDialog by lazy {
@@ -94,9 +97,12 @@ open class PlaylistCreateFragment : Fragment() {
             viewModel.savePlaylist()
         }
 
+        initOnBackPressedDispatcher()
+
+    }
+
+    protected fun initOnBackPressedDispatcher() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackCallBack)
-
-
     }
 
     override fun onDestroyView() {
@@ -142,9 +148,9 @@ open class PlaylistCreateFragment : Fragment() {
         }
     }
 
-    private fun safeExit() {
+    private fun safeExit(isEnabled: Boolean = true) {
 
-        if (viewModel.hasUnsavedModify()) {
+        if (isEnabled && viewModel.hasUnsavedModify()) {
             confirmDialog.show()
         } else {
             closeFragment()

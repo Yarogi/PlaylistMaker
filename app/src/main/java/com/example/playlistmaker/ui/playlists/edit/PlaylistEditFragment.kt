@@ -22,8 +22,7 @@ class PlaylistEditFragment : PlaylistCreateFragment() {
         binding.createButton.text = getString(R.string.save)
         binding.fragmentTitle.text = getString(R.string.edit)
 
-        onBackCallBack.apply { isEnabled = false }
-
+        onBackCallBack.isEnabled = false
         viewModel.fillByPlaylistId(requireArguments().getInt(PLAYLIST_KEY))
 
     }
