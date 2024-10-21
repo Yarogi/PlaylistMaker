@@ -24,6 +24,7 @@ import com.example.playlistmaker.presentation.playlists.item.PlaylistItemViewMod
 import com.example.playlistmaker.presentation.playlists.item.model.PlaylistDetailedInfo
 import com.example.playlistmaker.ui.player.PlayerFragment
 import com.example.playlistmaker.ui.playlists.edit.PlaylistCreateFragment
+import com.example.playlistmaker.ui.playlists.edit.PlaylistEditFragment
 import com.example.playlistmaker.ui.util.pxToDP
 import com.example.playlistmaker.ui.util.trackDurationToString
 import com.example.playlistmaker.ui.util.tracksQuantityToString
@@ -73,6 +74,8 @@ class PlaylistItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val playlistId = requireArguments().getInt(PLAYLIST_ID_KEY)
+
         binding.trackListView.adapter = adapter
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
         binding.shareButton.setOnClickListener { viewModel.sharePlaylist() }
@@ -80,9 +83,9 @@ class PlaylistItemFragment : Fragment() {
         binding.menuButton.setOnClickListener { viewModel.getCommandsList() }
 
         initBottomSheetBehavor()
-        initMenuViews()
+        initMenuViews(playlistId)
 
-        viewModel.updatePlaylistInfoById(requireArguments().getInt(PLAYLIST_ID_KEY))
+        viewModel.updatePlaylistInfoById(playlistId)
 
         viewModel.stateLiveDataObserver().observe(viewLifecycleOwner) { render(it) }
         viewModel.shareStateLiveDataObserver().observe(viewLifecycleOwner) { renderShareState(it) }
@@ -107,7 +110,7 @@ class PlaylistItemFragment : Fragment() {
 
     }
 
-    private fun initMenuViews() {
+    private fun initMenuViews(playlistId: Int) {
 
         menuSheetBehavior = BottomSheetBehavior.from(binding.menuSheetBehavior)
             .apply { state = BottomSheetBehavior.STATE_HIDDEN }
@@ -127,7 +130,7 @@ class PlaylistItemFragment : Fragment() {
         binding.menuEditButton.setOnClickListener {
             findNavController().navigate(
                 R.id.action_playlistItemFragment_to_playlistEditFragment,
-                PlaylistCreateFragment.createArgs(requireArguments().getInt(PLAYLIST_ID_KEY))
+                PlaylistEditFragment.createArgs(playlistId = playlistId)
             )
         }
         binding.menuDeleteButton.setOnClickListener {
