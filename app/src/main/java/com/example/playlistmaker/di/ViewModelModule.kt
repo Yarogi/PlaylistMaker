@@ -5,6 +5,7 @@ import com.example.playlistmaker.presentation.featured.FeaturedTracksViewModel
 import com.example.playlistmaker.presentation.playlists.edit.PlaylistCreateViewModel
 import com.example.playlistmaker.presentation.playlists.list.PlaylistViewModel
 import com.example.playlistmaker.presentation.player.PlayerViewModel
+import com.example.playlistmaker.presentation.playlists.edit.PlaylistEditViewModel
 import com.example.playlistmaker.presentation.playlists.item.PlaylistItemViewModel
 import com.example.playlistmaker.presentation.search.SearchViewModel
 import com.example.playlistmaker.presentation.settings.SettingsViewModel
@@ -50,6 +51,9 @@ val viewModelModule = module {
 
     viewModel<PlaylistCreateViewModel> {
         PlaylistCreateViewModel(playlistEditInteractor = get())
+    }
+    viewModel<PlaylistEditViewModel> {
+        PlaylistEditViewModel(playlistEditInteractor = get())
     }
 
     viewModel<PlaylistItemViewModel> {

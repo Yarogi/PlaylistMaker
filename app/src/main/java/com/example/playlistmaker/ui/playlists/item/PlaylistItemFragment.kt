@@ -23,7 +23,7 @@ import com.example.playlistmaker.presentation.playlists.item.PlaylistItemState
 import com.example.playlistmaker.presentation.playlists.item.PlaylistItemViewModel
 import com.example.playlistmaker.presentation.playlists.item.model.PlaylistDetailedInfo
 import com.example.playlistmaker.ui.player.PlayerFragment
-import com.example.playlistmaker.ui.playlists.edit.PlaylistEditFragment
+import com.example.playlistmaker.ui.playlists.edit.PlaylistCreateFragment
 import com.example.playlistmaker.ui.util.pxToDP
 import com.example.playlistmaker.ui.util.trackDurationToString
 import com.example.playlistmaker.ui.util.tracksQuantityToString
@@ -127,7 +127,7 @@ class PlaylistItemFragment : Fragment() {
         binding.menuEditButton.setOnClickListener {
             findNavController().navigate(
                 R.id.action_playlistItemFragment_to_playlistEditFragment,
-                PlaylistEditFragment.createArgs(requireArguments().getInt(PLAYLIST_ID_KEY))
+                PlaylistCreateFragment.createArgs(requireArguments().getInt(PLAYLIST_ID_KEY))
             )
         }
         binding.menuDeleteButton.setOnClickListener {

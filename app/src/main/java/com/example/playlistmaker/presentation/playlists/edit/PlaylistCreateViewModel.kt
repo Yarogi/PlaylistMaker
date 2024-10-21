@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
-class PlaylistCreateViewModel(private val playlistEditInteractor: PlaylistEditInteractor) :
+open class PlaylistCreateViewModel(private val playlistEditInteractor: PlaylistEditInteractor) :
     ViewModel() {
 
     private val playListState = MutableLiveData<PlaylistEditState>(PlaylistEditState.Empty)
