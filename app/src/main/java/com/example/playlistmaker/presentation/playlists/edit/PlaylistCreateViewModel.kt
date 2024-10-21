@@ -6,13 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.playlists.api.PlaylistEditInteractor
-import com.example.playlistmaker.domain.playlists.model.Playlist
 import com.example.playlistmaker.domain.playlists.model.PlaylistCreateData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
-class PlayListEditViewModel(private val playlistEditInteractor: PlaylistEditInteractor) :
+class PlaylistCreateViewModel(private val playlistEditInteractor: PlaylistEditInteractor) :
     ViewModel() {
 
     private val playListState = MutableLiveData<PlaylistEditState>(PlaylistEditState.Empty)

@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -22,7 +21,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistEditBinding
 import com.example.playlistmaker.domain.playlists.model.Playlist
 import com.example.playlistmaker.domain.playlists.model.PlaylistCreateData
-import com.example.playlistmaker.presentation.playlists.edit.PlayListEditViewModel
+import com.example.playlistmaker.presentation.playlists.edit.PlaylistCreateViewModel
 import com.example.playlistmaker.presentation.playlists.edit.PlaylistEditState
 import com.example.playlistmaker.ui.util.pxToDP
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -30,7 +29,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistEditFragment : Fragment() {
 
-    private val viewModel by viewModel<PlayListEditViewModel>()
+    private val viewModel by viewModel<PlaylistCreateViewModel>()
 
     private var _binding: FragmentPlaylistEditBinding? = null
     private val binding: FragmentPlaylistEditBinding get() = _binding!!

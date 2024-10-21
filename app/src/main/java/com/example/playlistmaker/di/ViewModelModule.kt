@@ -2,7 +2,7 @@ package com.example.playlistmaker.di
 
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.presentation.featured.FeaturedTracksViewModel
-import com.example.playlistmaker.presentation.playlists.edit.PlayListEditViewModel
+import com.example.playlistmaker.presentation.playlists.edit.PlaylistCreateViewModel
 import com.example.playlistmaker.presentation.playlists.list.PlaylistViewModel
 import com.example.playlistmaker.presentation.player.PlayerViewModel
 import com.example.playlistmaker.presentation.playlists.item.PlaylistItemViewModel
@@ -48,8 +48,8 @@ val viewModelModule = module {
         PlaylistViewModel(playlistInteractor = get())
     }
 
-    viewModel<PlayListEditViewModel> {
-        PlayListEditViewModel(playlistEditInteractor = get())
+    viewModel<PlaylistCreateViewModel> {
+        PlaylistCreateViewModel(playlistEditInteractor = get())
     }
 
     viewModel<PlaylistItemViewModel> {
