@@ -6,37 +6,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.playlists.api.PlaylistEditInteractor
-import com.example.playlistmaker.domain.playlists.model.Playlist
 import com.example.playlistmaker.domain.playlists.model.PlaylistCreateData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
-class PlayListEditViewModel(private val playlistEditInteractor: PlaylistEditInteractor) :
+open class PlaylistCreateViewModel(protected val playlistEditInteractor: PlaylistEditInteractor) :
     ViewModel() {
 
     private val playListState = MutableLiveData<PlaylistEditState>(PlaylistEditState.Empty)
     fun playListStateObserver(): LiveData<PlaylistEditState> = playListState
 
-    private var lastName: String = ""
-    private var lastDescription: String = ""
-    private var lastCover: Uri? = null
-
-    private var currentPlaylist: Playlist? = null
-
-    fun fillPlaylistInfoByid(id: Int) {
-        viewModelScope.launch {
-            playlistEditInteractor.getPlaylistById(id)
-                .collect {
-
-                    currentPlaylist = it
-                    lastName = currentPlaylist?.name ?: ""
-                    lastDescription = currentPlaylist?.description ?: ""
-                    lastCover = currentPlaylist?.coverPathUri
-
-                }
-        }
-    }
+    protected var lastName: String = ""
+    protected var lastDescription: String = ""
+    protected var lastCover: Uri? = null
 
     fun onNameChanged(newName: String) {
 
@@ -73,7 +56,7 @@ class PlayListEditViewModel(private val playlistEditInteractor: PlaylistEditInte
 
     }
 
-    fun savePlaylist() {
+    open fun savePlaylist() {
 
         viewModelScope.launch {
 
@@ -92,7 +75,7 @@ class PlayListEditViewModel(private val playlistEditInteractor: PlaylistEditInte
 
     }
 
-    private fun renderLastData() {
+    protected fun renderLastData() {
 
         val state = if (lastName.isNotEmpty()
             || lastDescription.isNotEmpty()
@@ -109,7 +92,7 @@ class PlayListEditViewModel(private val playlistEditInteractor: PlaylistEditInte
 
     }
 
-    private fun renderState(state: PlaylistEditState) {
+    protected fun renderState(state: PlaylistEditState) {
         playListState.postValue(state)
     }
 

@@ -23,6 +23,7 @@ import com.example.playlistmaker.presentation.playlists.item.PlaylistItemState
 import com.example.playlistmaker.presentation.playlists.item.PlaylistItemViewModel
 import com.example.playlistmaker.presentation.playlists.item.model.PlaylistDetailedInfo
 import com.example.playlistmaker.ui.player.PlayerFragment
+import com.example.playlistmaker.ui.playlists.edit.PlaylistCreateFragment
 import com.example.playlistmaker.ui.playlists.edit.PlaylistEditFragment
 import com.example.playlistmaker.ui.util.pxToDP
 import com.example.playlistmaker.ui.util.trackDurationToString
@@ -73,6 +74,8 @@ class PlaylistItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val playlistId = requireArguments().getInt(PLAYLIST_ID_KEY)
+
         binding.trackListView.adapter = adapter
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
         binding.shareButton.setOnClickListener { viewModel.sharePlaylist() }
@@ -80,9 +83,9 @@ class PlaylistItemFragment : Fragment() {
         binding.menuButton.setOnClickListener { viewModel.getCommandsList() }
 
         initBottomSheetBehavor()
-        initMenuViews()
+        initMenuViews(playlistId)
 
-        viewModel.updatePlaylistInfoById(requireArguments().getInt(PLAYLIST_ID_KEY))
+        viewModel.updatePlaylistInfoById(playlistId)
 
         viewModel.stateLiveDataObserver().observe(viewLifecycleOwner) { render(it) }
         viewModel.shareStateLiveDataObserver().observe(viewLifecycleOwner) { renderShareState(it) }
@@ -107,16 +110,19 @@ class PlaylistItemFragment : Fragment() {
 
     }
 
-    private fun initMenuViews() {
+    private fun initMenuViews(playlistId: Int) {
 
         menuSheetBehavior = BottomSheetBehavior.from(binding.menuSheetBehavior)
             .apply { state = BottomSheetBehavior.STATE_HIDDEN }
         menuSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+                setPlaylistVisible(newState != BottomSheetBehavior.STATE_COLLAPSED)
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     viewModel.updatePlaylistInfoByLast()
                 }
+
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
@@ -127,7 +133,7 @@ class PlaylistItemFragment : Fragment() {
         binding.menuEditButton.setOnClickListener {
             findNavController().navigate(
                 R.id.action_playlistItemFragment_to_playlistEditFragment,
-                PlaylistEditFragment.createArgs(requireArguments().getInt(PLAYLIST_ID_KEY))
+                PlaylistEditFragment.createArgs(playlistId = playlistId)
             )
         }
         binding.menuDeleteButton.setOnClickListener {
@@ -181,8 +187,10 @@ class PlaylistItemFragment : Fragment() {
     private fun updateDescriptioView(data: PlaylistDetailedInfo) {
         binding.playlistName.text = data.name
         binding.playlistDescription.text = data.description
-        binding.playlistDurationView.text = trackDurationToString(data.totalDuration)
-        binding.playlistTracksQuantityView.text = tracksQuantityToString(data.tracksQuantity)
+        binding.playlistDurationView.text =
+            trackDurationToString(requireContext(), data.totalDuration)
+        binding.playlistTracksQuantityView.text =
+            tracksQuantityToString(requireContext(), data.tracksQuantity)
     }
 
     private fun showComandsPanel(data: PlaylistDetailedInfo) {
@@ -192,20 +200,27 @@ class PlaylistItemFragment : Fragment() {
         updateDescriptioView(data)
 
         binding.itemSecondary.name.text = data.name
-        binding.itemSecondary.tracksQuantity.text = tracksQuantityToString(data.tracksQuantity)
+        binding.itemSecondary.tracksQuantity.text = tracksQuantityToString(
+            requireContext(), data.tracksQuantity
+        )
 
         Glide.with(requireContext())
             .load(data.coverPathUri)
             .placeholder(R.drawable.track_placeholder)
             .transform(CenterCrop(), RoundedCorners(pxToDP(requireContext(), 2)))
             .into(binding.itemSecondary.cover)
+
+        setPlaylistVisible(isVisible = false)
+
     }
 
     private fun setCommandMenuVisible(isVisible: Boolean) {
         binding.overlay.isVisible = isVisible
+
         menuSheetBehavior.state =
             if (isVisible) BottomSheetBehavior.STATE_COLLAPSED
             else BottomSheetBehavior.STATE_HIDDEN
+
     }
 
     private fun showPlaylistCover(coverUri: Uri?) {
@@ -225,6 +240,12 @@ class PlaylistItemFragment : Fragment() {
                 }
         }
 
+    }
+
+    private fun setPlaylistVisible(isVisible: Boolean) {
+        if (binding.bottomSheetBehavior.isVisible != isVisible) {
+            binding.bottomSheetBehavior.isVisible = isVisible
+        }
     }
 
     private fun updateTracklist(tracks: List<Track>) {

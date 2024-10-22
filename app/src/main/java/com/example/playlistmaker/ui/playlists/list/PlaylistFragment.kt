@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,7 +15,6 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.playlists.model.Playlist
 import com.example.playlistmaker.presentation.playlists.list.PlaylistState
 import com.example.playlistmaker.ui.playlists.item.PlaylistItemFragment
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class PlaylistFragment : BindingFragment<FragmentPlaylistsBinding>() {
 
@@ -48,7 +46,7 @@ class PlaylistFragment : BindingFragment<FragmentPlaylistsBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.newPlaylistButton.setOnClickListener {
-            findNavController().navigate(R.id.action_libraryFragment_to_playlistEditFragment)
+            findNavController().navigate(R.id.action_libraryFragment_to_playlistCreateFragment)
         }
 
         binding.playlists.layoutManager = GridLayoutManager(requireContext(), 2)
