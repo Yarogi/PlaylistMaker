@@ -1,5 +1,7 @@
 package com.example.playlistmaker.ui.playlists.item
 
+import android.app.Activity
+import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -90,6 +92,16 @@ class PlaylistItemFragment : Fragment() {
         viewModel.stateLiveDataObserver().observe(viewLifecycleOwner) { render(it) }
         viewModel.shareStateLiveDataObserver().observe(viewLifecycleOwner) { renderShareState(it) }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    }
+
+    override fun onPause() {
+        super.onPause()
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
     }
 
     override fun onDestroyView() {
