@@ -1,5 +1,6 @@
 package com.example.playlistmaker.presentation.playlists.edit
 
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.playlists.api.PlaylistEditInteractor
 import com.example.playlistmaker.domain.playlists.model.Playlist
@@ -10,6 +11,8 @@ class PlaylistEditViewModel(playlistEditInteractor: PlaylistEditInteractor) :
     PlaylistCreateViewModel(playlistEditInteractor) {
 
     private var playlistId: Int? = null
+
+    private lateinit var playlistAtStart: Playlist
 
     fun fillByPlaylistId(id: Int) {
         playlistId = id
@@ -25,22 +28,31 @@ class PlaylistEditViewModel(playlistEditInteractor: PlaylistEditInteractor) :
 
     override fun savePlaylist() {
 
-        playlistId?.let { id ->
+        if (playlistAtStart.name == lastName
+            && playlistAtStart.description == lastDescription
+            && playlistAtStart.coverPathUri == lastCover
+        ) {
+        } else {
 
-            val info = PlaylistEditData(
-                id = id,
-                name = lastName,
-                description = lastDescription,
-                cover = lastCover
-            )
+            renderState(PlaylistEditState.Create(playlistAtStart))
 
-            viewModelScope.launch {
-                playlistEditInteractor.saveEditPlaylistInfo(info)
-                    .collect {
-                        renderState(PlaylistEditState.Create(it))
-                    }
+            playlistId?.let { id ->
+
+                val info = PlaylistEditData(
+                    id = id,
+                    name = lastName,
+                    description = lastDescription,
+                    cover = lastCover
+                )
+
+                viewModelScope.launch {
+                    playlistEditInteractor.saveEditPlaylistInfo(info)
+                        .collect {
+                            renderState(PlaylistEditState.Create(it))
+                        }
+                }
+
             }
-
         }
 
     }
@@ -50,6 +62,8 @@ class PlaylistEditViewModel(playlistEditInteractor: PlaylistEditInteractor) :
         lastDescription = playlist.description
         lastCover = playlist.coverPathUri
         renderLastData()
+
+        playlistAtStart = playlist
     }
 
 }

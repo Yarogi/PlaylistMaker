@@ -38,13 +38,11 @@ open class PlaylistCreateFragment : Fragment() {
     private lateinit var nameTextWatcher: TextWatcher
     private lateinit var descriptionTextWatcher: TextWatcher
 
-    protected val onBackCallBack by lazy {
-        object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                safeExit(isEnabled)
-            }
-
+    protected val onBackCallBack = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            safeExit(isEnabled)
         }
+
     }
 
     private val confirmDialog by lazy {

@@ -48,10 +48,13 @@ class PlaylistRepositoryImpl(
         playlistEntity?.let { entity ->
 
             with(entity) {
-                deleteImage(coverLocalPath)
+                val lastName: String = coverLocalPath
                 coverLocalPath = saveImage(data)
                 name = data.name
                 description = data.description
+
+                deleteImage(lastName)
+
             }
 
             dataBase.playlistDao().insertPlaylist(entity)

@@ -3,6 +3,7 @@ package com.example.playlistmaker.ui.playlists.edit
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.presentation.playlists.edit.PlaylistEditViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,6 +22,10 @@ class PlaylistEditFragment : PlaylistCreateFragment() {
 
         binding.createButton.text = getString(R.string.save)
         binding.fragmentTitle.text = getString(R.string.edit)
+
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         onBackCallBack.isEnabled = false
         viewModel.fillByPlaylistId(requireArguments().getInt(PLAYLIST_KEY))
