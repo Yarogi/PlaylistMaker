@@ -15,14 +15,24 @@
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
 
+    <style name="Theme.PlaylistMaker.Background" parent="Theme.PlaylistMaker">
+        <item name="android:background">@color/white</item>
+    </style>
+
     <style name="Theme.PlaylistMaker.NoBackground" parent="Theme.PlaylistMaker">
         <item name="android:background">@null</item>
     </style>
-    <style name="Tabs" parent="Theme.PlaylistMaker.NoBackground"/>
+
+    <style name="Theme.PlaylistMaker.LightBackground">
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="Tabs" parent="Theme.PlaylistMaker.NoBackground" />
+
     <style name="PlaylistMakerTint" parent="Theme.PlaylistMaker.NoBackground">
         <item name="android:background">@color/white</item>
     </style>
-    
+
     <style name="PlaylistMakerNoColors">
         <item name="colorPrimary">@color/blue</item>
         <item name="colorSecondary">@color/light_gray</item>
@@ -38,9 +48,9 @@
         <item name="tint">@color/secondary_gray</item>
     </style>
 
-    <style name="NoTheme"/>
+    <style name="NoTheme" />
 
-    <style name="Theme.PlaylistMaker.TrackListItem" parent="Theme.PlaylistMaker">
+    <style name="Theme.PlaylistMaker.TrackListItem" parent="Theme.PlaylistMaker.Background">
         <item name="tint">@color/text_gray</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
@@ -93,10 +103,10 @@
         <item name="android:paddingVertical">10dp</item>
         <item name="backgroundTint">@color/search_text_color</item>
     </style>
-    
+
     <!--  Playlist item  -->
 
-    <style name="PlaylistItemDescriptionAreaTheme" parent="Theme.PlaylistMaker">
+    <style name="PlaylistItemDescriptionAreaTheme" parent="Theme.PlaylistMaker.Background">
         <item name="android:backgroundTint">@color/light_gray</item>
     </style>
 

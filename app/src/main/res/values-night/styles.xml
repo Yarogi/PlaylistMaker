@@ -284,4 +284,10 @@
         <item name="android:backgroundTint">@color/white</item>
     </style>
 
+    <style name="CustomAlertDialog">
+        <item name="backgroundColor">@color/white</item>
+        <item name="color">@color/white</item>
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+
 </resources>

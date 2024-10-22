@@ -4,16 +4,19 @@ import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.Resource
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -275,13 +278,22 @@ class PlaylistItemFragment : Fragment() {
 
         val dialogTitle = getString(R.string.delete_track)
         val dialogMessage = getString(R.string.question_sure_remove_track_from_playlist)
-        val cancelTitle = getString(R.string.cancel)
-        val finishTitle = getString(R.string.delete)
+        val cancelTitle = getString(R.string.no).uppercase()
+        val finishTitle = getString(R.string.yes).uppercase()
+
+
+        val backgroundTheme = resources.newTheme()
+        backgroundTheme.applyStyle(R.style.Theme_PlaylistMaker_LightBackground, true)
+        val background = resources.getDrawable(
+            R.drawable.dialog_background, backgroundTheme
+        )
+
 
         return MaterialAlertDialogBuilder(requireContext())
+            .setBackground(background)
             .setTitle(dialogTitle)
             .setMessage(dialogMessage)
-            .setNeutralButton(cancelTitle) { dialog, which -> }
+            .setNegativeButton(cancelTitle) { dialog, which -> }
             .setPositiveButton(finishTitle) { dialog, which -> viewModel.removeFromPlaylist(track) }
     }
 
@@ -294,8 +306,8 @@ class PlaylistItemFragment : Fragment() {
                     "%1", binding.playlistName.text.toString()
                 )
             )
-            .setNegativeButton(getString(R.string.no)) { dialog, which -> }
-            .setPositiveButton(getString(R.string.yes)) { dialog, which ->
+            .setNegativeButton(getString(R.string.no).uppercase()) { dialog, which -> }
+            .setPositiveButton(getString(R.string.yes).uppercase()) { dialog, which ->
                 viewModel.deletePlaylist()
             }
 
