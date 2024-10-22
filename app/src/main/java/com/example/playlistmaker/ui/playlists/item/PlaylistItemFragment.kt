@@ -117,9 +117,12 @@ class PlaylistItemFragment : Fragment() {
         menuSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+                setPlaylistVisible(newState != BottomSheetBehavior.STATE_COLLAPSED)
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     viewModel.updatePlaylistInfoByLast()
                 }
+
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
@@ -198,20 +201,26 @@ class PlaylistItemFragment : Fragment() {
 
         binding.itemSecondary.name.text = data.name
         binding.itemSecondary.tracksQuantity.text = tracksQuantityToString(
-            requireContext(), data.tracksQuantity)
+            requireContext(), data.tracksQuantity
+        )
 
         Glide.with(requireContext())
             .load(data.coverPathUri)
             .placeholder(R.drawable.track_placeholder)
             .transform(CenterCrop(), RoundedCorners(pxToDP(requireContext(), 2)))
             .into(binding.itemSecondary.cover)
+
+        setPlaylistVisible(isVisible = false)
+
     }
 
     private fun setCommandMenuVisible(isVisible: Boolean) {
         binding.overlay.isVisible = isVisible
+
         menuSheetBehavior.state =
             if (isVisible) BottomSheetBehavior.STATE_COLLAPSED
             else BottomSheetBehavior.STATE_HIDDEN
+
     }
 
     private fun showPlaylistCover(coverUri: Uri?) {
@@ -231,6 +240,12 @@ class PlaylistItemFragment : Fragment() {
                 }
         }
 
+    }
+
+    private fun setPlaylistVisible(isVisible: Boolean) {
+        if (binding.bottomSheetBehavior.isVisible != isVisible) {
+            binding.bottomSheetBehavior.isVisible = isVisible
+        }
     }
 
     private fun updateTracklist(tracks: List<Track>) {

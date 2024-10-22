@@ -201,7 +201,7 @@
         android:layout_height="match_parent"
         android:background="@color/light_black"
         android:alpha="0.5"
-        android:visibility="visible"
+        android:visibility="gone"
         android:clickable="true"/>
 
     <LinearLayout
