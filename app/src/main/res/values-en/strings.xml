@@ -69,4 +69,6 @@
     <string name="track_genitive">tracks</string>
     <string name="tracks_genitive">tracks</string>
 
+    <string name="playlist_is_empty">The playlist is empty</string>
+
 </resources>

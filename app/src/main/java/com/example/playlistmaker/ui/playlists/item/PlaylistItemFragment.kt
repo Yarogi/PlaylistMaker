@@ -255,6 +255,8 @@ class PlaylistItemFragment : Fragment() {
         adapter.tracks.addAll(tracks)
         adapter.notifyDataSetChanged()
 
+        binding.trackListView.isVisible = tracks.isNotEmpty()
+        binding.emptyTracklistHolder.isVisible = tracks.isEmpty()
     }
 
     private fun confirmRemoveTrackDialog(track: Track): MaterialAlertDialogBuilder {

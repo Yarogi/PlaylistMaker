@@ -78,7 +78,7 @@
     <string name="no">Нет</string>
     <string name="save">Сохранить</string>
     <string name="edit">Редактировать</string>
-    
+
     <!-- Declension -->
     <string name="minute">минута</string>
     <string name="minutes">минуты</string>
@@ -87,6 +87,8 @@
     <string name="track">трек</string>
     <string name="track_genitive">трека</string>
     <string name="tracks_genitive">треков</string>
-    
+
+    <string name="playlist_is_empty">Плейлист пустой</string>
+
 
 </resources>
