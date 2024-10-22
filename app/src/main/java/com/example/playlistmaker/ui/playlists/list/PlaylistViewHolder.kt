@@ -24,13 +24,21 @@ class PlaylistViewHolder(view: View) : ViewHolder(view) {
         nameView.text = playlist.name
         tracksQuantityView.text = tracksQuantityToString(itemView.context, playlist.tracksQuantity)
 
+//        Сброс кэша
+//        Glide.with(itemView)
+//            .load(playlist.coverPathUri)
+//            .diskCacheStrategy(DiskCacheStrategy.NONE)
+//            .skipMemoryCache(true)
+//            .placeholder(R.drawable.track_placeholder)
+//            .transform(CenterCrop(), RoundedCorners(pxToDP(itemView.context, 8)))
+//            .into(coverView)
+
         Glide.with(itemView)
             .load(playlist.coverPathUri)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .skipMemoryCache(true)
             .placeholder(R.drawable.track_placeholder)
             .transform(CenterCrop(), RoundedCorners(pxToDP(itemView.context, 8)))
             .into(coverView)
+
     }
 
 

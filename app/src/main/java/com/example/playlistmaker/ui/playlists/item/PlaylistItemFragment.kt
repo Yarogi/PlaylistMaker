@@ -186,6 +186,7 @@ class PlaylistItemFragment : Fragment() {
 
     private fun updateDescriptioView(data: PlaylistDetailedInfo) {
         binding.playlistName.text = data.name
+        binding.playlistDescription.isVisible = data.description.isNotEmpty()
         binding.playlistDescription.text = data.description
         binding.playlistDurationView.text =
             trackDurationToString(requireContext(), data.totalDuration)
