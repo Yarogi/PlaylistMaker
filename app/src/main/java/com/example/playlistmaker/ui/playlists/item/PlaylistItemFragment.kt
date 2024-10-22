@@ -2,6 +2,7 @@ package com.example.playlistmaker.ui.playlists.item
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
@@ -13,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -36,6 +38,7 @@ import com.example.playlistmaker.ui.util.tracksQuantityToString
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.component.getScopeId
 
 class PlaylistItemFragment : Fragment() {
 
@@ -281,17 +284,30 @@ class PlaylistItemFragment : Fragment() {
         val cancelTitle = getString(R.string.no).uppercase()
         val finishTitle = getString(R.string.yes).uppercase()
 
-
         val backgroundTheme = resources.newTheme()
-        backgroundTheme.applyStyle(R.style.Theme_PlaylistMaker_LightBackground, true)
         val background = resources.getDrawable(
             R.drawable.dialog_background, backgroundTheme
         )
 
+        val dialogTitleView = TextView(requireContext())
+        with(dialogTitleView) {
+            text = getString(R.string.delete_track)
+            textSize = 16.0F
+            setTextColor(resources.getColor(R.color.black, backgroundTheme))
+
+            val param = layoutParams as ViewGroup.MarginLayoutParams
+            param.setMargins(24, 16, 8, 8)
+
+            layoutParams = param
+
+        }
+
+
+
 
         return MaterialAlertDialogBuilder(requireContext())
             .setBackground(background)
-            .setTitle(dialogTitle)
+            .setCustomTitle(dialogTitleView)
             .setMessage(dialogMessage)
             .setNegativeButton(cancelTitle) { dialog, which -> }
             .setPositiveButton(finishTitle) { dialog, which -> viewModel.removeFromPlaylist(track) }
