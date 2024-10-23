@@ -2,6 +2,9 @@ package com.example.playlistmaker.domain.player.impl
 
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.domain.media_library.favorites.api.FeaturedTracksRepository
+import com.example.playlistmaker.domain.media_library.playlists.api.PlaylistRepository
+import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
+import com.example.playlistmaker.domain.media_library.playlists.model.TrackAddToPlaylistResult
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.api.PlayerRepository
 import com.example.playlistmaker.domain.player.model.PlaybackStatus
@@ -13,6 +16,7 @@ import kotlinx.coroutines.flow.flowOn
 class PlayerInteractorImpl(
     override val player: PlayerRepository,
     val libraryRepository: FeaturedTracksRepository,
+    val playlistRepository: PlaylistRepository
 ) : PlayerInteractor {
 
     override fun prepared(
@@ -56,6 +60,14 @@ class PlayerInteractorImpl(
         emit(foundTrack != null)
 
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun getAllPlaylists(): Flow<List<Playlist>> {
+       return playlistRepository.getAllPlaylist()
+    }
+
+    override suspend fun addTrackInPlaylist(track: Track, playlist: Playlist) :Flow<TrackAddToPlaylistResult>{
+        return playlistRepository.addTrack(track, playlist)
+    }
 
 
 }

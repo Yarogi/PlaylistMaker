@@ -6,8 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.main.model.Track
+import com.example.playlistmaker.domain.media_library.playlists.api.PlaylistInteractor
+import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
+import com.example.playlistmaker.domain.media_library.playlists.model.TrackAddToPlaylistResult
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.model.PlaybackStatus
+import com.example.playlistmaker.presentation.media_library.playlists.list.PlaylistState
 import com.example.playlistmaker.util.debounce
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -18,13 +22,20 @@ import kotlinx.coroutines.withContext
 class PlayerViewModel(
     val track: Track,
     val playerInteractor: PlayerInteractor,
+    private val playlistInteractor: PlaylistInteractor,
 ) : ViewModel() {
 
     private val trackScreenStateLiveData = MutableLiveData<TrackScreenState>()
-    private val playerState = MutableLiveData<TrackPlaybackState>()
-
     fun trackScreenStateObserver(): LiveData<TrackScreenState> = trackScreenStateLiveData
+
+    private val playerState = MutableLiveData<TrackPlaybackState>()
     fun playerStateObserver(): LiveData<TrackPlaybackState> = playerState
+
+    private val playlistState = MutableLiveData<PlayerPlaylistState>()
+    fun playlistStateObserver(): LiveData<PlayerPlaylistState> = playlistState
+
+    private val playlistTrackAddedState = MutableLiveData<PlaylistTrackAddState>()
+    fun playlistTrackAddedStateObserver(): LiveData<PlaylistTrackAddState> = playlistTrackAddedState
 
     private var timerJob: Job? = null
 
@@ -165,6 +176,64 @@ class PlayerViewModel(
             PlayerFeaturedState.Loading -> Log.d("MYDEBUG", "Featured btn - Loading...")
         }
         isFavoriteLiveData.postValue(state)
+    }
+
+    //Playlists
+    fun getAllPlaylists(listState: Int) {
+        viewModelScope.launch {
+            playlistInteractor.getAllPlaylists()
+                .collect { playlists ->
+                    renderPlaylistsState(
+                        PlayerPlaylistState.Content(
+                            data = playlists,
+                            listState = listState
+                        )
+                    )
+                }
+        }
+    }
+
+    fun clearPlaylists(listState: Int) {
+        renderPlaylistsState(
+            PlayerPlaylistState.Content(
+                data = emptyList(),
+                listState = listState
+            )
+        )
+    }
+
+    fun addTrackToPlaylist(playlist: Playlist) {
+        viewModelScope.launch {
+            playerInteractor.addTrackInPlaylist(track, playlist)
+                .collect { result ->
+                    val state: PlaylistTrackAddState = when (result) {
+                        TrackAddToPlaylistResult.ADDED -> PlaylistTrackAddState.TrackAdded(
+                            track,
+                            playlist
+                        )
+
+                        TrackAddToPlaylistResult.ADDED_EARLIER -> PlaylistTrackAddState.TrackAddedEarly(
+                            track,
+                            playlist
+                        )
+
+                        TrackAddToPlaylistResult.ERROR -> PlaylistTrackAddState.Error
+                    }
+                    renderPlaylistTrackAddedState(state)
+                }
+        }
+    }
+
+    private fun renderPlaylistsState(state: PlayerPlaylistState) {
+        playlistState.postValue(state)
+    }
+
+    fun clearPlaylistTrackAddedMessage() {
+        renderPlaylistTrackAddedState(PlaylistTrackAddState.Empty)
+    }
+
+    private fun renderPlaylistTrackAddedState(state: PlaylistTrackAddState) {
+        playlistTrackAddedState.postValue(state)
     }
 
 }

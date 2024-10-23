@@ -36,4 +36,13 @@
     <string name="action_1">Action 1</string>
     <string name="featured_tracks">Featured tracks</string>
     <string name="playlists">Playlists</string>
+    <string name="playlist_cover">Playlist cover</string>
+    <string name="required_name">Name*</string>
+    <string name="description">Description</string>
+    <string name="create">Create</string>
+    <string name="question_finish_creating_playlist_title">Finish creating the playlist?</string>
+    <string name="question_finish_creating_playlist_message">All unsaved data will be lost</string>
+    <string name="cancel">Cancel</string>
+    <string name="finish">Finish</string>
+    <string name="something_went_wrong">Something went wrong</string>
 </resources>

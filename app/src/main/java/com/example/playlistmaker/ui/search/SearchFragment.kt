@@ -19,7 +19,7 @@ import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.main.model.Track
 import com.example.playlistmaker.presentation.search.SearchState
 import com.example.playlistmaker.presentation.search.SearchViewModel
-import com.example.playlistmaker.ui.player.PlayerActivity
+import com.example.playlistmaker.ui.player.PlayerFragment
 import com.example.playlistmaker.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -54,8 +54,8 @@ class SearchFragment : Fragment() {
         debounce(0L, lifecycleScope, false) { track ->
             viewModel.addTrackToHistory(track)
             findNavController().navigate(
-                R.id.action_searchFragment_to_playerActivity,
-                PlayerActivity.createArgs(track)
+                R.id.action_searchFragment_to_playerFragment,
+                PlayerFragment.createArgs(track)
             )
         }
     }
