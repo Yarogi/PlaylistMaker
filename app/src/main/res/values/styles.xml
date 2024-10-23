@@ -298,13 +298,53 @@
         <item name="android:clickable">true</item>
     </style>
 
-    <style name="CustomAlertDialog">
-        <item name="backgroundColor">@color/white</item>
-        <item name="android:backgroundTint">@color/white</item>
+    <style name="CustomAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurface">@color/white</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/TitleTextStyle</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/BodyTextStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarStyle">@style/ButtonBarStyle</item>
+        <item name="dialogCornerRadius">18dp</item>
     </style>
 
-    <style name="CustomAlertDialogTitle" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
-       <item name="android:layout_marginTop">22dp</item>
+    <style name="AlertTitleTextStyle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:layout_marginTop">23dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
     </style>
+
+
+    <style name="TitleTextStyle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="BodyTextStyle" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="CustomTextButtonDialog" />
+
+    <style name="NegativeButtonStyle" parent="CustomTextButtonDialog" />
+
+    <style name="ButtonBarStyle">
+        <item name="android:minWidth">248dp</item>
+        <item name="android:minHeight">72dp</item>
+    </style>
+
+    <style name="CustomTextButtonDialog" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:minWidth">36dp</item>
+        <item name="android:minHeight">38dp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
 
 </resources>

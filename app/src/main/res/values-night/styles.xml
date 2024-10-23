@@ -284,14 +284,17 @@
         <item name="android:backgroundTint">@color/white</item>
     </style>
 
-    <style name="CustomAlertDialog">
-        <item name="backgroundColor">@color/white</item>
-        <item name="color">@color/white</item>
-        <item name="android:backgroundTint">@color/white</item>
+
+    <style name="CustomAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurface">@color/white</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/TitleTextStyle</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/BodyTextStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarStyle">@style/ButtonBarStyle</item>
+        <item name="dialogCornerRadius">18dp</item>
+        <item name="android:background">@color/white</item>
     </style>
 
-    <style name="CustomAlertDialogTitle">
-        <item name="android:layout_marginTop">22dp</item>
-    </style>
 
 </resources>

@@ -279,35 +279,12 @@ class PlaylistItemFragment : Fragment() {
 
     private fun confirmRemoveTrackDialog(track: Track): MaterialAlertDialogBuilder {
 
-        val dialogTitle = getString(R.string.delete_track)
+        //val dialogTitle = getString(R.string.delete_track)
         val dialogMessage = getString(R.string.question_sure_remove_track_from_playlist)
         val cancelTitle = getString(R.string.no).uppercase()
         val finishTitle = getString(R.string.yes).uppercase()
 
-        val backgroundTheme = resources.newTheme()
-        val background = resources.getDrawable(
-            R.drawable.dialog_background, backgroundTheme
-        )
-
-        val dialogTitleView = TextView(requireContext())
-        with(dialogTitleView) {
-            text = getString(R.string.delete_track)
-            textSize = 16.0F
-            setTextColor(resources.getColor(R.color.black, backgroundTheme))
-
-            val param = layoutParams as ViewGroup.MarginLayoutParams
-            param.setMargins(24, 16, 8, 8)
-
-            layoutParams = param
-
-        }
-
-
-
-
-        return MaterialAlertDialogBuilder(requireContext())
-            .setBackground(background)
-            .setCustomTitle(dialogTitleView)
+        return MaterialAlertDialogBuilder(requireContext(), R.style.CustomAlertDialog)
             .setMessage(dialogMessage)
             .setNegativeButton(cancelTitle) { dialog, which -> }
             .setPositiveButton(finishTitle) { dialog, which -> viewModel.removeFromPlaylist(track) }
@@ -315,8 +292,8 @@ class PlaylistItemFragment : Fragment() {
 
     private fun confirmDeleteDialog(): MaterialAlertDialogBuilder {
 
-        return MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.delete_playlist))
+        return MaterialAlertDialogBuilder(requireContext(), R.style.CustomAlertDialog)
+//            .setTitle(getString(R.string.delete_playlist))
             .setMessage(
                 getString(R.string.question_sure_delete_playlist).replace(
                     "%1", binding.playlistName.text.toString()

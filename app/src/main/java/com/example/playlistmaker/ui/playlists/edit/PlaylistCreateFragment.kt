@@ -156,7 +156,7 @@ open class PlaylistCreateFragment : Fragment() {
 
     }
 
-    private fun closeFragment() {
+    protected fun closeFragment() {
         findNavController().popBackStack()
     }
 
@@ -219,7 +219,7 @@ open class PlaylistCreateFragment : Fragment() {
         showPlaylistContent(PlaylistCreateData(name = "", description = "", cover = null))
     }
 
-    private fun showCreate(newPlaylist: Playlist) {
+    protected open fun showCreate(newPlaylist: Playlist) {
 
         Toast.makeText(
             requireActivity(),

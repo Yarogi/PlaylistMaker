@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.playlists.model.Playlist
 import com.example.playlistmaker.presentation.playlists.edit.PlaylistEditViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -30,6 +31,10 @@ class PlaylistEditFragment : PlaylistCreateFragment() {
         onBackCallBack.isEnabled = false
         viewModel.fillByPlaylistId(requireArguments().getInt(PLAYLIST_KEY))
 
+    }
+
+    override fun showCreate(newPlaylist: Playlist) {
+        closeFragment()
     }
 
 }

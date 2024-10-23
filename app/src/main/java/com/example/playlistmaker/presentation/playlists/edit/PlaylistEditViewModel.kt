@@ -32,6 +32,7 @@ class PlaylistEditViewModel(playlistEditInteractor: PlaylistEditInteractor) :
             && playlistAtStart.description == lastDescription
             && playlistAtStart.coverPathUri == lastCover
         ) {
+            renderState(PlaylistEditState.Create(playlistAtStart))
         } else {
 
             renderState(PlaylistEditState.Create(playlistAtStart))
