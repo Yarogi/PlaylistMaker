@@ -156,6 +156,7 @@ class PlaylistItemFragment : Fragment() {
         }
         binding.menuDeleteButton.setOnClickListener {
             confirmDeleteDialog().show()
+            viewModel.updatePlaylistInfoByLast()
         }
 
     }

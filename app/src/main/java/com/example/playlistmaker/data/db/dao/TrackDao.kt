@@ -167,7 +167,8 @@ interface TrackDao {
         insertToPlaylist(
             PlaylistTracksEntity(
                 playlistId = playlistId,
-                trackId = trackEntity.trackId
+                trackId = trackEntity.trackId,
+                timestamp = System.currentTimeMillis()
             )
         )
     }

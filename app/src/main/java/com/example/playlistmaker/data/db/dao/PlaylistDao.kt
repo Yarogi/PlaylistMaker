@@ -39,7 +39,8 @@ interface PlaylistDao {
                 "FROM playlist_tracks " +
                 "   LEFT JOIN track_table " +
                 "       ON playlist_tracks.trackId = track_table.trackId  " +
-                "WHERE playlist_tracks.playlistId = :playlistId"
+                "WHERE playlist_tracks.playlistId = :playlistId " +
+                "ORDER BY playlist_tracks.timestamp DESC"
     )
     fun getTracks(playlistId: Int): List<TrackEntity>
 
