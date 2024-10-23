@@ -1,14 +1,14 @@
 package com.example.playlistmaker.di
 
-import com.example.playlistmaker.data.media_library.impl.FeaturedTracksRepositoryImpl
-import com.example.playlistmaker.data.media_library.impl.PlaylistRepositoryImpl
+import com.example.playlistmaker.data.featured.FeaturedTracksRepositoryImpl
+import com.example.playlistmaker.data.playlists.impl.PlaylistRepositoryImpl
 import com.example.playlistmaker.data.player.impl.PlayerRepositoryImpl
 import com.example.playlistmaker.data.search.impl.SearchHistoryRepositoryImpl
 import com.example.playlistmaker.data.search.impl.TracksRepositoryImpl
 import com.example.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import com.example.playlistmaker.di.util.DINames
-import com.example.playlistmaker.domain.media_library.favorites.api.FeaturedTracksRepository
-import com.example.playlistmaker.domain.media_library.playlists.api.PlaylistRepository
+import com.example.playlistmaker.domain.featured.api.FeaturedTracksRepository
+import com.example.playlistmaker.domain.playlists.api.PlaylistRepository
 import com.example.playlistmaker.domain.player.api.PlayerRepository
 import com.example.playlistmaker.domain.search.api.SearchHistoryRepository
 import com.example.playlistmaker.domain.search.api.TracksRepository

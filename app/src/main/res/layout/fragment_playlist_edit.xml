@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.media_library.playlists.edit.PlaylistEditFragment">
+    android:theme="@style/Theme.PlaylistMaker.Background"
+    tools:context=".ui.playlists.edit.PlaylistCreateFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/topPanelBottomLine"
@@ -40,6 +41,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/fragment_title"
         style="@style/PanelTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

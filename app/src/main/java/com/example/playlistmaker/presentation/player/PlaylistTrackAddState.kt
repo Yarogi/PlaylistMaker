@@ -1,7 +1,7 @@
 package com.example.playlistmaker.presentation.player
 
 import com.example.playlistmaker.domain.main.model.Track
-import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
+import com.example.playlistmaker.domain.playlists.model.Playlist
 
 sealed interface PlaylistTrackAddState {
     object Loading : PlaylistTrackAddState

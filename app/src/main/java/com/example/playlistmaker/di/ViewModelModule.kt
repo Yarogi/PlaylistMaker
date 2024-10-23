@@ -1,10 +1,12 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.domain.main.model.Track
-import com.example.playlistmaker.presentation.media_library.featured.FeaturedTracksViewModel
-import com.example.playlistmaker.presentation.media_library.playlists.edit.PlayListEditViewModel
-import com.example.playlistmaker.presentation.media_library.playlists.list.PlaylistViewModel
+import com.example.playlistmaker.presentation.featured.FeaturedTracksViewModel
+import com.example.playlistmaker.presentation.playlists.edit.PlaylistCreateViewModel
+import com.example.playlistmaker.presentation.playlists.list.PlaylistViewModel
 import com.example.playlistmaker.presentation.player.PlayerViewModel
+import com.example.playlistmaker.presentation.playlists.edit.PlaylistEditViewModel
+import com.example.playlistmaker.presentation.playlists.item.PlaylistItemViewModel
 import com.example.playlistmaker.presentation.search.SearchViewModel
 import com.example.playlistmaker.presentation.settings.SettingsViewModel
 import com.google.gson.Gson
@@ -17,9 +19,11 @@ val viewModelModule = module {
     viewModel<PlayerViewModel> { (trackJson: String?) ->
         val gson: Gson = get()
         val track = gson.fromJson(trackJson, Track::class.java)
-        PlayerViewModel(track = track,
+        PlayerViewModel(
+            track = track,
             playerInteractor = get(),
-            playlistInteractor = get())
+            playlistInteractor = get()
+        )
     }
 
     viewModel<SearchViewModel> {
@@ -45,8 +49,18 @@ val viewModelModule = module {
         PlaylistViewModel(playlistInteractor = get())
     }
 
-    viewModel<PlayListEditViewModel> {
-        PlayListEditViewModel(playlistEditInteractor = get())
+    viewModel<PlaylistCreateViewModel> {
+        PlaylistCreateViewModel(playlistEditInteractor = get())
+    }
+    viewModel<PlaylistEditViewModel> {
+        PlaylistEditViewModel(playlistEditInteractor = get())
+    }
+
+    viewModel<PlaylistItemViewModel> {
+        PlaylistItemViewModel(
+            application = androidApplication(),
+            playlistItemInteractor = get(),
+        )
     }
 
 }

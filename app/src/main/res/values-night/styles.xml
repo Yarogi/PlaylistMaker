@@ -261,4 +261,40 @@
         <item name="android:textColor">@color/light_black</item>
     </style>
 
+
+    <!--  Playlist item   -->
+    <style name="PlaylistItemDescrAreaStyle">
+        <item name="tint">@color/black</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="PlaylistItemDescrAreaStyle.Title" />
+
+    <style name="PlaylistItemDescrAreaStyle.Description">
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="PlaylistItemDescrAreaStyle.CommandButton" />
+
+    <style name="PlaylistItemBSAreaStyle" />
+
+    <style name="PlaylistItemBSAreaStyle.TopView">
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+
+
+    <style name="CustomAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurface">@color/white</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/TitleTextStyle</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/BodyTextStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarStyle">@style/ButtonBarStyle</item>
+        <item name="dialogCornerRadius">18dp</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+
 </resources>

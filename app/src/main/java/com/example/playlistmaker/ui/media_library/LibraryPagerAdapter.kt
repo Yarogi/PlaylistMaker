@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.playlistmaker.ui.media_library.featured.FeaturedTracksFragment
-import com.example.playlistmaker.ui.media_library.playlists.list.PlaylistFragment
+import com.example.playlistmaker.ui.featured.FeaturedTracksFragment
+import com.example.playlistmaker.ui.playlists.list.PlaylistFragment
 
 class LibraryPagerAdapter(
     fragmentManager: FragmentManager,

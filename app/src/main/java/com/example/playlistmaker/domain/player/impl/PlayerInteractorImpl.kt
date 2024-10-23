@@ -1,10 +1,10 @@
 package com.example.playlistmaker.domain.player.impl
 
 import com.example.playlistmaker.domain.main.model.Track
-import com.example.playlistmaker.domain.media_library.favorites.api.FeaturedTracksRepository
-import com.example.playlistmaker.domain.media_library.playlists.api.PlaylistRepository
-import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
-import com.example.playlistmaker.domain.media_library.playlists.model.TrackAddToPlaylistResult
+import com.example.playlistmaker.domain.featured.api.FeaturedTracksRepository
+import com.example.playlistmaker.domain.playlists.api.PlaylistRepository
+import com.example.playlistmaker.domain.playlists.model.Playlist
+import com.example.playlistmaker.domain.playlists.model.TrackAddToPlaylistResult
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.api.PlayerRepository
 import com.example.playlistmaker.domain.player.model.PlaybackStatus

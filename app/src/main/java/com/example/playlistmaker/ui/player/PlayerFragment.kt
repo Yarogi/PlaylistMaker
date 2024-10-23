@@ -15,7 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlayerBinding
 import com.example.playlistmaker.domain.main.model.Track
-import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
+import com.example.playlistmaker.domain.playlists.model.Playlist
 import com.example.playlistmaker.presentation.player.PlayerFeaturedState
 import com.example.playlistmaker.presentation.player.PlayerPlaylistState
 import com.example.playlistmaker.presentation.player.PlayerViewModel
@@ -201,7 +201,7 @@ class PlayerFragment : Fragment() {
             // экран «Создание плейлиста».
             viewModel.clearPlaylists(BottomSheetBehavior.STATE_HIDDEN)
             //Открываем окно создания нового плейлиста
-            findNavController().navigate(R.id.action_playerFragment_to_playlistEditFragment)
+            findNavController().navigate(R.id.action_playerFragment_to_playlistCreateFragment)
         }
     }
 
