@@ -31,5 +31,7 @@
     <dimen name="input_icon_size">16dp</dimen>
     <!--  list -->
     <dimen name="small_text_primary">11sp</dimen>
+    <!--  playlist item  -->
+    <dimen name="playlist_item_trackList_height">266dp</dimen>
 
 </resources>

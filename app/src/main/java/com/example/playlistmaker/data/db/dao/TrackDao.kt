@@ -167,14 +167,15 @@ interface TrackDao {
         insertToPlaylist(
             PlaylistTracksEntity(
                 playlistId = playlistId,
-                trackId = trackEntity.trackId
+                trackId = trackEntity.trackId,
+                timestamp = System.currentTimeMillis()
             )
         )
     }
 
     //** Убрать трек из плейлиста */
     @Transaction
-    fun removeFromPlaylist(trackEntity: TrackEntity, playlistId: Int) {
+    suspend fun removeFromPlaylist(trackEntity: TrackEntity, playlistId: Int) {
         deleteFromPlaylist(
             PlaylistTracksEntity(
                 playlistId = playlistId,
