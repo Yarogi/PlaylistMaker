@@ -1,6 +1,6 @@
 package com.example.playlistmaker.presentation.player
 
-import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
+import com.example.playlistmaker.domain.playlists.model.Playlist
 
 sealed class PlayerPlaylistState(val listState: Int) {
     class Loading(visibleState: Int) : PlayerPlaylistState(visibleState)

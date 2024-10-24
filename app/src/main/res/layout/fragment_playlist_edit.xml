@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.media_library.playlists.edit.PlaylistEditFragment">
+    android:theme="@style/Theme.PlaylistMaker.Background"
+    tools:context=".ui.playlists.edit.PlaylistCreateFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/topPanelBottomLine"
@@ -28,7 +29,7 @@
         app:layout_constraintGuide_end="16dp" />
 
     <ImageButton
-        android:id="@+id/backButton"
+        android:id="@+id/btn_back"
         style="@style/PanelImgButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -40,13 +41,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/fragment_title"
         style="@style/PanelTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:text="@string/new_playlist"
         app:layout_constraintBottom_toTopOf="@id/topPanelBottomLine"
-        app:layout_constraintStart_toEndOf="@id/backButton"
+        app:layout_constraintStart_toEndOf="@id/btn_back"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -58,14 +60,14 @@
         android:clickable="true"
         android:contentDescription="@string/playlist_cover"
         android:src="@drawable/add_photo_area"
-        app:layout_constraintBottom_toTopOf="@id/playlist_name"
+        app:layout_constraintBottom_toTopOf="@id/tv_playlist_name"
         app:layout_constraintDimensionRatio="H, 1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topPanelBottomLine" />
 
     <EditText
-        android:id="@+id/playlist_name"
+        android:id="@+id/tv_playlist_name"
         style="@style/PlaylistItem"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -83,12 +85,12 @@
         android:layout_height="wrap_content"
         android:text="@string/required_name"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/playlist_name"
-        app:layout_constraintStart_toStartOf="@+id/playlist_name"
-        app:layout_constraintTop_toTopOf="@id/playlist_name" />
+        app:layout_constraintBottom_toTopOf="@id/tv_playlist_name"
+        app:layout_constraintStart_toStartOf="@+id/tv_playlist_name"
+        app:layout_constraintTop_toTopOf="@id/tv_playlist_name" />
 
     <EditText
-        android:id="@+id/playlist_description"
+        android:id="@+id/tv_playlist_description"
         style="@style/PlaylistItem"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -97,7 +99,7 @@
         app:layout_constraintBottom_toTopOf="@id/create_button"
         app:layout_constraintEnd_toStartOf="@id/endBorder"
         app:layout_constraintStart_toEndOf="@id/startBorder"
-        app:layout_constraintTop_toBottomOf="@id/playlist_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_playlist_name"
         app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <TextView
@@ -107,9 +109,9 @@
         android:layout_height="wrap_content"
         android:text="@string/description"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/playlist_description"
-        app:layout_constraintStart_toStartOf="@+id/playlist_description"
-        app:layout_constraintTop_toTopOf="@id/playlist_description" />
+        app:layout_constraintBottom_toTopOf="@id/tv_playlist_description"
+        app:layout_constraintStart_toStartOf="@+id/tv_playlist_description"
+        app:layout_constraintTop_toTopOf="@id/tv_playlist_description" />
 
 
     <Button
@@ -129,6 +131,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/playlist_description" />
+        app:layout_constraintTop_toBottomOf="@id/tv_playlist_description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

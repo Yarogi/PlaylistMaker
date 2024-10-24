@@ -15,7 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlayerBinding
 import com.example.playlistmaker.domain.main.model.Track
-import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
+import com.example.playlistmaker.domain.playlists.model.Playlist
 import com.example.playlistmaker.presentation.player.PlayerFeaturedState
 import com.example.playlistmaker.presentation.player.PlayerPlaylistState
 import com.example.playlistmaker.presentation.player.PlayerViewModel
@@ -32,14 +32,6 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerFragment : Fragment() {
-
-    companion object {
-        const val CURRENT_TRACK_KEY = "track"
-        fun createArgs(track: Track): Bundle {
-            val json = Gson().toJson(track)
-            return bundleOf(CURRENT_TRACK_KEY to json)
-        }
-    }
 
     private var _binding: FragmentPlayerBinding? = null
     private val binding: FragmentPlayerBinding get() = _binding!!
@@ -82,7 +74,6 @@ class PlayerFragment : Fragment() {
             viewModel.isFavoriteOnClick()
         }
 
-        //bottom_sheet
         initBottomSheet()
 
     }
@@ -141,12 +132,6 @@ class PlayerFragment : Fragment() {
 
                 is PlaylistTrackAddState.TrackAdded -> {
 
-                    //Требование:
-                    // Если текущий трек не добавлен в выбранный плейлист,
-                    // то окно добавления трека в плейлист исчезает, текущий
-                    // трек добавляется в выбранный плейлист и пользователь
-                    // видит всплывающее сообщение с текстом «Добавлено в плейлист
-                    // [название плейлиста]».
                     viewModel.clearPlaylists(BottomSheetBehavior.STATE_HIDDEN)
 
                     showAddMessage(
@@ -194,14 +179,8 @@ class PlayerFragment : Fragment() {
         binding.playlistsRecyclerView.adapter = adapter
         binding.createNewPlaylistButton.setOnClickListener {
 
-            //Требование:
-            // Если пользователь находится на экране «Аудиоплеер» и видит всплывающее окно
-            // добавления трека в плейлист, то при нажатии на кнопку «Новый плейлист» окно
-            // добавления трека в плейлист исчезает и пользователь перенаправляется на
-            // экран «Создание плейлиста».
             viewModel.clearPlaylists(BottomSheetBehavior.STATE_HIDDEN)
-            //Открываем окно создания нового плейлиста
-            findNavController().navigate(R.id.action_playerFragment_to_playlistEditFragment)
+            findNavController().navigate(R.id.action_playerFragment_to_playlistCreateFragment)
         }
     }
 
@@ -228,7 +207,6 @@ class PlayerFragment : Fragment() {
 
     private fun fillTrackInformation(track: Track) {
 
-        //Cover
         val coverImgView = binding.cover
         val artWorkRadius = pxToDP(coverImgView.context, 8)
         Glide.with(coverImgView)
@@ -332,5 +310,12 @@ class PlayerFragment : Fragment() {
         binding.overlay.isVisible = listState != BottomSheetBehavior.STATE_HIDDEN
     }
 
+    companion object {
+        const val CURRENT_TRACK_KEY = "track"
+        fun createArgs(track: Track): Bundle {
+            val json = Gson().toJson(track)
+            return bundleOf(CURRENT_TRACK_KEY to json)
+        }
+    }
 
 }

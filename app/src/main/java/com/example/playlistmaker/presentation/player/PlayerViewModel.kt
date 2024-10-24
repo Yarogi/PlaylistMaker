@@ -6,12 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.main.model.Track
-import com.example.playlistmaker.domain.media_library.playlists.api.PlaylistInteractor
-import com.example.playlistmaker.domain.media_library.playlists.model.Playlist
-import com.example.playlistmaker.domain.media_library.playlists.model.TrackAddToPlaylistResult
+import com.example.playlistmaker.domain.playlists.api.PlaylistInteractor
+import com.example.playlistmaker.domain.playlists.model.Playlist
+import com.example.playlistmaker.domain.playlists.model.TrackAddToPlaylistResult
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.model.PlaybackStatus
-import com.example.playlistmaker.presentation.media_library.playlists.list.PlaylistState
 import com.example.playlistmaker.util.debounce
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

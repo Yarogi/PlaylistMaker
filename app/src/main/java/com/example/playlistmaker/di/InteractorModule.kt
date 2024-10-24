@@ -1,13 +1,15 @@
 package com.example.playlistmaker.di
 
-import com.example.playlistmaker.domain.media_library.favorites.api.FeaturedTracksInteractor
-import com.example.playlistmaker.domain.media_library.favorites.impl.FeaturedTracksInteractorImpl
-import com.example.playlistmaker.domain.media_library.playlists.api.PlaylistEditInteractor
-import com.example.playlistmaker.domain.media_library.playlists.api.PlaylistInteractor
-import com.example.playlistmaker.domain.media_library.playlists.impl.PlaylistEditInteractorImpl
-import com.example.playlistmaker.domain.media_library.playlists.impl.PlaylistInteractorImpl
+import com.example.playlistmaker.domain.featured.api.FeaturedTracksInteractor
+import com.example.playlistmaker.domain.featured.impl.FeaturedTracksInteractorImpl
+import com.example.playlistmaker.domain.playlists.api.PlaylistEditInteractor
+import com.example.playlistmaker.domain.playlists.api.PlaylistInteractor
+import com.example.playlistmaker.domain.playlists.impl.PlaylistEditInteractorImpl
+import com.example.playlistmaker.domain.playlists.impl.PlaylistInteractorImpl
 import com.example.playlistmaker.domain.player.api.PlayerInteractor
 import com.example.playlistmaker.domain.player.impl.PlayerInteractorImpl
+import com.example.playlistmaker.domain.playlists.api.PlaylistItemInteractor
+import com.example.playlistmaker.domain.playlists.impl.PlaylistItemInteractorImpl
 import com.example.playlistmaker.domain.search.api.SearchHistoryInteractor
 import com.example.playlistmaker.domain.search.api.TracksInteractor
 import com.example.playlistmaker.domain.search.impl.SearchHistoryInteractorImpl
@@ -64,5 +66,9 @@ val interactorModule = module {
         PlaylistEditInteractorImpl(repository = get())
     }
     single<PlaylistInteractor> { PlaylistInteractorImpl(repository = get()) }
+
+    factory<PlaylistItemInteractor> {
+        PlaylistItemInteractorImpl(repository = get(), externalNavigator = get())
+    }
 
 }
