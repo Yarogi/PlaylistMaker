@@ -140,7 +140,10 @@ class PlaylistItemFragment : Fragment() {
         })
 
         //buttons
-        binding.menuShareButton.setOnClickListener { viewModel.sharePlaylist() }
+        binding.menuShareButton.setOnClickListener {
+            viewModel.updatePlaylistInfoByLast()
+            viewModel.sharePlaylist()
+        }
         binding.menuEditButton.setOnClickListener {
             findNavController().navigate(
                 R.id.action_playlistItemFragment_to_playlistEditFragment,
