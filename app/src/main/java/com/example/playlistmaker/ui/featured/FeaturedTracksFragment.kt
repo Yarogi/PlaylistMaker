@@ -20,10 +20,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FeaturedTracksFragment : BindingFragment<FragmentFeaturedTracksBinding>() {
 
-    companion object {
-        fun newInstanse(): FeaturedTracksFragment = FeaturedTracksFragment()
-    }
-
     private val viewModel by viewModel<FeaturedTracksViewModel>()
 
     private val playTrackDebouncer: (Track) -> Unit by lazy {
@@ -93,4 +89,7 @@ class FeaturedTracksFragment : BindingFragment<FragmentFeaturedTracksBinding>() 
 
     }
 
+    companion object {
+        fun newInstanse(): FeaturedTracksFragment = FeaturedTracksFragment()
+    }
 }
