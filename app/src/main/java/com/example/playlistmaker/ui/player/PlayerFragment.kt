@@ -33,14 +33,6 @@ import java.util.Locale
 
 class PlayerFragment : Fragment() {
 
-    companion object {
-        const val CURRENT_TRACK_KEY = "track"
-        fun createArgs(track: Track): Bundle {
-            val json = Gson().toJson(track)
-            return bundleOf(CURRENT_TRACK_KEY to json)
-        }
-    }
-
     private var _binding: FragmentPlayerBinding? = null
     private val binding: FragmentPlayerBinding get() = _binding!!
 
@@ -332,5 +324,12 @@ class PlayerFragment : Fragment() {
         binding.overlay.isVisible = listState != BottomSheetBehavior.STATE_HIDDEN
     }
 
+    companion object {
+        const val CURRENT_TRACK_KEY = "track"
+        fun createArgs(track: Track): Bundle {
+            val json = Gson().toJson(track)
+            return bundleOf(CURRENT_TRACK_KEY to json)
+        }
+    }
 
 }

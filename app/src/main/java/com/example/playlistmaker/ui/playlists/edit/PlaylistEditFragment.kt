@@ -11,11 +11,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistEditFragment : PlaylistCreateFragment() {
 
-    companion object {
-        private const val PLAYLIST_KEY = "playlistKey"
-        fun createArgs(playlistId: Int) = bundleOf(PLAYLIST_KEY to playlistId)
-    }
-
     override val viewModel by viewModel<PlaylistEditViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,6 +30,11 @@ class PlaylistEditFragment : PlaylistCreateFragment() {
 
     override fun showCreate(newPlaylist: Playlist) {
         closeFragment()
+    }
+
+    companion object {
+        private const val PLAYLIST_KEY = "playlistKey"
+        fun createArgs(playlistId: Int) = bundleOf(PLAYLIST_KEY to playlistId)
     }
 
 }

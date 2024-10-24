@@ -147,7 +147,11 @@ interface TrackDao {
     fun getlAllHistoryId(): List<Int>
 
     /** Получить историю */
-    @Query("SELECT * FROM search_history LEFT JOIN track_table ON search_history.trackId= track_table.trackId ORDER BY search_history.timestamp DESC")
+    @Query("SELECT * " +
+            "FROM search_history " +
+            "   LEFT JOIN track_table " +
+            "       ON search_history.trackId = track_table.trackId " +
+            "ORDER BY search_history.timestamp DESC")
     fun getAllHistory(): List<TimestampTrack>
 
     /** Служебная */

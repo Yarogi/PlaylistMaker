@@ -18,9 +18,6 @@ import com.example.playlistmaker.ui.playlists.item.PlaylistItemFragment
 
 class PlaylistFragment : BindingFragment<FragmentPlaylistsBinding>() {
 
-    companion object {
-        fun newInstanse() = PlaylistFragment()
-    }
 
     private val viewModel by viewModel<PlaylistViewModel>()
     private val adapter: PlaylistAdapter = PlaylistAdapter(
@@ -87,6 +84,10 @@ class PlaylistFragment : BindingFragment<FragmentPlaylistsBinding>() {
         binding.playlists.isVisible = false
         binding.errorHolderGroup.isVisible = true
 
+    }
+
+    companion object {
+        fun newInstanse() = PlaylistFragment()
     }
 
 }

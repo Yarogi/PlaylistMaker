@@ -42,13 +42,6 @@ import org.koin.core.component.getScopeId
 
 class PlaylistItemFragment : Fragment() {
 
-    companion object {
-
-        private const val PLAYLIST_ID_KEY = "playlistId"
-        fun createArgs(playlist: Playlist) = bundleOf(PLAYLIST_ID_KEY to playlist.id)
-
-    }
-
     private var _binding: FragmentPlaylistItemBinding? = null
     private val binding: FragmentPlaylistItemBinding get() = _binding!!
 
@@ -280,7 +273,6 @@ class PlaylistItemFragment : Fragment() {
 
     private fun confirmRemoveTrackDialog(track: Track): MaterialAlertDialogBuilder {
 
-        //val dialogTitle = getString(R.string.delete_track)
         val dialogMessage = getString(R.string.question_sure_remove_track_from_playlist)
         val cancelTitle = getString(R.string.no).uppercase()
         val finishTitle = getString(R.string.yes).uppercase()
@@ -294,7 +286,6 @@ class PlaylistItemFragment : Fragment() {
     private fun confirmDeleteDialog(): MaterialAlertDialogBuilder {
 
         return MaterialAlertDialogBuilder(requireContext(), R.style.CustomAlertDialog)
-//            .setTitle(getString(R.string.delete_playlist))
             .setMessage(
                 getString(R.string.question_sure_delete_playlist).replace(
                     "%1", binding.playlistName.text.toString()
@@ -304,6 +295,13 @@ class PlaylistItemFragment : Fragment() {
             .setPositiveButton(getString(R.string.yes).uppercase()) { dialog, which ->
                 viewModel.deletePlaylist()
             }
+
+    }
+
+    companion object {
+
+        private const val PLAYLIST_ID_KEY = "playlistId"
+        fun createArgs(playlist: Playlist) = bundleOf(PLAYLIST_ID_KEY to playlist.id)
 
     }
 
