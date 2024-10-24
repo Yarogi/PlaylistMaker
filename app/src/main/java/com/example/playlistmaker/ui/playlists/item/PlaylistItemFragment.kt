@@ -77,11 +77,11 @@ class PlaylistItemFragment : Fragment() {
 
         val playlistId = requireArguments().getInt(PLAYLIST_ID_KEY)
 
-        binding.trackListView.adapter = adapter
-        binding.backButton.setOnClickListener { findNavController().popBackStack() }
-        binding.shareButton.setOnClickListener { viewModel.sharePlaylist() }
+        binding.rvTracklist.adapter = adapter
+        binding.btnBack.setOnClickListener { findNavController().popBackStack() }
+        binding.ivShare.setOnClickListener { viewModel.sharePlaylist() }
 
-        binding.menuButton.setOnClickListener { viewModel.getCommandsList() }
+        binding.ivMenu.setOnClickListener { viewModel.getCommandsList() }
 
         initBottomSheetBehavor()
         initMenuViews(playlistId)
@@ -110,7 +110,7 @@ class PlaylistItemFragment : Fragment() {
 
     private fun initBottomSheetBehavor() {
 
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetBehavior)
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bsbTracklist)
             .apply { state = BottomSheetBehavior.STATE_COLLAPSED }
         bottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
@@ -123,7 +123,7 @@ class PlaylistItemFragment : Fragment() {
 
     private fun initMenuViews(playlistId: Int) {
 
-        menuSheetBehavior = BottomSheetBehavior.from(binding.menuSheetBehavior)
+        menuSheetBehavior = BottomSheetBehavior.from(binding.bsbMenu)
             .apply { state = BottomSheetBehavior.STATE_HIDDEN }
         menuSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
@@ -140,17 +140,17 @@ class PlaylistItemFragment : Fragment() {
         })
 
         //buttons
-        binding.menuShareButton.setOnClickListener {
+        binding.btnMenuShare.setOnClickListener {
             viewModel.updatePlaylistInfoByLast()
             viewModel.sharePlaylist()
         }
-        binding.menuEditButton.setOnClickListener {
+        binding.btnMenuEdit.setOnClickListener {
             findNavController().navigate(
                 R.id.action_playlistItemFragment_to_playlistEditFragment,
                 PlaylistEditFragment.createArgs(playlistId = playlistId)
             )
         }
-        binding.menuDeleteButton.setOnClickListener {
+        binding.btnMenuDelete.setOnClickListener {
             confirmDeleteDialog().show()
             viewModel.updatePlaylistInfoByLast()
         }
@@ -200,12 +200,12 @@ class PlaylistItemFragment : Fragment() {
     }
 
     private fun updateDescriptioView(data: PlaylistDetailedInfo) {
-        binding.playlistName.text = data.name
-        binding.playlistDescription.isVisible = data.description.isNotEmpty()
-        binding.playlistDescription.text = data.description
-        binding.playlistDurationView.text =
+        binding.tvPlaylistName.text = data.name
+        binding.tvPlaylistDescription.isVisible = data.description.isNotEmpty()
+        binding.tvPlaylistDescription.text = data.description
+        binding.tvPlaylistDuration.text =
             trackDurationToString(requireContext(), data.totalDuration)
-        binding.playlistTracksQuantityView.text =
+        binding.tvPlaylistTracksQuantity.text =
             tracksQuantityToString(requireContext(), data.tracksQuantity)
     }
 
@@ -241,26 +241,26 @@ class PlaylistItemFragment : Fragment() {
 
     private fun showPlaylistCover(coverUri: Uri?) {
 
-        binding.coverHolder.isVisible = true
-        binding.coverPrimary.isVisible = false
+        binding.ivCoverHolder.isVisible = true
+        binding.ivCoverPrimary.isVisible = false
 
         //Cover
-        binding.coverPrimary.isVisible = false
+        binding.ivCoverPrimary.isVisible = false
         coverUri?.let {
             Glide.with(requireContext())
                 .load(coverUri)
                 .transform(CenterCrop())
-                .into(binding.coverPrimary)
+                .into(binding.ivCoverPrimary)
                 .let {
-                    binding.coverPrimary.isVisible = true
+                    binding.ivCoverPrimary.isVisible = true
                 }
         }
 
     }
 
     private fun setPlaylistVisible(isVisible: Boolean) {
-        if (binding.bottomSheetBehavior.isVisible != isVisible) {
-            binding.bottomSheetBehavior.isVisible = isVisible
+        if (binding.bsbTracklist.isVisible != isVisible) {
+            binding.bsbTracklist.isVisible = isVisible
         }
     }
 
@@ -270,8 +270,8 @@ class PlaylistItemFragment : Fragment() {
         adapter.tracks.addAll(tracks)
         adapter.notifyDataSetChanged()
 
-        binding.trackListView.isVisible = tracks.isNotEmpty()
-        binding.emptyTracklistHolder.isVisible = tracks.isEmpty()
+        binding.rvTracklist.isVisible = tracks.isNotEmpty()
+        binding.llEmptyTracklistHolder.isVisible = tracks.isEmpty()
     }
 
     private fun confirmRemoveTrackDialog(track: Track): MaterialAlertDialogBuilder {
@@ -291,7 +291,7 @@ class PlaylistItemFragment : Fragment() {
         return MaterialAlertDialogBuilder(requireContext(), R.style.CustomAlertDialog)
             .setMessage(
                 getString(R.string.question_sure_delete_playlist).replace(
-                    "%1", binding.playlistName.text.toString()
+                    "%1", binding.tvPlaylistName.text.toString()
                 )
             )
             .setNegativeButton(getString(R.string.no).uppercase()) { dialog, which -> }
