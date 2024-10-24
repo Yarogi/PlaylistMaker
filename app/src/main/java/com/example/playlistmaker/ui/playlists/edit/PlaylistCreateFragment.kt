@@ -70,7 +70,7 @@ open class PlaylistCreateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.backButton.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             safeExit()
         }
 
@@ -120,7 +120,7 @@ open class PlaylistCreateFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         }
         nameTextWatcher.let {
-            binding.playlistName.addTextChangedListener(it)
+            binding.tvPlaylistName.addTextChangedListener(it)
         }
 
         descriptionTextWatcher = object : TextWatcher {
@@ -132,17 +132,17 @@ open class PlaylistCreateFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         }
         descriptionTextWatcher.let {
-            binding.playlistDescription.addTextChangedListener(it)
+            binding.tvPlaylistDescription.addTextChangedListener(it)
         }
 
     }
 
     private fun destroyTextWatchers() {
         nameTextWatcher?.let {
-            binding.playlistName.removeTextChangedListener(it)
+            binding.tvPlaylistName.removeTextChangedListener(it)
         }
         descriptionTextWatcher?.let {
-            binding.playlistDescription.removeTextChangedListener(it)
+            binding.tvPlaylistDescription.removeTextChangedListener(it)
         }
     }
 
@@ -173,28 +173,28 @@ open class PlaylistCreateFragment : Fragment() {
 
     private fun showPlaylistContent(data: PlaylistCreateData) {
 
-        if (binding.playlistName.text.toString() != data.name) {
-            binding.playlistName.setText(data.name)
+        if (binding.tvPlaylistName.text.toString() != data.name) {
+            binding.tvPlaylistName.setText(data.name)
         }
-        if (binding.playlistName.text.isNotEmpty()) {
+        if (binding.tvPlaylistName.text.isNotEmpty()) {
             binding.playlistNameTitle.isVisible = true
-            binding.playlistName.isSelected = true
+            binding.tvPlaylistName.isSelected = true
             binding.createButton.isEnabled = true
         } else {
             binding.playlistNameTitle.isVisible = false
-            binding.playlistName.isSelected = false
+            binding.tvPlaylistName.isSelected = false
             binding.createButton.isEnabled = false
         }
 
-        if (binding.playlistDescription.text.toString() != data.description) {
-            binding.playlistDescription.setText(data.description)
+        if (binding.tvPlaylistDescription.text.toString() != data.description) {
+            binding.tvPlaylistDescription.setText(data.description)
         }
-        if (binding.playlistDescription.text.isNotEmpty()) {
+        if (binding.tvPlaylistDescription.text.isNotEmpty()) {
             binding.playlistDescriptionTitle.isVisible = true
-            binding.playlistDescription.isSelected = true
+            binding.tvPlaylistDescription.isSelected = true
         } else {
             binding.playlistDescriptionTitle.isVisible = false
-            binding.playlistDescription.isSelected = false
+            binding.tvPlaylistDescription.isSelected = false
         }
 
         showPlaylistCoverByUri(data.cover)

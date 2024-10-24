@@ -19,7 +19,7 @@ class PlaylistEditFragment : PlaylistCreateFragment() {
         binding.createButton.text = getString(R.string.save)
         binding.fragmentTitle.text = getString(R.string.edit)
 
-        binding.backButton.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
 

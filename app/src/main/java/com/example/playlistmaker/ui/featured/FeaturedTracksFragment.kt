@@ -46,7 +46,7 @@ class FeaturedTracksFragment : BindingFragment<FragmentFeaturedTracksBinding>() 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.trackListView.adapter = trackListAdapter
+        binding.rvTracklist.adapter = trackListAdapter
         viewModel.stateObserver().observe(viewLifecycleOwner) { state -> render(state) }
     }
 
@@ -84,7 +84,7 @@ class FeaturedTracksFragment : BindingFragment<FragmentFeaturedTracksBinding>() 
         holderIsVisible: Boolean = false,
     ) {
         binding.holderEmpty.isVisible = holderIsVisible
-        binding.trackListView.isVisible = trackListIsVisible
+        binding.rvTracklist.isVisible = trackListIsVisible
         binding.progressBar.isVisible = progresBarIsVisible
 
     }
