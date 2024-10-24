@@ -74,7 +74,6 @@ class PlayerFragment : Fragment() {
             viewModel.isFavoriteOnClick()
         }
 
-        //bottom_sheet
         initBottomSheet()
 
     }
@@ -133,12 +132,6 @@ class PlayerFragment : Fragment() {
 
                 is PlaylistTrackAddState.TrackAdded -> {
 
-                    //Требование:
-                    // Если текущий трек не добавлен в выбранный плейлист,
-                    // то окно добавления трека в плейлист исчезает, текущий
-                    // трек добавляется в выбранный плейлист и пользователь
-                    // видит всплывающее сообщение с текстом «Добавлено в плейлист
-                    // [название плейлиста]».
                     viewModel.clearPlaylists(BottomSheetBehavior.STATE_HIDDEN)
 
                     showAddMessage(
@@ -186,13 +179,7 @@ class PlayerFragment : Fragment() {
         binding.playlistsRecyclerView.adapter = adapter
         binding.createNewPlaylistButton.setOnClickListener {
 
-            //Требование:
-            // Если пользователь находится на экране «Аудиоплеер» и видит всплывающее окно
-            // добавления трека в плейлист, то при нажатии на кнопку «Новый плейлист» окно
-            // добавления трека в плейлист исчезает и пользователь перенаправляется на
-            // экран «Создание плейлиста».
             viewModel.clearPlaylists(BottomSheetBehavior.STATE_HIDDEN)
-            //Открываем окно создания нового плейлиста
             findNavController().navigate(R.id.action_playerFragment_to_playlistCreateFragment)
         }
     }
@@ -220,7 +207,6 @@ class PlayerFragment : Fragment() {
 
     private fun fillTrackInformation(track: Track) {
 
-        //Cover
         val coverImgView = binding.cover
         val artWorkRadius = pxToDP(coverImgView.context, 8)
         Glide.with(coverImgView)
