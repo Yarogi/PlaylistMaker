@@ -199,10 +199,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun showContent(tracks: List<Track>) {
-        trackListAdapter.tracks.clear()
-        trackListAdapter.tracks.addAll(tracks)
-        trackListAdapter.notifyDataSetChanged()
-
+//        trackListAdapter.tracks.clear()
+//        trackListAdapter.tracks.addAll(tracks)
+//        trackListAdapter.notifyDataSetChanged()
+        trackListAdapter.submitList(tracks)
         updateResultViewVisible(trackList = true)
 
     }
@@ -217,13 +217,13 @@ class SearchFragment : Fragment() {
 
     private fun showHistory(tracks: List<Track>) {
 
-        if (historyAdapter.tracks.isNotEmpty()) {
-            historyAdapter.tracks.clear()
-        }
-
-        historyAdapter.tracks.addAll(tracks)
-        historyAdapter.notifyDataSetChanged()
-
+//        if (historyAdapter.tracks.isNotEmpty()) {
+//            historyAdapter.tracks.clear()
+//        }
+//
+//        historyAdapter.tracks.addAll(tracks)
+//        historyAdapter.notifyDataSetChanged()
+        historyAdapter.submitList(tracks)
         updateResultViewVisible(history = true)
 
     }
@@ -247,7 +247,8 @@ class SearchFragment : Fragment() {
         binding.emptyHolder.isVisible = empty
         binding.noConnectionHolder.isVisible = noConnection
         binding.progressBar.isVisible = progressBar
-        binding.historyHolder.isVisible = history && historyAdapter.tracks.isNotEmpty()
+        //binding.historyHolder.isVisible = history && historyAdapter.tracks.isNotEmpty()
+        binding.historyHolder.isVisible = history && historyAdapter.itemCount != 0
         binding.trackListView.isVisible = trackList
 
 

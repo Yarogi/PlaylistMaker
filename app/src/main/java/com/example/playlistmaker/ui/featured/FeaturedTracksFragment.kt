@@ -72,9 +72,10 @@ class FeaturedTracksFragment : BindingFragment<FragmentFeaturedTracksBinding>() 
     }
 
     private fun showTrackList(trackList: List<Track>) {
-        trackListAdapter.tracks.clear()
-        trackListAdapter.tracks.addAll(trackList)
-        trackListAdapter.notifyDataSetChanged()
+//        trackListAdapter.tracks.clear()
+//        trackListAdapter.tracks.addAll(trackList)
+//        trackListAdapter.notifyDataSetChanged()
+        trackListAdapter.submitList(trackList)
         setElementVisibile(trackListIsVisible = true)
     }
 
